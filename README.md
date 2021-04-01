@@ -1,5 +1,7 @@
 # Duckface
 
+![screenshot](screenshots/season-1-haunted-maze.png)
+
 Duckface is a puzzle platformer featuring butt ugly coder art, dodgy controls, broken physics,
 poorly performed music, and humour that isn't probably funny. It's free, open source, and runs in your browser.
 
