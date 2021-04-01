@@ -1,0 +1,341 @@
+{
+  "id": "lord-of-the-ring",
+  "title": "Lord of the Ring",
+  "author": "Janne Kivilahti",
+  "bgColor": "#c9e6ad",
+  "themeSong": "theme-nostalgia",
+  "captions": [
+    {
+      "text": "The ring is calling for you, Duckface.",
+      "y": 0.85,
+      "delay": 1000
+    }
+  ],
+  "endCaption": "You rule!",
+  "top": 0,
+  "right": 800,
+  "bottom": 600,
+  "left": 0,
+  "horizontalLoop": true,
+  "verticalLoop": true,
+  "effects": [
+    {
+      "type": "rain",
+      "id": "rain-bg",
+      "layer": 1,
+      "props": {
+        "drops": 100,
+        "color": "#f0f0f0"
+      }
+    },
+    {
+      "type": "rain",
+      "id": "rain-front",
+      "layer": 3,
+      "props": {
+        "drops": 20,
+        "color": "#f0f0f0"
+      }
+    }
+  ],
+  "sprites": [
+    {
+      "id": "b90574d0ea",
+      "typeId": "ring",
+      "weight": 0,
+      "x": 400,
+      "y": 128,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "be0a84df77",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 176,
+      "y": 304,
+      "width": 56,
+      "height": 48
+    },
+    {
+      "id": "f0028dd278",
+      "typeId": "box",
+      "x": 568,
+      "y": 352,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "618ad0f144",
+      "typeId": "box",
+      "x": 352,
+      "y": 384,
+      "width": 120,
+      "height": 72
+    },
+    {
+      "id": "e0269df424",
+      "typeId": "box",
+      "x": 368,
+      "y": 360,
+      "width": 88,
+      "height": 24
+    },
+    {
+      "id": "33f1cd6850",
+      "typeId": "box",
+      "x": 384,
+      "y": 344,
+      "width": 56,
+      "height": 16
+    }
+  ],
+  "tiles": [
+    {
+      "id": "374fd7c29e",
+      "color": "#82b083",
+      "x": -80,
+      "y": 456,
+      "width": 960,
+      "height": 160
+    },
+    {
+      "id": "fc6a3f633b",
+      "color": "#bababa",
+      "x": 352,
+      "y": 216,
+      "width": 120,
+      "height": 128
+    },
+    {
+      "id": "ecdcb63a33",
+      "color": "#bababa",
+      "x": 360,
+      "y": 248,
+      "width": 8,
+      "height": 16
+    },
+    {
+      "id": "762e69efcf",
+      "color": "#bababa",
+      "x": 440,
+      "y": 264,
+      "width": 8,
+      "height": 16
+    },
+    {
+      "id": "754cc0f645",
+      "color": "#bababa",
+      "x": 320,
+      "y": 280,
+      "width": 112,
+      "height": 32
+    },
+    {
+      "id": "cc6a9c9de7",
+      "color": "#bababa",
+      "x": 320,
+      "y": 296,
+      "width": 104,
+      "height": 8,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": true
+      }
+    },
+    {
+      "id": "46fb34e3b9",
+      "color": "#bababa",
+      "x": 376,
+      "y": 168,
+      "width": 16,
+      "height": 16,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
+      "id": "fc0f443ab6",
+      "color": "#bababa",
+      "x": 440,
+      "y": 168,
+      "width": 16,
+      "height": 16,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
+      "id": "9e13c7f558",
+      "color": "#bababa",
+      "x": 408,
+      "y": 168,
+      "width": 16,
+      "height": 16,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
+      "id": "db1086de78",
+      "color": "#bababa",
+      "x": 392,
+      "y": 184,
+      "width": 16,
+      "height": 32,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "17d281704a",
+      "color": "#bababa",
+      "x": 424,
+      "y": 184,
+      "width": 16,
+      "height": 32,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "4e68ac45f5",
+      "color": "#bababa",
+      "x": 376,
+      "y": 184,
+      "width": 16,
+      "height": 32,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": true,
+        "l": true
+      }
+    },
+    {
+      "id": "9edc095e78",
+      "color": "#bababa",
+      "x": 408,
+      "y": 184,
+      "width": 16,
+      "height": 32,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "54c594b1d9",
+      "color": "#bababa",
+      "x": 440,
+      "y": 184,
+      "width": 16,
+      "height": 32,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "298e769ce7",
+      "shape": 2,
+      "color": "#bababa",
+      "x": 48,
+      "y": 392,
+      "width": 128,
+      "height": 64
+    },
+    {
+      "id": "7165901f54",
+      "color": "#bababa",
+      "x": 176,
+      "y": 392,
+      "width": 56,
+      "height": 64,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "132d58e8cd",
+      "color": "#bababa",
+      "x": 536,
+      "y": 376,
+      "width": 64,
+      "height": 80
+    },
+    {
+      "id": "51202e4e45",
+      "color": "#bababa",
+      "x": 568,
+      "y": 416,
+      "width": 80,
+      "height": 40
+    },
+    {
+      "id": "80b76ce529",
+      "color": "#bababa",
+      "x": 552,
+      "y": 440,
+      "width": 40,
+      "height": 16
+    },
+    {
+      "id": "d1b8a390cf",
+      "color": "#89b082",
+      "x": 392,
+      "y": 344,
+      "z": -0.2,
+      "width": 40,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "e941e3a19f",
+      "color": "#89b082",
+      "x": 376,
+      "y": 448,
+      "z": -0.2,
+      "width": 72,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "7d0b6a54a8",
+      "color": "#89b082",
+      "x": 408,
+      "y": 352,
+      "z": -0.2,
+      "width": 8,
+      "height": 96,
+      "layer": 1,
+      "blocks": false
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Duckface</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="description"
+        content="Duckface is a puzzle platformer with butt ugly coder art, dodgy controls, broken physics, poorly performed music, and wrong opinions about various things.">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
+
+        body {
+            font-family: 'Arial';
+            background-color: #f0f0ff;
+            color: #383838;
+        }
+
+        main {
+            font-family: 'Gaegu';
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: max(400px, 60vw);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #ff880e;
+            font-size: 4em;
+            margin: 0;
+            letter-spacing: -8px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        a.button {
+            border: 1px solid #3a772b;
+            border-radius: 5px;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: block;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bolder;
+            background-color: #3cc123;
+        }
+
+        .footnote {
+            font-size: 0.8em;
+        }
+    </style>
+    <script>
+
+        const width = 220;
+        const height = 220;
+        const lineWidth = width / 200;
+        const randoms = {
+            get value() {
+                return (Math.random() - Math.random()) * (width / 111);
+            }
+        };
+
+        async function onLoad() {
+            renderDuckface();
+            setInterval(() => {
+                renderDuckface();
+            }, 200);
+        }
+
+        function renderDuckface() {
+            const canvas = document.getElementById("duckface");
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.save();
+            context.strokeStyle = "#303030";
+            context.translate(canvas.width / 2 - width / 2, canvas.height / 2 - height / 2);
+
+            for (let i = 0; i < 6; i++) {
+                context.lineWidth = lineWidth;
+
+                context.fillStyle = "#ffffff";
+                context.beginPath();
+                context.moveTo(randoms.value, randoms.value);
+                context.lineTo(width + randoms.value, randoms.value);
+                context.lineTo(width + randoms.value, height + randoms.value);
+                context.lineTo(randoms.value, height + randoms.value);
+                context.closePath();
+                if (i == 0) context.fill();
+                context.stroke();
+            }
+            for (let i = 0; i < 3; i++) {
+                context.lineWidth = lineWidth;
+
+                context.fillStyle = "#ffc080";
+                context.beginPath();
+                context.moveTo(width * 0.25 + randoms.value, height * 0.4 + randoms.value);
+                context.lineTo(width * 1.10 + randoms.value, height * 0.4 + randoms.value);
+                context.lineTo(width * 1.10 + randoms.value, height * 0.6 + randoms.value);
+                context.lineTo(width * 0.25 + randoms.value, height * 0.6 + randoms.value);
+                context.closePath();
+                if (i == 0) context.fill();
+                context.stroke();
+
+                context.lineWidth = lineWidth;
+                context.beginPath();
+                context.moveTo(width * 0.35 + randoms.value, height * 0.5 + randoms.value);
+                context.lineTo(width * 1.10 + randoms.value, height * 0.5 + randoms.value);
+                context.stroke();
+
+                context.lineWidth = lineWidth;
+                context.beginPath();
+                context.moveTo(width * 0.15 + randoms.value, height * 0.3 + randoms.value);
+                context.lineTo(width * 0.15 + randoms.value, height * 0.35 + randoms.value);
+                context.moveTo(width * 0.85 + randoms.value, height * 0.25 + randoms.value);
+                context.lineTo(width * 0.85 + randoms.value, height * 0.3 + randoms.value);
+                context.stroke();
+
+                context.lineWidth = lineWidth / 2;
+                context.beginPath();
+                context.moveTo(width * 0.96 + randoms.value, height * 0.94 + randoms.value);
+                context.lineTo(width * 0.94 + randoms.value, height * 0.96 + randoms.value);
+                context.moveTo(width * 0.96 + randoms.value, height * 0.90 + randoms.value);
+                context.lineTo(width * 0.95 + randoms.value, height * 0.91 + randoms.value);
+
+                context.stroke();
+            }
+
+            context.restore();
+        }
+
+    </script>
+</head>
+
+<body onload="onLoad()">
+    <main>
+        <h1>Duckface</h1>
+        <h2>by Janne Kivilahti / Piste Gamez</h2>
+        <canvas id="duckface" title="a scetchy image of some bird" width="300" height="280"></canvas>
+        <div>
+            Duckface is a puzzle platformer featuring butt ugly coder art, dodgy controls, broken physics,
+            poorly performed music, and humour that isn't probably funny. It's free, open source, and runs in your
+            browser.
+        </div>
+        <div>
+            <a href="game.html" class="button">Try public alpha now!</a>
+        </div>
+        <div class="footnote">
+            Public alpha means, that this is not the final version of the game.
+            Things might still change. There might be bugs.
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Duckface</title>
+    <meta name="description"
+        content="Duckface is a puzzle platformer with butt ugly coder art, dodgy controls, broken physics, too many music genres, and wrong opinions about various things. You may not like it.">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script>
+        const worker = new Worker('/js/worker.js');
+    </script>
+    <!-- scripts-start -->
+    <script src="js/common.js"></script>
+    <script src="js/sprite-type-bundle.js"></script>
+    <script src="js/particleTypes.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/sound.js"></script>
+    <!-- scripts-end -->
+
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <main id="main">
+        <div id="content">
+            <h1>Duckface</h1>
+            <div id="screen">
+                <canvas id="game-canvas" width="800" height="600"></canvas>
+                <img id="grain" width="800" height="600" src="grain.jpg" />
+                <div id="help" style="display:none">
+                    <h2>How to Play Duckface</h2>
+                    <h3>Keyboard</h3>
+                    <p>Use arrow keys or A,W,D to move</p>
+                    <h3>Mobile</h3>
+                    <p>
+                    <div>Press left side of the screen to move left and</div>
+                    <div>right side of the screen to move right.</div>
+                    <div>Press both sides of the screen at the same time to jump.</div>
+                    </p>
+                    <br />
+                    <p>If you are stuck, press Try again button or R</p>
+                    <p>P = Pause</p>
+                </div>
+                <div id="settings" style="display:none">
+                    <form>
+                        <div>
+                            <div class="header">Sounds</div>
+                            <div>
+                                <label><input id="sfx-input" type="checkbox" checked /> Sound effects</label>
+                            </div>
+                            <div>
+                                <label><input id="music-input" type="checkbox" checked /> Music</label>
+                            </div>
+                            <div><label>Volume</label></div>
+                            <div>
+                                <input id="volume-input" type="range" min="0" max="1" step="0.1" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="header">Graphics</div>
+                            <div>
+                                <label><input id="jitters-input" type="checkbox" checked
+                                        onclick="jitters = event.target.checked" /> Jitters</label>
+                            </div>
+                            <div>
+                                <label><input id="grain-input" type="checkbox" checked
+                                        onclick="grain = event.target.checked" /> Grain</label>
+                            </div>
+                            <br />
+                            <div>
+                                <button class="width-100" type="button" onclick="openFullScreen()">Full screen</button>
+                            </div>
+                            <br />
+                            <div>
+                                <button class="width-100" type="button" onclick="clearBestTimes()">Erase Best
+                                    Times</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <nav>
+                <form>
+                    <button type="button" id="button-first" onclick="openFirst()">
+                        <canvas id="button-first-image" width="32" height="32" alt="Open first level"
+                            title="Open first level" />
+                    </button>
+                    <button type="button" id="button-previous" onclick="openPrevious()">
+                        <canvas id="button-previous-image" width="32" height="32" alt="Open previous level"
+                            title="Open previous level" />
+                    </button>
+                    <button type="button" id="button-reset" onclick="toggleSettings()">Settings</button>
+                    <button type="button" id="button-reset" onclick="resetScene()">Try again (R)</button>
+                    <!--
+                    <button type="button" id="button-random" onclick="openRandom()">Random</button>
+                    -->
+                    <button type="button" id="button-help" onclick="toggleHelp()">Help</button>
+                    <button type="button" id="button-next" onclick="openNext()">
+                        <canvas id="button-next-image" width="32" height="32" alt="Open next level"
+                            title="Open next level" />
+                    </button>
+                    <button type="button" id="button-last" onclick="openLast()">
+                        <canvas id="button-last-image" width="32" height="32" alt="Open last level"
+                            title="Open last level" />
+                    </button>
+                </form>
+            </nav>
+            <footer>
+                <a id="level-link">Link to this level</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/pistegamez/duckface">GitHub</a>
+                <a target="_blank" rel="noopener noreferrer"
+                    href="https://www.teepublic.com/t-shirt/20507563-duckface">Buy T-shirt!</a>
+                <a target="_blank" rel="noopener noreferrer"
+                    href="https://pistegamez.proboards.com/board/12/duckface">Forum</a>
+                <a id="editor-link">Edit in editor</a>
+            </footer>
+        </div>
+        <audio id="game-audio" />
+    </main>
+
+
+    <script>
+
+        let albumId = new URL(window.location.href).searchParams.get("album") || localStorage.getItem("duckface-last-album-id") || "season-1";
+        let sceneId = new URL(window.location.href).searchParams.get("scene") || localStorage.getItem("duckface-last-scene-id") || "square-1";
+
+        if (sceneId !== "from-editor") {
+            localStorage.setItem("duckface-last-scene-id", sceneId);
+            localStorage.setItem("duckface-last-album-id", albumId);
+        }
+        /*
+        document.getElementById("screen").onmouseover = () => {
+            document.getElementById("settings").style.display = null;
+        };
+
+        document.getElementById("screen").onmouseleave = () => {
+            document.getElementById("settings").style.display = "none";
+        };*/
+
+        const musicEnabled = localStorage.getItem("duckface-settings-music-enabled") !== null ? localStorage.getItem("duckface-settings-music-enabled") === "true" : true;
+        document.getElementById("music-input").checked = musicEnabled;
+        if (!musicEnabled) {
+            audio.disableMusic();
+        }
+
+        document.getElementById("music-input").onchange = (event) => {
+            if (event.target.checked) {
+                audio.enableMusic();
+            }
+            else {
+                audio.disableMusic();
+            }
+            localStorage.setItem("duckface-settings-music-enabled", event.target.checked);
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+        };
+
+        const sfxEnabled = localStorage.getItem("duckface-settings-sfx-enabled") !== null ? localStorage.getItem("duckface-settings-sfx-enabled") === "true" : true;
+        document.getElementById("sfx-input").checked = sfxEnabled;
+        if (!sfxEnabled) {
+            audio.disableEffects();
+        }
+
+        document.getElementById("sfx-input").onchange = (event) => {
+            if (event.target.checked) {
+                audio.enableEffects();
+            }
+            else {
+                audio.disableEffects();
+            }
+            localStorage.setItem("duckface-settings-sfx-enabled", event.target.checked);
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+        };
+
+        jitters = localStorage.getItem("duckface-settings-jitter-enabled") !== null ? localStorage.getItem("duckface-settings-jitter-enabled") === "true" : true;
+        grain = localStorage.getItem("duckface-settings-grain-enabled") !== null ? localStorage.getItem("duckface-settings-grain-enabled") === "true" : true;
+
+        document.getElementById("jitters-input").checked = jitters;
+        document.getElementById("jitters-input").onclick = ({ target }) => {
+            jitters = target.checked;
+            localStorage.setItem("duckface-settings-jitter-enabled", jitters);
+        };
+        document.getElementById("grain-input").checked = grain;
+        document.getElementById("grain-input").onclick = ({ target }) => {
+            grain = target.checked;
+            localStorage.setItem("duckface-settings-grain-enabled", grain);
+        };
+
+        //document.getElementById("volume-input").value = audio.gainNode.gain.value;
+
+        const volume = localStorage.getItem("duckface-settings-volume") !== null ? parseFloat(localStorage.getItem("duckface-settings-volume")) : 0.5;
+        document.getElementById("volume-input").value = volume;
+
+        document.getElementById("volume-input").onchange = (event) => {
+            audio.setVolume(parseFloat(event.target.value));
+            localStorage.setItem("duckface-settings-volume", event.target.value);
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+        };
+
+        /*
+        document.getElementById("game-canvas").onclick = () => {
+            document.getElementById("settings").style.display = "none";
+        };*/
+
+        document.getElementById("game-canvas").onmousemove = event => {
+            const canvas = document.getElementById("game-canvas");
+            const br = canvas.getBoundingClientRect();
+            // css styles can strech the canvas, we need to compensate that
+            const xf = canvas.width / (br.right - br.x);
+            const yf = canvas.height / (br.bottom - br.y);
+            controls.mousePixelX = Math.round((event.pageX - canvas.offsetLeft) * xf);
+            controls.mousePixelY = Math.round((event.pageY - canvas.offsetTop) * yf);
+        };
+
+        document.getElementById("game-canvas").onmousedown = event => {
+            const canvas = document.getElementById("game-canvas");
+            const br = canvas.getBoundingClientRect();
+            // css styles can strech the canvas, we need to compensate that
+            const xf = canvas.width / (br.right - br.x);
+            const yf = canvas.height / (br.bottom - br.y);
+            controls.mousePixelX = Math.round((event.pageX - canvas.offsetLeft) * xf);
+            controls.mousePixelY = Math.round((event.pageY - canvas.offsetTop) * yf);
+            controls.mouseLeft = true;
+            document.getElementById("settings").style.display = "none";
+            document.getElementById("help").style.display = "none";
+
+        };
+
+        document.getElementById("game-canvas").onmouseup = event => {
+            controls.mouseLeft = false;
+        };
+
+        async function onLoad() {
+            album = await loadAlbum(albumId);
+            await initGame({ sceneId, albumId, volume, scale: 1 });
+            gameState.setState(STATES.TITLE);
+            resetCamera();
+            updateTitle();
+            renderButtons();
+            updateButtons();
+            updateLinks();
+            audio.loadMusic(scene.themeSong);
+        }
+
+        async function toggleSettings() {
+            const settings = document.getElementById("settings");
+            if (settings.style.display === "none") {
+                settings.style.display = null;
+            }
+            else {
+                settings.style.display = "none";
+            }
+        }
+
+        async function toggleHelp() {
+            const help = document.getElementById("help");
+            if (help.style.display === "none") {
+                help.style.display = null;
+            }
+            else {
+                help.style.display = "none";
+            }
+        }
+
+        async function openFirst() {
+            sceneId = album.scenes[0].id;
+            await loadScene({ sceneId, albumId });
+            gameState.setState(STATES.TITLE);
+            resetCamera();
+            updateTitle();
+            updateButtons();
+            updateLinks();
+            audio.loadMusic(scene.themeSong);
+            localStorage.setItem("duckface-last-scene-id", sceneId);
+        }
+
+        async function openPrevious() {
+            const index = album.scenes.findIndex(scene => scene.id === sceneId);
+            if (gameState.state !== STATES.END) {
+                sceneId = album.scenes[Math.max(0, index - 1)].id;
+            }
+
+            await loadScene({ sceneId, albumId });
+            gameState.setState(STATES.TITLE);
+            resetCamera();
+            updateTitle();
+            updateButtons();
+            updateLinks();
+            audio.loadMusic(scene.themeSong);
+            localStorage.setItem("duckface-last-scene-id", sceneId);
+
+        }
+
+        async function openRandom() {
+            let index = 0;
+            do {
+                index = Math.floor(Math.random() * album.scenes.length);
+            } while (album.scenes[index].id === sceneId);
+            sceneId = album.scenes[index].id;
+            await loadScene({ sceneId, albumId });
+            gameState.setState(STATES.TITLE);
+            resetCamera();
+            updateTitle();
+            updateButtons();
+            updateLinks();
+            audio.loadMusic(scene.themeSong);
+            localStorage.setItem("duckface-last-scene-id", sceneId);
+        }
+
+        async function openNext() {
+
+            const index = album.scenes.findIndex(scene => scene.id === sceneId);
+            if (index < album.scenes.length - 1) {
+                sceneId = album.scenes[Math.min(album.scenes.length - 1, index + 1)].id;
+                await loadScene({ sceneId, albumId });
+                gameState.setState(STATES.TITLE);
+                resetCamera();
+                updateTitle();
+                updateButtons();
+                updateLinks();
+                audio.loadMusic(scene.themeSong);
+                localStorage.setItem("duckface-last-scene-id", sceneId);
+            }
+            else {
+                worker.postMessage({ action: "STOP" });
+                gameState.setState(STATES.END);
+                audio.loadMusic(album.endTheme || "theme-punk-1-orchestal");
+                updateButtons();
+            }
+        }
+
+        async function openLast() {
+            sceneId = album.scenes[album.scenes.length - 1].id;
+            await loadScene({ sceneId, albumId });
+            gameState.setState(STATES.TITLE);
+            resetCamera();
+            updateTitle();
+            updateButtons();
+            updateLinks();
+            audio.loadMusic(scene.themeSong);
+            localStorage.setItem("duckface-last-scene-id", sceneId);
+        }
+
+        function openFullScreen() {
+            var elem = document.getElementById("game-canvas");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            }
+        }
+
+        function updateButtons() {
+            const index = album.scenes.findIndex(scene => scene.id === sceneId);
+            if (index === 0) {
+                document.getElementById("button-first").disabled = true;
+                document.getElementById("button-previous").disabled = true;
+            }
+            else {
+                document.getElementById("button-first").disabled = false;
+                document.getElementById("button-previous").disabled = false;
+            }
+
+            if (index === album.scenes.length - 1) {
+                document.getElementById("button-last").disabled = true;
+                document.getElementById("button-next").disabled = true;
+            }
+            else {
+                document.getElementById("button-last").disabled = false;
+                document.getElementById("button-next").disabled = false;
+            }
+        }
+
+        function updateTitle() {
+            //const index = album.scenes.findIndex(scene => scene.id === sceneId);
+            //document.getElementById("title").textContent = `Level ${index + 1}: ${scene.title}`;
+            //document.getElementById("author").textContent = "By: " + scene.author;
+        }
+
+        function updateLinks() {
+            document.getElementById("editor-link").href = `editor.html?album=${albumId}&scene=${sceneId}`;//' + sceneId;
+            document.getElementById("level-link").href = `?album=${albumId}&scene=${sceneId}`;
+        }
+
+        function clearBestTimes() {
+            if (confirm("Are you sure you want to erase your best times?")) {
+                localStorage.setItem("duckface-best-times", "{}");
+            }
+        }
+
+        function renderButtons() {
+            renderFirstButton(document.getElementById("button-first-image").getContext('2d'));
+            renderPreviousButton(document.getElementById("button-previous-image").getContext('2d'));
+            renderNextButton(document.getElementById("button-next-image").getContext('2d'));
+            renderLastButton(document.getElementById("button-last-image").getContext('2d'));
+        }
+
+        function renderFirstButton(context) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.strokeStyle = "#303030";
+            context.lineWidth = 1.5;
+            context.beginPath();
+            context.moveTo(0.5, 1);
+            context.lineTo(1.5, context.canvas.height - 1);
+
+            context.moveTo(context.canvas.width / 2, 8);
+            context.lineTo(context.canvas.width / 5, context.canvas.height / 2);
+            context.lineTo(context.canvas.width / 2, context.canvas.height - 8);
+
+            context.moveTo(context.canvas.width / 4.9, context.canvas.height / 2);
+            context.lineTo(context.canvas.width - 2, context.canvas.height / 2 + 0.5);
+
+            context.stroke();
+        }
+
+        function renderPreviousButton(context) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.strokeStyle = "#303030";
+            context.lineWidth = 1.5;
+            context.beginPath();
+
+            context.moveTo(context.canvas.width / 2, 7);
+            context.lineTo(context.canvas.width / 5, context.canvas.height / 2);
+            context.lineTo(context.canvas.width / 2, context.canvas.height - 7);
+
+            context.moveTo(context.canvas.width / 4.8, context.canvas.height / 2);
+            context.lineTo(context.canvas.width - 2, context.canvas.height / 2 + 0.2);
+
+            context.stroke();
+        }
+
+        function renderLastButton(context) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.strokeStyle = "#303030";
+            context.lineWidth = 1.5;
+            context.beginPath();
+            context.moveTo(context.canvas.width - 1.5, 1);
+            context.lineTo(context.canvas.width - 0.5, context.canvas.height - 1);
+
+            context.moveTo(context.canvas.width / 2, 8);
+            context.lineTo(context.canvas.width / 1.2, context.canvas.height / 2);
+            context.lineTo(context.canvas.width / 2, context.canvas.height - 8);
+
+            context.moveTo(context.canvas.width / 1.3, context.canvas.height / 2);
+            context.lineTo(2, context.canvas.height / 2 + 0.5);
+
+            context.stroke();
+        }
+
+        function renderNextButton(context) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.strokeStyle = "#303030";
+            context.lineWidth = 1.5;
+            context.beginPath();
+
+            context.moveTo(context.canvas.width / 2, 7);
+            context.lineTo(context.canvas.width / 1.2, context.canvas.height / 2);
+            context.lineTo(context.canvas.width / 2, context.canvas.height - 7);
+
+            context.moveTo(context.canvas.width / 1.3, context.canvas.height / 2 + 0.5);
+            context.lineTo(2, context.canvas.height / 2 - 0.5);
+
+            context.stroke();
+        }
+
+        onLoad();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+{
+    "id": "valentines-day",
+    "title": "Valentine's Day",
+    "author": "",
+    "bgColor": "#fd96d2",
+    "themeSong": "theme-kazoo",
+    "captions": [
+     {
+      "text": "Catch All the Hearts!",
+      "y": 0.85,
+      "delay": 1000
+     }
+    ],
+    "endCaption": "Happy Valentine's Day!",
+    "top": 0,
+    "right": 800,
+    "bottom": 600,
+    "left": 0,
+    "horizontalLoop": true,
+    "verticalLoop": false,
+    "sprites": [
+     {
+      "id": "1e99977249",
+      "typeId": "cylinder-hat",
+      "x": 632,
+      "y": 296,
+      "width": 52,
+      "height": 48
+     },
+     {
+      "id": "729cab00bf",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 168,
+      "y": 440,
+      "width": 56,
+      "height": 48
+     },
+     {
+      "id": "c7879ba508",
+      "typeId": "duckface",
+      "isPlayer": false,
+      "x": 376,
+      "y": 440,
+      "width": 56,
+      "height": 48,
+      "direction": 4
+     },
+     {
+      "id": "a8a88a91d7",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 304,
+      "y": 184,
+      "width": 40,
+      "height": 40
+     },
+     {
+      "id": "07c6c94f22",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 400,
+      "y": 272,
+      "width": 40,
+      "height": 40
+     },
+     {
+      "id": "167e9807b2",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 520,
+      "y": 88,
+      "width": 24,
+      "height": 24
+     },
+     {
+      "id": "eb9151db2c",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 104,
+      "y": 80,
+      "width": 72,
+      "height": 72
+     },
+     {
+      "id": "2be8af18e8",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 624,
+      "y": 240,
+      "width": 32,
+      "height": 32
+     },
+     {
+      "id": "4e10565a6f",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 688,
+      "y": 168,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "556ee5e669",
+      "typeId": "flying-heart",
+      "weight": 0,
+      "x": 112,
+      "y": 320,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "e828a6708d",
+      "typeId": "cylinder-hat",
+      "x": 136,
+      "y": 352,
+      "width": 52,
+      "height": 48
+     }
+    ],
+    "tiles": [
+     {
+      "id": "9bcea66e20",
+      "shape": 5,
+      "color": "#e784d1",
+      "x": 176,
+      "y": 208,
+      "width": 160,
+      "height": 280,
+      "layer": 1
+     },
+     {
+      "id": "c5b9d79313",
+      "color": "#c176a9",
+      "x": -8,
+      "y": 488,
+      "width": 816,
+      "height": 120
+     },
+     {
+      "id": "c5d7c31d9f",
+      "shape": 5,
+      "color": "#e784d1",
+      "x": 96,
+      "y": 400,
+      "width": 120,
+      "height": 88,
+      "layer": 1
+     },
+     {
+      "id": "8e46952c1a",
+      "shape": 5,
+      "color": "#e784d1",
+      "x": 608,
+      "y": 344,
+      "width": 112,
+      "height": 144,
+      "layer": 1
+     },
+     {
+      "id": "e31614615c",
+      "shape": 5,
+      "color": "#e784d1",
+      "x": 304,
+      "y": 272,
+      "width": 104,
+      "height": 216,
+      "layer": 1
+     },
+     {
+      "id": "9023c2b4ea",
+      "shape": 3,
+      "color": "#4c3440",
+      "opacity": 0.3,
+      "x": 216,
+      "y": 400,
+      "width": 88,
+      "height": 88,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+       "t": false,
+       "r": true,
+       "b": true,
+       "l": true
+      }
+     }
+    ]
+   }

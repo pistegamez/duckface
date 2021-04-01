@@ -1,0 +1,96 @@
+{
+    "id": "season-1",
+    "title": "Season 1",
+    "credits": [
+        { "name": "Janne Kivilahti", "role": "Level design" },
+        { "name": "No one yet", "role": "Testing" },
+        { "name": "No one yet", "role": "Additional ideas" }
+    ],
+    "endTheme": "theme-punk-1-orchestal",
+    "scenes": [
+        {
+            "id": "square-1"
+        },
+        {
+            "id": "off-with-their-heads"
+        },
+        {
+            "id": "its-a-trap"
+        },
+        {
+            "id": "living-stones"
+        },
+        {
+            "id": "lord-of-the-ring"
+        },
+        {
+            "id": "reach-for-the-sun"
+        },
+        {
+            "id": "dungeon"
+        },
+        {
+            "id": "valentines-day"
+        },
+        {
+            "id": "birth"
+        },
+        {
+            "id": "duckle-bobble"
+        },
+        {
+            "id": "up"
+        },
+        {
+            "id": "haunted-maze"
+        },
+        {
+            "id": "slim-fit"
+        },
+        {
+            "id": "singularity"
+        },
+        {
+            "id": "looking-at-you"
+        },
+        {
+            "id": "zombie-tower"
+        },
+        {
+            "id": "wine-tasting"
+        },
+        {
+            "id": "friends"
+        },
+        {
+            "id": "house-of-burgers"
+        },
+        {
+            "id": "need-for-speed"
+        },
+        {
+            "id": "duck-of-the-dead"
+        },
+        {
+            "id": "red-castle"
+        },
+        {
+            "id": "raging-rabbits"
+        },
+        {
+            "id": "pig-rescue"
+        },
+        {
+            "id": "slips-n-slides"
+        },
+        {
+            "id": "fire-bird"
+        },
+        {
+            "id": "oh-horror"
+        },
+        {
+            "id": "fire-vs-fire"
+        }
+    ]
+}

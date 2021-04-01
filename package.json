@@ -1,0 +1,24 @@
+{
+  "name": "duckface",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Duckface is a questionable platformer with awful puzzles, and poor physics",
+  "url": "http://duckface.lol",
+  "repository": "https://github.com/pistegamez/duckface",
+  "main": "index.js",
+  "dependencies": {
+    "@node-minify/core": "^6.2.0",
+    "@node-minify/html-minifier": "^6.2.0",
+    "@node-minify/jsonminify": "^6.2.0",
+    "@node-minify/uglify-es": "^6.2.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node build-server.js",
+    "build": "node build.js"
+  },
+  "author": "Piste Gamez",
+  "license": "GPL-3.0-or-later"
+}

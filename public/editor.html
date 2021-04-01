@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editor</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script>
+        const worker = new Worker('/js/worker.js');
+    </script>
+    <!-- scripts-start -->
+    <script src="/js/common.js"></script>
+    <script src="/js/sprite-type-bundle.js"></script>
+    <script src="/js/particleTypes.js"></script>
+    <script src="/js/game.js"></script>
+    <script src="/js/editor.js"></script>
+    <script src="/js/sound.js"></script>
+    <script src="/js/draw.js"></script>
+    <!-- scripts-end -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
+
+        body {
+            box-sizing: border-box;
+            padding: 0px;
+            margin: 0px;
+            font-family: sans-serif;
+            font-size: 0.9em;
+        }
+
+        main {
+            display: flex;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #game-canvas {
+            border: 0px solid #333;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #scene {
+            box-sizing: border-box;
+            position: fixed;
+            right: 0px;
+            background-color: rgba(225, 225, 225, 0.92);
+            width: 200px;
+            height: 100vh;
+            overflow: auto;
+            padding: 4px;
+            border-left: 1px solid #000;
+        }
+
+        #tools {
+            box-sizing: border-box;
+            position: fixed;
+            left: 0px;
+            background-color: rgba(225, 225, 225, 0.92);
+            width: 220px;
+            height: 100vh;
+            overflow: auto;
+            padding: 4px;
+            border-right: 1px solid #000;
+        }
+
+        #source {
+            width: 100%;
+            height: 100%;
+        }
+
+        #sprite-type-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sprite-type-item {
+            margin: 1px;
+            border: 1px solid #bbb;
+            border-radius: 3px;
+            background-color: #dadada;
+        }
+
+        .sprite-type-item label {
+            display: flex;
+            align-items: center;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+
+        .sprite-type-item label canvas {
+            width: 30px;
+            height: 30px;
+            margin-right: 4px;
+        }
+
+        legend {
+            font-size: 0.7em;
+        }
+
+        fieldset {
+            border-color: #cacaca;
+            border-radius: 8px;
+            border-style: solid;
+        }
+
+        div.form-row {
+            margin-bottom: 0.2em;
+        }
+
+        div.form-row label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 8ch;
+            text-align: right;
+        }
+
+        input[type="text"] {
+            width: 100%;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        button {
+            margin-top: 0.3em;
+            margin-bottom: 0.3em;
+            width: 100%;
+        }
+
+        #border-variation-buttons {
+            border: 1px solid #ababab;
+            margin: 2px;
+            padding: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        #border-variation-buttons button {
+            width: 20px;
+            height: 20px;
+            margin: 3px;
+            background-color: #eee;
+        }
+
+        a.button {
+            border: 1px solid #808080;
+            background-color: #c8eaff;
+            border-radius: 0.2em;
+            margin-top: 0.3em;
+            width: 100%;
+            display: block;
+            padding-top: 0.3em;
+            padding-bottom: 0.3em;
+            text-align: center;
+        }
+
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .color-palette .color {
+            width: 20px;
+            height: 20px;
+            border: 0;
+            margin: 1px;
+            cursor: pointer;
+        }
+
+        .dialog {
+            box-sizing: border-box;
+            position: fixed;
+            width: 70vw;
+            height: 80vh;
+            left: 15vw;
+            top: 10vh;
+            padding: 0px;
+        }
+    </style>
+    <script>
+
+        let albumId = new URL(window.location.href).searchParams.get("album") || "season-1";
+        let sceneId = new URL(window.location.href).searchParams.get("scene");
+
+        async function onLoad() {
+            createThemeSongOptions();
+            await initEditor({ sceneId, albumId });
+            renderSpriteTypeButtons();
+            createBorderVariationButtons();
+        }
+
+        function renderSpriteTypeButtons() {
+            const buttons = document.getElementById("sprite-type-buttons");
+            buttons.innerHTML = "";
+            Object.keys(spriteTypes)
+                .map(id => spriteTypes[id])
+                .filter(type => type.availableInEditor)
+                .sort((type1, type2) => {
+                    //console.log(type1.name.toUpperCase() + " < " + type2.name.toUpperCase() + " = " + (type1.name.toUpperCase() < type2.name.toUpperCase()));
+                    return type1.name.toUpperCase() < type2.name.toUpperCase() ? -1 : type1.name.toUpperCase() > type2.name.toUpperCase() ? 1 : 0;
+                })
+                .forEach(type => {
+                    const div = document.createElement('div');
+                    div.className = "sprite-type-item";
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = "radio";
+                    input.name = "tool";
+                    input.value = `draw-sprite-${type.id}`;
+                    label.appendChild(input);
+                    label.appendChild(createSpriteTypePreviewCanvas(type.id));
+                    div.title = type.name;
+                    div.appendChild(label);
+
+                    buttons.appendChild(div);
+                });
+        }
+
+        function createSpriteTypePreviewCanvas(type) {
+
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 70;
+            canvas.height = 70;
+
+            const sprite = new Sprite({
+                typeId: type,
+                width: canvas.width - 20,
+                height: canvas.height - 20,
+            });
+            sprite.setAnimation("idle");
+            sprite.frame = 0;
+
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.save();
+            context.translate(
+                canvas.width / 2 - sprite.width / 2,
+                canvas.height / 2 - sprite.height / 2
+            );
+
+            try {
+                drawSprite(sprite, context);
+            }
+            catch (e) {
+                context.restore();
+                throw e;
+            }
+
+            context.restore();
+
+            return canvas;
+        }
+
+        function createThemeSongOptions() {
+            const select = document.getElementById("scene.themeSong");
+            for (let theme in themes) {
+                const option = document.createElement("option");
+                option.value = theme;
+                option.textContent = themes[theme].title;
+                select.appendChild(option);
+            }
+        }
+
+        function createBorderVariationButtons() {
+            const borderButtons = document.getElementById("border-variation-buttons");
+            for (let t = 0; t < 2; t++) {
+                for (let r = 0; r < 2; r++) {
+                    for (let b = 0; b < 2; b++) {
+                        for (let l = 0; l < 2; l++) {
+                            const button = document.createElement("button");
+                            button.style.borderTop = t === 0 ? "2px solid #303030" : "0px";
+                            button.style.borderRight = r === 0 ? "2px solid #303030" : "0px";
+                            button.style.borderBottom = b === 0 ? "2px solid #303030" : "0px";
+                            button.style.borderLeft = l === 0 ? "2px solid #303030" : "0px";
+                            button.dataset.borders = JSON.stringify({
+                                t: t === 0,
+                                r: r === 0,
+                                b: b === 0,
+                                l: l === 0
+                            });
+                            button.onclick = function () {
+                                editor.setTileBorders(JSON.parse(this.dataset.borders));
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }.bind(button);
+                            borderButtons.appendChild(button);
+                        }
+                    }
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="onLoad()">
+    <main>
+        <div>
+            <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
+        </div>
+        <form id="scene">
+            <fieldset>
+                <legend>Scene</legend>
+                <div class="form-row">
+                    <label>Title </label>
+                    <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Author(s) </label>
+                    <input id="scene.author" type="text" value=""
+                        onchange="editor.setSceneAuthor(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Top:
+                        <input id="scene.top" type="number" value="0"
+                            onchange="editor.setSceneSize({top:event.target.value})" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Right:
+                        <input id="scene.right" type="number" value="800"
+                            onchange="editor.setSceneSize({right:event.target.value})" /></label>
+                </div>
+                <div class="form-row">
+                    <label>Bottom:
+                        <input id="scene.bottom" type="number" value="600"
+                            onchange="editor.setSceneSize({bottom:event.target.value})" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Left:
+                        <input id="scene.left" type="number" value="0"
+                            onchange="editor.setSceneSize({left:event.target.value})" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Background <input id="scene.bgColor" type="color"
+                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Soundtrack</label>
+                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
+                        style="width:100%">
+                    </select>
+                </div>
+                <div>
+                    <label><input id="scene.horizontalLoop" type="checkbox"
+                            onchange="editor.setSceneHorizontalLooping(event.target.checked)" /> Loop
+                        horizontally</label>
+                </div>
+                <div>
+                    <label><input id="scene.verticalLoop" type="checkbox"
+                            onchange="editor.setSceneVerticalLooping(event.target.checked)" /> Loop vertically</label>
+                </div>
+                <div>
+                    <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Camera</legend>
+                <div>
+                    <label><input id="use-game-camera" type="checkbox"
+                            onchange="editor.onUseGameCameraChange(event.target.checked)" /> Game Camera</label>
+                </div>
+            </fieldset>
+            <div>
+                <button type="button" onclick="saveScene({albumId})">Save Scene</button>
+            </div>
+            <div>
+                <a class="button" onclick="editor.stashScene()" href="../game.html?scene=from-editor">Test Scene</a>
+            </div>
+        </form>
+
+        <form id="tools">
+            <fieldset>
+                <legend>Draw Tiles</legend>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-box" checked />Box</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-slope-left" />Slope to Left</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-slope-right" />Slope to Right</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-sloping-ceiling-left" />Sloping Ceiling
+                        Left</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-sloping-ceiling-right" />Sloping Ceiling
+                        Right</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-top-down" />Top Down</label>
+                </div>
+                <!--
+                <div>
+                    <label><input name="tool" type="radio" value="draw-tile-shading" />Shading</label>
+                </div>
+                -->
+            </fieldset>
+            <fieldset>
+                <legend>Tile Layer</legend>
+                <div>
+                    <label><input name="tile-layer" type="radio" value="1"
+                            onclick="editor.setTileLayer(event.target.value)" />Background</label>
+                </div>
+                <div>
+                    <label><input name="tile-layer" type="radio" value="2"
+                            onclick="editor.setTileLayer(event.target.value)" checked />Middle</label>
+                </div>
+                <div>
+                    <label><input name="tile-layer" type="radio" value="3"
+                            onclick="editor.setTileLayer(event.target.value)" />Foreground</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Tile Borders</legend>
+                <div>
+                    <label><input id="tile-borders-top" type="checkbox" checked
+                            onchange="editor.setTileBorders()" />Top</label>
+                </div>
+                <div>
+                    <label><input id="tile-borders-right" type="checkbox" checked
+                            onchange="editor.setTileBorders()" />Right</label>
+                </div>
+                <div>
+                    <label><input id="tile-borders-bottom" type="checkbox" checked
+                            onchange="editor.setTileBorders()" />Bottom</label>
+                </div>
+                <div>
+                    <label><input id="tile-borders-left" type="checkbox" checked
+                            onchange="editor.setTileBorders()" />Left</label>
+                </div>
+                <div id="border-variation-buttons"></div>
+            </fieldset>
+            <fieldset>
+                <legend>Tile Colors</legend>
+                <div class="form-row">
+                    <label>Fill
+                        <input id="fill-color" type="color" value="#b08080"
+                            onchange="editor.setTileFillColor(event.target.value)" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Stroke <input id="stroke-color" type="color" value="#383838"
+                            onchange="editor.setTileStrokeColor(event.target.value)" /></label>
+                </div>
+                <div>
+                    <label for="opacity">Opacity</label>
+                    <input id="opacity" type="range" value="1.0" min="0.0" max="1.0" step="0.1"
+                        onchange="editor.setTileOpacity(parseFloat(event.target.value))" />
+
+                </div>
+                <div class="form-row">
+                    <label><input id="fill-transparent" type="checkbox"
+                            onchange="editor.setTileTransparency(event.target.checked)" />No fill</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Scene Palette</legend>
+                <div id="fill-color-palette" class="color-palette"></div>
+            </fieldset>
+            <fieldset>
+                <legend>Size</legend>
+                <div class="form-row">
+                    <label>Width: <input id="width" type="number" value="0" min="0" step="1"
+                            onchange="editor.setWidth(parseInt(event.target.value))" /></label>
+                </div>
+                <div class="form-row">
+                    <label>Height: <input id="height" type="number" value="0" min="0" step="1"
+                            onchange="editor.setHeight(parseInt(event.target.value))" /></label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Tile</legend>
+                <div class="form-row">
+                    <label>Material
+                        <select id="tile-material" onchange="editor.setTileMaterial(event.target.value)">
+                            <option value="default">Clay</option>
+                            <option value="ice">Ice</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label><input id="tile-blocks" type="checkbox"
+                            onchange="editor.setTileBlocks(event.target.checked)" />Blocks</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Position</legend>
+                <div class="form-row">
+                    <label>X: <input id="x" type="number" value="0"
+                            onchange="editor.setPosition({x:event.target.value})" /></label>
+                </div>
+                <div class="form-row">
+                    <label>Y: <input id="y" type="number" value="0"
+                            onchange="editor.setPosition({y:event.target.value})" /></label>
+                </div>
+                <div class="form-row">
+                    <label>Z: <input id="z" type="number" value="0"
+                            onchange="editor.setPosition({z:event.target.value})" /></label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Order</legend>
+                <div>
+                    <button type="button" onclick="editor.moveToBack()">Send to Back</button>
+                    <button type="button" onclick="editor.moveToFront()">Send to Front</button>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Draw Sprites</legend>
+                <div id="sprite-type-buttons">
+
+                </div>
+                <!--
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-duckface" />Duckface</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-pighead" />Pigface</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-box" />Movable Box</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-pill-plus" />Grow Pill</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-burger" />Burger</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-pill-minus" />Shrink Pill</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-pill-placebo" />Placebo</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-pill-speed" />Speed Pill</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-chili" />Chili</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-heart" />Heart</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-flying-heart" />Flying Heart</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-exit-door" />Exit Door</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-living-stone" />Living Stone</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-torso" />Torso</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-zombie" />Zombie</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-1-eyed-zombie" />Zombie (One Eyed)</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-ghost" />
+                        Ghost</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-elevator-horizontal" />Horizontal
+                        Elevator</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-elevator-vertical" />Vertical
+                        Elevator</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-spikes-up" />Spikes Up</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="draw-sprite-chill-n-fire" />Chill 'n Fire</label>
+                </div>
+                -->
+            </fieldset>
+            <fieldset>
+                <legend>Sprite</legend>
+                <div>
+                    <label><input id="sprite-is-player" type="checkbox" checked
+                            onchange="editor.setSpriteIsPlayer(event.target.checked)" />Player</label>
+                </div>
+                <div>
+                    <div>Direction</div>
+                    <label><input name="sprite-direction" id="sprite-direction-left" type="radio" value="4"
+                            onchange="editor.setSpriteDirection(DIRECTION.LEFT)" />Left</label>
+                    <label><input name="sprite-direction" id="sprite-direction-right" type="radio" value="2"
+                            onchange="editor.setSpriteDirection(DIRECTION.RIGHT)" />Right</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Select</legend>
+                <div>
+                    <label><input name="tool" type="radio" value="select-tiles" />Tiles</label>
+                </div>
+                <div>
+                    <label><input name="tool" type="radio" value="select-sprites" />Sprites</label>
+                </div>
+                <div>
+                    <button type="button" onclick="editor.selectAllTilesInCurrentLayer()">Current layer</button>
+                </div>
+            </fieldset>
+        </form>
+    </main>
+    <div id="source-dialog" class="dialog">
+        <textarea id="source" onchange="editor.setSceneFromJSON(event.target.value)"></textarea>
+    </div>
+    <audio id="game-audio" />
+</body>
+
+</html>

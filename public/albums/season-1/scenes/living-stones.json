@@ -1,0 +1,1338 @@
+{
+  "id": "living-stones",
+  "title": "Living Stones",
+  "author": "Janne Kivilahti",
+  "bgColor": "#abb3bf",
+  "themeSong": "theme-duckbeat",
+  "captions": [
+    {
+      "text": "Where is the exit?",
+      "y": 0.5,
+      "delay": 1000
+    }
+  ],
+  "endCaption": "Bliss!",
+  "top": 0,
+  "right": 2000,
+  "bottom": 600,
+  "left": 0,
+  "horizontalLoop": false,
+  "verticalLoop": false,
+  "effects": [
+    {
+      "type": "rain",
+      "id": "drops",
+      "layer": 2,
+      "props": {
+        "drops": 10,
+        "vector": {
+          "x": 0,
+          "y": 8
+        }
+      }
+    }
+  ],
+  "sprites": [
+    {
+      "id": "cc01c0e55f",
+      "typeId": "exit-door",
+      "weight": 0,
+      "x": 1872,
+      "y": 392,
+      "width": 80,
+      "height": 88
+    },
+    {
+      "id": "d352e1dca5",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 32,
+      "y": 280,
+      "width": 56,
+      "height": 56
+    },
+    {
+      "id": "b1a5be3ae4",
+      "typeId": "living-stone",
+      "x": 480,
+      "y": 344,
+      "width": 72,
+      "height": 40
+    },
+    {
+      "id": "9eb7358738",
+      "typeId": "spikes-up",
+      "x": 624,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "cb05980792",
+      "typeId": "spikes-up",
+      "x": 672,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "ec3b98041e",
+      "typeId": "spikes-up",
+      "x": 720,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "dd56a5268e",
+      "typeId": "spikes-up",
+      "x": 768,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "b90916c561",
+      "typeId": "spikes-up",
+      "x": 816,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "b8e3c045a9",
+      "typeId": "spikes-up",
+      "x": 864,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "0b71f7fa63",
+      "typeId": "spikes-up",
+      "x": 912,
+      "y": 392,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "5e30273104",
+      "typeId": "spikes-up",
+      "x": 960,
+      "y": 392,
+      "width": 40,
+      "height": 32
+    },
+    {
+      "id": "a5c5e6a3d5",
+      "typeId": "living-stone",
+      "x": 1504,
+      "y": 272,
+      "width": 80,
+      "height": 56,
+      "direction": 4
+    },
+    {
+      "id": "aac48de9de",
+      "typeId": "spikes-up",
+      "x": 1592,
+      "y": 520,
+      "width": 56,
+      "height": 40
+    },
+    {
+      "id": "690f85e872",
+      "typeId": "spikes-up",
+      "x": 1648,
+      "y": 520,
+      "width": 56,
+      "height": 40
+    },
+    {
+      "id": "1c64a99bd9",
+      "typeId": "spikes-up",
+      "x": 1704,
+      "y": 520,
+      "width": 56,
+      "height": 40
+    },
+    {
+      "id": "74f766f9ed",
+      "typeId": "spikes-up",
+      "x": 1760,
+      "y": 520,
+      "width": 56,
+      "height": 40
+    },
+    {
+      "id": "9e6a2bef06",
+      "typeId": "key",
+      "x": 1888,
+      "y": 232,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "a5d03b1e90",
+      "typeId": "ghost",
+      "x": 496,
+      "y": 56,
+      "width": 72,
+      "height": 80
+    },
+    {
+      "id": "cdff756752",
+      "typeId": "ghost",
+      "x": 280,
+      "y": 48,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "id": "6b97e29f94",
+      "typeId": "ghost",
+      "x": 832,
+      "y": 216,
+      "width": 56,
+      "height": 48
+    },
+    {
+      "id": "0193fe7bf0",
+      "typeId": "ghost",
+      "x": 1768,
+      "y": 128,
+      "width": 56,
+      "height": 64
+    },
+    {
+      "id": "6e4a14d4cc",
+      "typeId": "lock",
+      "x": 1592,
+      "y": 328,
+      "width": 64,
+      "height": 48
+    },
+    {
+      "id": "c6af641d3e",
+      "typeId": "lock",
+      "x": 1656,
+      "y": 328,
+      "width": 64,
+      "height": 48
+    },
+    {
+      "id": "84b8f7936f",
+      "typeId": "lock",
+      "x": 1720,
+      "y": 328,
+      "width": 64,
+      "height": 48
+    }
+  ],
+  "tiles": [
+    {
+      "id": "8b921546f8",
+      "color": "#7c96a2",
+      "x": -16,
+      "y": 344,
+      "width": 304,
+      "height": 264
+    },
+    {
+      "id": "2f61ca3f1f",
+      "color": "#7c96a2",
+      "x": 288,
+      "y": 384,
+      "width": 336,
+      "height": 224
+    },
+    {
+      "id": "4991d5faad",
+      "color": "#7c96a2",
+      "x": 624,
+      "y": 424,
+      "width": 376,
+      "height": 184
+    },
+    {
+      "id": "8ede1ebc36",
+      "color": "#7c96a2",
+      "x": 1000,
+      "y": 384,
+      "width": 184,
+      "height": 224,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": true
+      }
+    },
+    {
+      "id": "b633cad514",
+      "color": "#7c96a2",
+      "x": 832,
+      "y": 344,
+      "width": 48,
+      "height": 40
+    },
+    {
+      "id": "b9f9184103",
+      "color": "#7c96a2",
+      "x": 1000,
+      "y": 168,
+      "width": 96,
+      "height": 144
+    },
+    {
+      "id": "d0e3544010",
+      "shape": 2,
+      "color": "#7c96a2",
+      "x": 1184,
+      "y": 328,
+      "width": 176,
+      "height": 56
+    },
+    {
+      "id": "a6c86029ac",
+      "color": "#7c96a2",
+      "x": 1360,
+      "y": 328,
+      "width": 232,
+      "height": 288,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "72c80a67d6",
+      "color": "#7c96a2",
+      "x": 1184,
+      "y": 384,
+      "width": 176,
+      "height": 224,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": true,
+        "l": false
+      }
+    },
+    {
+      "id": "ff7cdd13b3",
+      "color": "#7c96a2",
+      "x": 1384,
+      "y": 304,
+      "width": 56,
+      "height": 24
+    },
+    {
+      "id": "c68f26853d",
+      "color": "#7c96a2",
+      "x": 1784,
+      "y": 328,
+      "width": 240,
+      "height": 56
+    },
+    {
+      "id": "f50b5913c6",
+      "color": "#7c96a2",
+      "x": 1976,
+      "y": -16,
+      "width": 32,
+      "height": 344
+    },
+    {
+      "id": "ba192c5bd7",
+      "color": "#7c96a2",
+      "x": 1816,
+      "y": 480,
+      "width": 192,
+      "height": 128
+    },
+    {
+      "id": "6dfac33110",
+      "color": "#7c96a2",
+      "x": 1592,
+      "y": 560,
+      "width": 240,
+      "height": 48
+    },
+    {
+      "id": "eb51c54abc",
+      "color": "#7c96a2",
+      "x": 1424,
+      "y": 384,
+      "width": 40,
+      "height": 24
+    },
+    {
+      "id": "272bc766ea",
+      "color": "#7c96a2",
+      "x": 1464,
+      "y": 384,
+      "width": 40,
+      "height": 24
+    },
+    {
+      "id": "b32efd47ca",
+      "color": "#7c96a2",
+      "x": 1448,
+      "y": 408,
+      "width": 40,
+      "height": 24
+    },
+    {
+      "id": "169eb2eae5",
+      "color": "#7c96a2",
+      "x": 1520,
+      "y": 464,
+      "width": 40,
+      "height": 24
+    },
+    {
+      "id": "e00c0a74a0",
+      "color": "#7c96a2",
+      "x": 1064,
+      "y": 440,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "60b1e40635",
+      "color": "#7c96a2",
+      "x": 1120,
+      "y": 400,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "id": "19ee6566a5",
+      "color": "#7c96a2",
+      "x": 208,
+      "y": 328,
+      "width": 40,
+      "height": 16
+    },
+    {
+      "id": "3a91add8cb",
+      "color": "#7c96a2",
+      "x": 344,
+      "y": 440,
+      "width": 40,
+      "height": 32
+    },
+    {
+      "id": "54f64f9880",
+      "color": "#7c96a2",
+      "x": 520,
+      "y": 416,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "id": "fd1d79b0c7",
+      "color": "#7c96a2",
+      "x": 552,
+      "y": 456,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "id": "4b8b0e3290",
+      "color": "#7c96a2",
+      "x": 664,
+      "y": 448,
+      "width": 40,
+      "height": 16
+    },
+    {
+      "id": "5a7f9a08a5",
+      "color": "#7c96a2",
+      "x": 752,
+      "y": 496,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "13a7c6292d",
+      "transparent": true,
+      "x": 1016,
+      "y": 224,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "id": "6adc899f7e",
+      "transparent": true,
+      "x": 1032,
+      "y": 248,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "9f0f4d37bf",
+      "color": "#7c96a2",
+      "x": 944,
+      "y": 464,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "84c625ee4c",
+      "color": "#7c96a2",
+      "x": 1288,
+      "y": 368,
+      "width": 40,
+      "height": 32
+    },
+    {
+      "id": "2e98921974",
+      "color": "#7c96a2",
+      "x": 1160,
+      "y": 480,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "9ed81a3034",
+      "color": "#7c96a2",
+      "x": 1440,
+      "y": 312,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "254125d24f",
+      "color": "#7c96a2",
+      "x": 1976,
+      "y": 384,
+      "width": 32,
+      "height": 96
+    },
+    {
+      "id": "f94fc42ae5",
+      "color": "#7c96a2",
+      "x": 1872,
+      "y": 504,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "83800d7bc2",
+      "color": "#7c96a2",
+      "x": 1928,
+      "y": 544,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "id": "3f60813250",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 352,
+      "y": 136,
+      "z": -0.1,
+      "width": 96,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "f5cdbe793b",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 360,
+      "y": 96,
+      "z": -0.1,
+      "width": 24,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "95a20cdc2b",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 424,
+      "y": 96,
+      "z": -0.1,
+      "width": 16,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "36eb82bde6",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 352,
+      "y": 64,
+      "z": -0.1,
+      "width": 104,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "5b5bf328cf",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 488,
+      "y": 104,
+      "z": -0.1,
+      "width": 32,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ed26f3ece8",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 424,
+      "y": 208,
+      "z": -0.1,
+      "width": 32,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "c5ee6267f7",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 208,
+      "y": 104,
+      "z": -0.1,
+      "width": 56,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "00571bdcce",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 64,
+      "y": 56,
+      "z": -0.1,
+      "width": 32,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "fc2261efc5",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 240,
+      "y": 144,
+      "z": -0.1,
+      "width": 40,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "6d4affd90c",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 168,
+      "y": 144,
+      "z": -0.1,
+      "width": 64,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ff687bc001",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 304,
+      "y": 256,
+      "z": -0.1,
+      "width": 32,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "b7cab8da4e",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 736,
+      "y": 128,
+      "z": -0.1,
+      "width": 56,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "366cbef3f1",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 768,
+      "y": 176,
+      "z": -0.1,
+      "width": 56,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "6611a71639",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 808,
+      "y": 96,
+      "z": -0.1,
+      "width": 80,
+      "height": 72,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "344937724c",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 824,
+      "y": 72,
+      "z": -0.1,
+      "width": 32,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ecdff58fd1",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 736,
+      "y": 16,
+      "z": -0.1,
+      "width": 40,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "52c66b0238",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 600,
+      "y": 144,
+      "z": -0.1,
+      "width": 40,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "920ea00e0e",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 680,
+      "y": 320,
+      "z": -0.1,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ced0e7722f",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 632,
+      "y": 288,
+      "z": -0.1,
+      "width": 40,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "c6e2704092",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 696,
+      "y": 232,
+      "z": -0.1,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "37b807e83a",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 920,
+      "y": 232,
+      "z": -0.1,
+      "width": 40,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "f2a60bbb47",
+      "color": "#707070",
+      "stroke": "#787878",
+      "x": 384,
+      "y": 96,
+      "z": -0.1,
+      "width": 40,
+      "height": 40,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "dd03142dfd",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 640,
+      "y": 144,
+      "z": -0.1,
+      "width": 48,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "cde1e34a9f",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 592,
+      "y": 88,
+      "z": -0.1,
+      "width": 24,
+      "height": 56,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "76c705e20e",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 672,
+      "y": 88,
+      "z": -0.1,
+      "width": 24,
+      "height": 56,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ce8aecfedf",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 600,
+      "y": 56,
+      "z": -0.1,
+      "width": 80,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "d2af27e3a8",
+      "color": "#707070",
+      "stroke": "#787878",
+      "x": 616,
+      "y": 88,
+      "z": -0.1,
+      "width": 56,
+      "height": 56,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "e032f3c830",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1264,
+      "y": 64,
+      "z": -0.1,
+      "width": 32,
+      "height": 96,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "b8ddbafd74",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1280,
+      "y": 32,
+      "z": -0.1,
+      "width": 72,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "cb2cc2d172",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1336,
+      "y": 64,
+      "z": -0.1,
+      "width": 32,
+      "height": 56,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "bb7694cb8e",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1336,
+      "y": 120,
+      "z": -0.1,
+      "width": 16,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "6937532e67",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1256,
+      "y": 160,
+      "z": -0.1,
+      "width": 120,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "cc2a4229a7",
+      "color": "#707070",
+      "stroke": "#787878",
+      "x": 1296,
+      "y": 64,
+      "z": -0.1,
+      "width": 40,
+      "height": 96,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "d35821134b",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1296,
+      "y": 96,
+      "z": -0.1,
+      "width": 40,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "85c3b04295",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1296,
+      "y": 128,
+      "z": -0.1,
+      "width": 40,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "598fd1d5b7",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1320,
+      "y": 72,
+      "z": -0.1,
+      "width": 8,
+      "height": 88,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "c143d963c8",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1304,
+      "y": 72,
+      "z": -0.1,
+      "width": 8,
+      "height": 88,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "20d2a87847",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 624,
+      "y": 96,
+      "z": -0.1,
+      "width": 8,
+      "height": 48,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "94ab192f3a",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 656,
+      "y": 96,
+      "z": -0.1,
+      "width": 8,
+      "height": 48,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "b477dab634",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1448,
+      "y": 104,
+      "z": -0.1,
+      "width": 64,
+      "height": 64,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "3a99640c52",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1352,
+      "y": 48,
+      "z": -0.1,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "377bc9061e",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1248,
+      "y": 104,
+      "z": -0.1,
+      "width": 16,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "31537fcafa",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1616,
+      "y": 184,
+      "z": -0.1,
+      "width": 40,
+      "height": 48,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "7b1f4000eb",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1640,
+      "y": 136,
+      "z": -0.1,
+      "width": 32,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "ef04d4bff1",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1616,
+      "y": 408,
+      "z": -0.1,
+      "width": 48,
+      "height": 64,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "efdb2826d6",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1672,
+      "y": 424,
+      "z": -0.1,
+      "width": 16,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "2ca3289c4c",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1680,
+      "y": 496,
+      "z": -0.1,
+      "width": 48,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "7e6c551bf3",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1832,
+      "y": 88,
+      "z": -0.1,
+      "width": 32,
+      "height": 88,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "fb1798fed2",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1848,
+      "y": 56,
+      "z": -0.1,
+      "width": 80,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "9ed9ceb2f2",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1848,
+      "y": 176,
+      "z": -0.1,
+      "width": 88,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "537b0504d7",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1920,
+      "y": 128,
+      "z": -0.1,
+      "width": 40,
+      "height": 48,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "fe72ba1796",
+      "stroke": "#787878",
+      "transparent": true,
+      "x": 1920,
+      "y": 88,
+      "z": -0.1,
+      "width": 24,
+      "height": 40,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "2e93ae1b36",
+      "color": "#707070",
+      "stroke": "#787878",
+      "x": 1864,
+      "y": 88,
+      "z": -0.1,
+      "width": 56,
+      "height": 88,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "0f43132ac5",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1872,
+      "y": 96,
+      "z": -0.1,
+      "width": 8,
+      "height": 80,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "97616b3618",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1896,
+      "y": 96,
+      "z": -0.1,
+      "width": 8,
+      "height": 80,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "dca29ab9f2",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1864,
+      "y": 120,
+      "z": -0.1,
+      "width": 56,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "cabf093543",
+      "color": "#abb3bf",
+      "stroke": "#787878",
+      "x": 1864,
+      "y": 152,
+      "z": -0.1,
+      "width": 48,
+      "height": 8,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "50659bb8ec",
+      "color": "#7c96a2",
+      "x": -48,
+      "y": -16,
+      "width": 40,
+      "height": 360
+    },
+    {
+      "id": "30efde8e28",
+      "shape": 3,
+      "color": "#f2f9b8",
+      "opacity": 0.2,
+      "x": -8,
+      "y": 240,
+      "width": 192,
+      "height": 104,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "4471b6c064",
+      "color": "#f2f9b8",
+      "opacity": 0.2,
+      "x": 776,
+      "y": 0,
+      "width": 56,
+      "height": 424,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "8a94bc5458",
+      "color": "#f2f9b8",
+      "opacity": 0.2,
+      "x": 832,
+      "y": 0,
+      "width": 48,
+      "height": 344,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "ebe4456846",
+      "color": "#f2f9b8",
+      "opacity": 0.2,
+      "x": 880,
+      "y": 0,
+      "width": 48,
+      "height": 424,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "89833c5765",
+      "color": "#f2f9b8",
+      "opacity": 0.2,
+      "x": 1696,
+      "y": 0,
+      "width": 56,
+      "height": 560,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "1f27ce0886",
+      "color": "#7c96a2",
+      "x": 1888,
+      "y": 288,
+      "width": 48,
+      "height": 40
+    }
+  ]
+}

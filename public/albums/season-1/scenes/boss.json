@@ -1,0 +1,561 @@
+{
+    "id": "boss",
+    "title": "Huge Boss",
+    "author": "",
+    "bgColor": "#7d8187",
+    "themeSong": "theme-kyarhem-1",
+    "captions": [
+     {
+      "text": "Are you ready?",
+      "y": 0.5,
+      "delay": 1000
+     }
+    ],
+    "endCaption": "Bliss!",
+    "top": 0,
+    "right": 800,
+    "bottom": 600,
+    "left": 0,
+    "horizontalLoop": false,
+    "verticalLoop": true,
+    "sprites": [
+     {
+      "id": "dbabee604b",
+      "typeId": "zombie",
+      "x": 336,
+      "y": 16,
+      "width": 192,
+      "height": 184
+     },
+     {
+      "id": "9eda28cec0",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 96,
+      "y": 200,
+      "width": 48,
+      "height": 48
+     },
+     {
+      "id": "66364fb1bc",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 392,
+      "y": 144,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "fdbd5c71b1",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 688,
+      "y": 280,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "776d75faeb",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 248,
+      "y": 336,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "b8fa3f0027",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 392,
+      "y": 232,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "b78729b418",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 704,
+      "y": 80,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "66452bd1f9",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 616,
+      "y": 280,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "a96f4c4aca",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 296,
+      "y": 336,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "a0b3ae88f1",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 112,
+      "y": 472,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "6ec27f1fd1",
+      "typeId": "pill-placebo",
+      "weight": 0,
+      "x": 576,
+      "y": 464,
+      "width": 16,
+      "height": 16
+     },
+     {
+      "id": "7a02e203cc",
+      "typeId": "ghost",
+      "x": 336,
+      "y": 128,
+      "width": 64,
+      "height": 56
+     },
+     {
+      "id": "bb674c352b",
+      "typeId": "ghost",
+      "x": 144,
+      "y": 480,
+      "width": 64,
+      "height": 56
+     }
+    ],
+    "tiles": [
+     {
+      "id": "58255d6966",
+      "shape": 5,
+      "color": "#92a1a5",
+      "stroke": "#484848",
+      "x": 672,
+      "y": 192,
+      "width": 88,
+      "height": 416,
+      "layer": 1
+     },
+     {
+      "id": "d878c32b14",
+      "color": "#9e9e9e",
+      "x": 0,
+      "y": 96,
+      "width": 40,
+      "height": 128
+     },
+     {
+      "id": "256e3f325b",
+      "color": "#9e9e9e",
+      "x": 760,
+      "y": 0,
+      "width": 40,
+      "height": 112
+     },
+     {
+      "id": "24bcecb1bf",
+      "shape": 5,
+      "color": "#92a1a5",
+      "stroke": "#484848",
+      "x": 280,
+      "y": 200,
+      "width": 208,
+      "height": 400,
+      "layer": 1
+     },
+     {
+      "id": "3f3359f6e3",
+      "shape": 5,
+      "color": "#92a4aa",
+      "stroke": "#484848",
+      "x": 96,
+      "y": 288,
+      "width": 368,
+      "height": 312,
+      "layer": 1
+     },
+     {
+      "id": "c176a6cb4f",
+      "shape": 5,
+      "color": "#92a4aa",
+      "stroke": "#484848",
+      "x": 408,
+      "y": 320,
+      "width": 352,
+      "height": 280,
+      "layer": 1
+     },
+     {
+      "id": "85fe0ba506",
+      "shape": 5,
+      "color": "#98a9ae",
+      "stroke": "#484848",
+      "x": 40,
+      "y": 376,
+      "width": 472,
+      "height": 224,
+      "layer": 1
+     },
+     {
+      "id": "93b8f3e20a",
+      "shape": 5,
+      "color": "#9aacb1",
+      "stroke": "#484848",
+      "x": 328,
+      "y": 400,
+      "width": 432,
+      "height": 208,
+      "layer": 1
+     },
+     {
+      "id": "7af950b1c3",
+      "shape": 5,
+      "color": "#a1b4ba",
+      "stroke": "#484848",
+      "x": 232,
+      "y": 448,
+      "width": 144,
+      "height": 168,
+      "layer": 1
+     },
+     {
+      "id": "33ced37dd5",
+      "shape": 5,
+      "color": "#a1b4ba",
+      "stroke": "#484848",
+      "x": 352,
+      "y": 496,
+      "width": 80,
+      "height": 120,
+      "layer": 1
+     },
+     {
+      "id": "6c8b9c11d3",
+      "shape": 5,
+      "color": "#a1b4ba",
+      "stroke": "#484848",
+      "x": 568,
+      "y": 496,
+      "width": 32,
+      "height": 120,
+      "layer": 1
+     },
+     {
+      "id": "c9ccc5f1ea",
+      "color": "#9e9e9e",
+      "x": 0,
+      "y": 536,
+      "width": 40,
+      "height": 64
+     },
+     {
+      "id": "8e39f3a476",
+      "color": "#949494",
+      "x": 0,
+      "y": 504,
+      "width": 16,
+      "height": 32
+     },
+     {
+      "id": "974b71fac5",
+      "color": "#a3a3a3",
+      "x": 16,
+      "y": 512,
+      "width": 24,
+      "height": 24
+     },
+     {
+      "id": "2d51014b7c",
+      "color": "#9e9e9e",
+      "x": 16,
+      "y": 456,
+      "width": 24,
+      "height": 56
+     },
+     {
+      "id": "a00287cb70",
+      "color": "#a3a3a3",
+      "x": 0,
+      "y": 456,
+      "width": 16,
+      "height": 48
+     },
+     {
+      "id": "0c5fe6f5c6",
+      "color": "#a3a3a3",
+      "x": 0,
+      "y": 368,
+      "width": 40,
+      "height": 88
+     },
+     {
+      "id": "eb5b8718f6",
+      "color": "#9e9e9e",
+      "x": 0,
+      "y": 320,
+      "width": 24,
+      "height": 48
+     },
+     {
+      "id": "ff8bbbd5c5",
+      "color": "#a3a3a3",
+      "x": 0,
+      "y": 264,
+      "width": 40,
+      "height": 56
+     },
+     {
+      "id": "1f0d8ebadf",
+      "color": "#a3a3a3",
+      "x": 24,
+      "y": 232,
+      "width": 16,
+      "height": 32
+     },
+     {
+      "id": "a2cfe5ef50",
+      "color": "#999999",
+      "x": 0,
+      "y": 224,
+      "width": 24,
+      "height": 40
+     },
+     {
+      "id": "410b9c31bc",
+      "color": "#a3a3a3",
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 96
+     },
+     {
+      "id": "3a9b500d8c",
+      "color": "#9e9e9e",
+      "x": 760,
+      "y": 528,
+      "width": 40,
+      "height": 72
+     },
+     {
+      "id": "1e527d2bc9",
+      "color": "#a3a3a3",
+      "x": 776,
+      "y": 496,
+      "width": 24,
+      "height": 32
+     },
+     {
+      "id": "2769affc4c",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 496,
+      "width": 16,
+      "height": 32
+     },
+     {
+      "id": "18ce1463c6",
+      "color": "#9e9e9e",
+      "x": 768,
+      "y": 472,
+      "width": 32,
+      "height": 24
+     },
+     {
+      "id": "be2e0d26d1",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 384,
+      "width": 40,
+      "height": 88
+     },
+     {
+      "id": "08b0b9d028",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 472,
+      "width": 8,
+      "height": 24
+     },
+     {
+      "id": "e374f0011f",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 344,
+      "width": 40,
+      "height": 40
+     },
+     {
+      "id": "2420ff05f2",
+      "color": "#9e9e9e",
+      "x": 760,
+      "y": 280,
+      "width": 24,
+      "height": 64
+     },
+     {
+      "id": "a71e0c9347",
+      "color": "#a3a3a3",
+      "x": 784,
+      "y": 312,
+      "width": 16,
+      "height": 32
+     },
+     {
+      "id": "6f597e8a96",
+      "color": "#999999",
+      "x": 784,
+      "y": 264,
+      "width": 16,
+      "height": 48
+     },
+     {
+      "id": "247295f76e",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 264,
+      "width": 24,
+      "height": 16
+     },
+     {
+      "id": "ae3c433972",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 176,
+      "width": 40,
+      "height": 88
+     },
+     {
+      "id": "8bd54535de",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 152,
+      "width": 24,
+      "height": 24
+     },
+     {
+      "id": "b044578cf4",
+      "color": "#a3a3a3",
+      "x": 776,
+      "y": 112,
+      "width": 24,
+      "height": 40
+     },
+     {
+      "id": "2ec486e196",
+      "color": "#a3a3a3",
+      "x": 760,
+      "y": 128,
+      "width": 16,
+      "height": 24
+     },
+     {
+      "id": "036796ed77",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 152,
+      "y": 96,
+      "width": 40,
+      "height": 32,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "baa61c8f66",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 176,
+      "y": 136,
+      "width": 40,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "ffbcf4b5d5",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 144,
+      "y": 136,
+      "width": 24,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "565433ebba",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 208,
+      "y": 224,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "5e1d871790",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 568,
+      "y": 64,
+      "width": 56,
+      "height": 48,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "1c22bd0559",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 632,
+      "y": 48,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "476bd4c301",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 544,
+      "y": 232,
+      "width": 32,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "c3e756f7cc",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 632,
+      "y": 144,
+      "width": 24,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+     },
+     {
+      "id": "8596f0016c",
+      "stroke": "#585858",
+      "transparent": true,
+      "x": 72,
+      "y": 24,
+      "width": 24,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+     }
+    ]
+   }

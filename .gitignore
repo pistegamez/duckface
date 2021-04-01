@@ -1,0 +1,13 @@
+/node_modules
+
+/build/*.html
+/build/*.png
+/build/*.jpg
+/build/*.md
+/build/*.css
+/build/*.json
+/build/js/*.js
+/build/albums/*/scenes/*.json
+/build/albums/*/*.json
+/build/albums/*.json
+/build/audio/*.mp3

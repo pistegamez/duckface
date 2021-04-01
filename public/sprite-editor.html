@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Duckface Path Editor</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="/js/common.js"></script>
+    <script src="/js/behaviours.js"></script>
+    <script src="/js/sprite-type-bundle.js"></script>
+    <script src="/js/draw.js"></script>
+    <style>
+        body {
+            font-family: 'Arial';
+            background-color: #303030;
+            color: #f0f0f0;
+        }
+
+        main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        #editor-section {
+            flex-basis: 80%;
+        }
+
+        #preview-section {
+            flex-basis: 420px;
+        }
+
+        textarea {
+            width: 95%;
+            height: 90vh;
+            background-color: #3a3a3a;
+            color: #d2d2d2;
+        }
+
+        canvas {
+            border: 1px solid #303030;
+            border-radius: 5px;
+            background-color: #abb7ca;
+        }
+
+        button {
+            font-family: 'Arial';
+            padding: 0.4em;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 2px solid #333;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+
+        button.selected {
+            background-color: #5c5cbe;
+            color: #FFF;
+        }
+
+        form .row {
+            margin-top: 0.4em;
+        }
+
+        hr {
+            border: 1px solid #818181;
+        }
+
+        select {
+            padding: 0.4em;
+            width: 100%;
+        }
+    </style>
+    <script>
+
+        let type = new URL(window.location.href).searchParams.get("type") || "duckface";
+
+        const randoms = new RandomValues(50, 1.25);
+        let animation = "idle";
+        let frame = 0;
+        let size = "L";
+        let showCollisionBox = true;
+
+        async function onLoad() {
+            //document.getElementById("json").value = JSON.stringify(spriteTypes[type], null, '  ');
+            const res = await fetch(`/sprite-types/${type}.js`);
+            if (res.ok) {
+                const code = await res.text();
+                document.getElementById("json").value = code;
+                updateSpriteType();
+                renderPreview();
+                updateUI();
+            }
+            else {
+                alert("Loading sprite type failed: " + res.status);
+            }
+        }
+
+        function updateSpriteType() {
+            eval(document.getElementById("json").value);
+            //spriteTypes["sprite-editor"] = new SpriteType(JSON.parse(document.getElementById("json").value));
+        }
+
+        function onJSONChange() {
+            try {
+                document.getElementById("error").textContent = "";
+
+                updateSpriteType();
+                renderPreview();
+                updateUI();
+                //document.getElementById("json").value = JSON.stringify(spriteTypes["sprite-editor"], null, '  ');
+            }
+            catch (e) {
+                //alert(e);
+                document.getElementById("error").textContent = e;
+                return;
+            }
+        }
+
+        function updateJSONCursorPosition() {
+            const cursorPosition = document.getElementById("json").selectionStart;
+            document.getElementById("cursor-position").innerText = cursorPosition;
+        }
+
+        function onAnimationChange(value) {
+            animation = value;
+            frame = 0;
+            renderPreview();
+            updateUI();
+        }
+
+        function onFrameChange(value) {
+            frame = parseInt(value);
+            renderPreview();
+            updateUI();
+        }
+
+        function onSizeChange(value) {
+            size = value;
+            renderPreview();
+            updateUI();
+        }
+
+        function onShowCollisionBoxChange(value) {
+            showCollisionBox = value;
+            renderPreview();
+            updateUI();
+        }
+
+        function updateUI() {
+            let animationOptions = "";
+            for (let i in spriteTypes[type].animations) {
+                animationOptions += `<option>${i}</option>`;
+            }
+            document.getElementById("animation").innerHTML = animationOptions;
+            document.getElementById("animation").value = animation;
+
+            document.getElementById("size").value = size;
+            document.getElementById("collision-box").checked = showCollisionBox;
+
+            const frameButtons = spriteTypes[type].animations[animation].map((aframe, index) =>
+                `<button type="button" class="${frame === index && 'selected'}" onclick="onFrameChange(${index})">${index}</button>`
+            );
+            document.getElementById("frame-buttons").innerHTML = frameButtons.join("");
+
+            const framePaths = spriteTypes[type].frames[spriteTypes[type].animations[animation][frame].frame].map((path, index) =>
+                path.path
+            );
+            document.getElementById("frame-paths").innerHTML = framePaths.join(", ");
+
+        }
+
+        const sizes = {
+            XL: { width: 200, height: 200 },
+            L: { width: 100, height: 100 },
+            M: { width: 48, height: 48 },
+            S: { width: 32, height: 32 },
+            XS: { width: 16, height: 16 }
+        }
+
+        function renderPreview() {
+
+            const canvas = document.getElementById("preview");
+            const context = canvas.getContext('2d');
+            canvas.width = sizes[size].width * 2;
+            canvas.height = sizes[size].height * 2;
+
+            const sprite = new Sprite({
+                typeId: type,
+                width: sizes[size].width,
+                height: sizes[size].height,
+            });
+            sprite.setAnimation(animation);
+            sprite.frame = frame;
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.save();
+            context.translate(
+                canvas.width / 2 - sprite.width / 2,
+                canvas.height / 2 - sprite.height / 2
+            );
+
+            context.strokeStyle = "#888888";
+            context.lineWidth = 1.5;
+            context.setLineDash([8, 2]);
+            context.strokeRect(0, 0, sprite.width, sprite.height);
+
+            try {
+                drawSprite(sprite, context);
+            }
+            catch (e) {
+                context.restore();
+                throw e;
+            }
+
+
+
+            if (showCollisionBox) {
+                const spriteType = spriteTypes[type];
+
+                context.strokeStyle = "#ff6060";
+                context.lineWidth = 1.5;
+                context.setLineDash([8, 2]);
+                context.strokeRect(
+                    sprite.width * spriteType.collisionBox.l,
+                    sprite.height * spriteType.collisionBox.t,
+                    sprite.width * (spriteType.collisionBox.r - spriteType.collisionBox.l),
+                    sprite.height * (spriteType.collisionBox.b - spriteType.collisionBox.t)
+                );
+            }
+
+            context.restore();
+
+        }
+
+    </script>
+</head>
+
+<body onload="onLoad()">
+    <main>
+        <section id="editor-section">
+            <div id="error"></div>
+            <textarea id="json" onclick="updateJSONCursorPosition()" onkeyup="updateJSONCursorPosition()"
+                onchange="onJSONChange()">
+            </textarea>
+            <div id="cursor-position"></div>
+        </section>
+        <section id="preview-section">
+            <canvas id="preview" width="400" height="400"></canvas>
+            <div id="frame-paths"></div>
+            <hr>
+            <form>
+                <div class="row">
+                    <label>Size</label>
+                </div>
+                <div class="row">
+                    <select id="size" onchange="onSizeChange(event.target.value)">
+                        <option value="XL">XL</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="S">S</option>
+                        <option value="XS">XS</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Animation</label>
+                </div>
+                <div class="row">
+                    <select id="animation" onchange="onAnimationChange(event.target.value)">
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Frame</label>
+                </div>
+                <div class="row" id="frame-buttons">
+                </div>
+                <div class="row">
+                    <label>
+                        <input type="checkbox" id="collision-box"
+                            onchange="onShowCollisionBoxChange(event.target.checked)" />
+                        Show Collision Box
+                    </label>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script>
+        document.getElementById('json').addEventListener('keydown', function (e) {
+            if (e.key == 'Tab') {
+                e.preventDefault();
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
+
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = this.value.substring(0, start) +
+                    "    " + this.value.substring(end);
+
+                // put caret at right position again
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+        });
+    </script>
+</body>
+
+</html>

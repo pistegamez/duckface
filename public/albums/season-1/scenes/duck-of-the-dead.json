@@ -1,0 +1,452 @@
+{
+  "id": "duck-of-the-dead",
+  "title": "Duck of the Dead",
+  "author": "Janne Kivilahti",
+  "bgColor": "#c2baa8",
+  "themeSong": "theme-slow-dungeon",
+  "captions": [
+    {
+      "text": "Are you ready?",
+      "y": 0.5,
+      "delay": 1000
+    }
+  ],
+  "endCaption": "Bliss!",
+  "top": 0,
+  "right": 800,
+  "bottom": 600,
+  "left": 0,
+  "horizontalLoop": true,
+  "verticalLoop": true,
+  "sprites": [
+    {
+      "id": "43735e0a27",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 332,
+      "y": 196,
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "3d0d1ff87c",
+      "typeId": "pill-plus",
+      "weight": 0,
+      "shape": 4,
+      "x": 460,
+      "y": 220,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "eca216b68f",
+      "typeId": "pill-plus",
+      "weight": 0,
+      "shape": 4,
+      "x": 564,
+      "y": 284,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "f0829b8af1",
+      "typeId": "box",
+      "x": 548,
+      "y": 140,
+      "width": 16,
+      "height": 40
+    },
+    {
+      "id": "26271d3c31",
+      "typeId": "pill-plus",
+      "weight": 0,
+      "shape": 4,
+      "x": 676,
+      "y": 228,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "8e71a970b9",
+      "typeId": "box",
+      "x": 340,
+      "y": 308,
+      "width": 56,
+      "height": 24
+    },
+    {
+      "id": "b967ec5c0d",
+      "typeId": "pill-plus",
+      "weight": 0,
+      "shape": 4,
+      "x": 692,
+      "y": 460,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "4f8fc471dc",
+      "typeId": "pill-minus",
+      "weight": 0,
+      "shape": 4,
+      "x": 508,
+      "y": 516,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "887463c9d5",
+      "typeId": "pill-plus",
+      "weight": 0,
+      "shape": 4,
+      "x": 148,
+      "y": 252,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "7305093db5",
+      "typeId": "pill-minus",
+      "weight": 0,
+      "shape": 4,
+      "x": 252,
+      "y": 500,
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "d54dd71b71",
+      "typeId": "living-stone",
+      "x": 356,
+      "y": 516,
+      "width": 80,
+      "height": 16
+    },
+    {
+      "id": "178102abd4",
+      "typeId": "box",
+      "x": 540,
+      "y": 108,
+      "width": 32,
+      "height": 24
+    },
+    {
+      "id": "7a8304ba94",
+      "typeId": "box",
+      "x": 524,
+      "y": 60,
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "15767095f3",
+      "typeId": "box",
+      "x": 564,
+      "y": 76,
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": "5593f0d99e",
+      "typeId": "box",
+      "x": 276,
+      "y": 484,
+      "width": 24,
+      "height": 24
+    },
+    {
+      "id": "4814f1ee6f",
+      "typeId": "box",
+      "x": 388,
+      "y": 236,
+      "width": 56,
+      "height": 8
+    },
+    {
+      "id": "140df9f36d",
+      "typeId": "zombie",
+      "x": 500,
+      "y": 236,
+      "width": 24,
+      "height": 24
+    },
+    {
+      "id": "7c790262bc",
+      "typeId": "zombie",
+      "x": 300,
+      "y": 484,
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "4781ae6741",
+      "typeId": "zombie",
+      "x": 132,
+      "y": 100,
+      "width": 64,
+      "height": 64
+    }
+  ],
+  "tiles": [
+    {
+      "id": "1c7967d82e",
+      "color": "#b08080",
+      "x": 308,
+      "y": 260,
+      "width": 88,
+      "height": 40
+    },
+    {
+      "id": "343be40fbd",
+      "color": "#b08080",
+      "x": 500,
+      "y": 180,
+      "width": 32,
+      "height": 56
+    },
+    {
+      "id": "394646ee8b",
+      "color": "#b08080",
+      "x": 276,
+      "y": 180,
+      "width": 40,
+      "height": 56
+    },
+    {
+      "id": "c4d4255d49",
+      "color": "#b08080",
+      "x": 532,
+      "y": 180,
+      "width": 88,
+      "height": 16
+    },
+    {
+      "id": "44d2ebc58a",
+      "color": "#b08080",
+      "x": 268,
+      "y": 340,
+      "width": 264,
+      "height": 24
+    },
+    {
+      "id": "76930a9da3",
+      "color": "#b08080",
+      "x": 436,
+      "y": 260,
+      "width": 72,
+      "height": 40
+    },
+    {
+      "id": "75596666b3",
+      "color": "#b08080",
+      "x": 572,
+      "y": 340,
+      "width": 56,
+      "height": 24
+    },
+    {
+      "id": "d691281d6f",
+      "color": "#b08080",
+      "x": 620,
+      "y": 276,
+      "width": 72,
+      "height": 64
+    },
+    {
+      "id": "13329abcb7",
+      "color": "#b08080",
+      "x": 756,
+      "y": 116,
+      "width": 48,
+      "height": 248
+    },
+    {
+      "id": "6ecfef6079",
+      "color": "#b08080",
+      "x": 460,
+      "y": 364,
+      "width": 32,
+      "height": 64
+    },
+    {
+      "id": "6d9270ce1d",
+      "color": "#b08080",
+      "x": 460,
+      "y": 444,
+      "width": 168,
+      "height": 16
+    },
+    {
+      "id": "1c74933d3e",
+      "color": "#b08080",
+      "x": 628,
+      "y": 340,
+      "width": 40,
+      "height": 64
+    },
+    {
+      "id": "6e2fe1478d",
+      "color": "#b08080",
+      "x": 732,
+      "y": 364,
+      "width": 72,
+      "height": 144
+    },
+    {
+      "id": "ebf895bd19",
+      "color": "#b08080",
+      "x": 668,
+      "y": 508,
+      "width": 136,
+      "height": 96
+    },
+    {
+      "id": "8cfc9383ea",
+      "color": "#b08080",
+      "x": 724,
+      "y": -4,
+      "width": 80,
+      "height": 120
+    },
+    {
+      "id": "70ffb6fade",
+      "color": "#b08080",
+      "x": 412,
+      "y": 548,
+      "width": 192,
+      "height": 56
+    },
+    {
+      "id": "8bc3f7fe00",
+      "color": "#b08080",
+      "x": 196,
+      "y": 524,
+      "width": 144,
+      "height": 80
+    },
+    {
+      "id": "0ab003e8df",
+      "color": "#b08080",
+      "x": 316,
+      "y": 76,
+      "width": 112,
+      "height": 16
+    },
+    {
+      "id": "3774b3c186",
+      "color": "#b08080",
+      "x": -4,
+      "y": -4,
+      "width": 80,
+      "height": 208
+    },
+    {
+      "id": "998ac33f11",
+      "color": "#b08080",
+      "x": -4,
+      "y": 204,
+      "width": 40,
+      "height": 224
+    },
+    {
+      "id": "e7827d5406",
+      "color": "#b08080",
+      "x": -4,
+      "y": 428,
+      "width": 104,
+      "height": 176
+    },
+    {
+      "id": "31ebcc7691",
+      "color": "#b08080",
+      "x": 116,
+      "y": 284,
+      "width": 72,
+      "height": 72
+    },
+    {
+      "id": "3f21a6076e",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 624,
+      "y": 488,
+      "z": -0.2,
+      "width": 128,
+      "height": 120,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "5bd6fa0d08",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 576,
+      "y": 512,
+      "z": -0.2,
+      "width": 48,
+      "height": 96,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "d917399763",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 600,
+      "y": 496,
+      "z": -0.2,
+      "width": 16,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "0d52e90aa2",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 464,
+      "y": 528,
+      "z": -0.2,
+      "width": 48,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "16f483be70",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 480,
+      "y": 512,
+      "z": -0.2,
+      "width": 16,
+      "height": 16,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "5a09a2d70a",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 120,
+      "y": 528,
+      "z": -0.2,
+      "width": 56,
+      "height": 80,
+      "layer": 1,
+      "blocks": false
+    },
+    {
+      "id": "15397ba143",
+      "color": "#c2baa8",
+      "stroke": "#a7a090",
+      "x": 128,
+      "y": 504,
+      "z": -0.2,
+      "width": 24,
+      "height": 24,
+      "layer": 1,
+      "blocks": false
+    }
+  ]
+}
