@@ -44,6 +44,7 @@
                     <br />
                     <p>If you are stuck, press Try again button or R</p>
                     <p>P = Pause</p>
+                    <button class="width-100 close" type="button" onclick="toggleHelp()">Close</button>
                 </div>
                 <div id="settings" style="display:none">
                     <form>
@@ -74,10 +75,12 @@
                             <div>
                                 <button class="width-100" type="button" onclick="openFullScreen()">Full screen</button>
                             </div>
-                            <br />
                             <div>
-                                <button class="width-100" type="button" onclick="clearBestTimes()">Erase Best
-                                    Times</button>
+                                <button class="width-100 warning" type="button" onclick="clearBestTimes()">Erase best
+                                    times</button>
+                            </div>
+                            <div>
+                                <button class="width-100 mt-10" type="button" onclick="toggleSettings()">Close settings</button>
                             </div>
                         </div>
                     </form>
@@ -251,7 +254,7 @@
             audio.loadMusic(scene.themeSong);
         }
 
-        async function toggleSettings() {
+        function toggleSettings() {
             const settings = document.getElementById("settings");
             if (settings.style.display === "none") {
                 settings.style.display = null;
@@ -259,6 +262,10 @@
             else {
                 settings.style.display = "none";
             }
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+
         }
 
         async function toggleHelp() {
@@ -269,6 +276,10 @@
             else {
                 help.style.display = "none";
             }
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+
         }
 
         async function openFirst() {

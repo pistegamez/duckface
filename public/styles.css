@@ -66,7 +66,9 @@ a {
 
 #settings {
     position: absolute;
-    padding: 2em;
+    padding: 1.5em;
+    padding-bottom: 0.5em;
+    padding-top: 1em;
     background-color: #ffffff;
     border: 2px solid #383838;
     font-size: 1.6em;
@@ -75,10 +77,10 @@ a {
 
 #help {
     position: absolute;
-    padding: 2em;
+    padding: 1.25em;
     background-color: #ffffff;
     border: 2px solid #383838;
-    font-size: 1.4em;
+    font-size: 1.3em;
     text-align: center;
     box-shadow: 0px 18px 1px 0px rgb(0 0 0 / 30%);
 }
@@ -97,11 +99,17 @@ nav form {
 button {
     font-family: 'Gaegu';
     padding: 0.5em;
-    /*font-size: min(0.8em, calc((100vw + 100vh)/70));*/
     border-radius: 4px;
     border: 2px solid #333;
     cursor: pointer;
     background-color: #f0f0f0;
+    margin-bottom: 1em;
+    font-size: 0.7em;
+}
+
+button.warning {
+    background-color: #ff3030;
+    color: #ffffff;
 }
 
 nav form button {
@@ -122,6 +130,10 @@ input[type="range"] {
 
 .width-100 {
     width: 100%;
+}
+
+.mt-10 {
+    margin-top: 10px;
 }
 
 .header {
