@@ -2,8 +2,9 @@
     "id": "season-1",
     "title": "Season 1",
     "credits": [
-        { "name": "Janne Kivilahti", "role": "Level design" },
-        { "name": "Felix44", "role": "Testing" }
+        { "name": "Janne Kivilahti", "roles": ["Level design"] },
+        { "name": "Felice D'Angelo (aka Felix44)", "roles": ["Testing"] },
+        { "name": "MeHuLi", "roles": ["Testing"] }
     ],
     "endTheme": "theme-punk-1-orchestal",
     "scenes": [
