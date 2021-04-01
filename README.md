@@ -67,6 +67,13 @@ And open your browser from http://localhost:8080
 - localization support
 - multiple collision boxes for sprites
 
+### Bugs
+- After first level, game skips to level 7 (tested on Edge)
+
 ### Editor features / bugs
+- deleting with delete key (on Windows)
 - deleting a tile with a sprite collision crashes the editor
+
+### Season 1
+- Additional hint to Lord of the Ring
 

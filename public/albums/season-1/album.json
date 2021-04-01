@@ -3,8 +3,7 @@
     "title": "Season 1",
     "credits": [
         { "name": "Janne Kivilahti", "role": "Level design" },
-        { "name": "No one yet", "role": "Testing" },
-        { "name": "No one yet", "role": "Additional ideas" }
+        { "name": "Felix44", "role": "Testing" }
     ],
     "endTheme": "theme-punk-1-orchestal",
     "scenes": [

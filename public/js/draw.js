@@ -10,6 +10,8 @@ const effects = { redraw: true };
 
 const tileLayers = { update: true };
 
+const buttons = {};
+
 function updateTileCanvases(drawAll = false) {
 
     const zx = typeof editor !== "undefined" ? 0 : camera.pixelX;
@@ -197,23 +199,27 @@ function drawGame() {
         drawCaptions();
 
         if (state.completed && Date.now() - (sceneStartTime + sceneCompletionTime) > 2000) {
-            drawButton("Try again (R)", 0.5, 0.42, () => {
+            drawButton("try-again", "Try again (R)", 0.5, 0.42, () => {
                 resetScene();
             });
 
-            drawButton("Next (Enter)", 0.5, 0.58, () => {
+            drawButton("next", "Next (Enter)", 0.5, 0.58, () => {
                 openNext();
             });
         }
         else if (state.failed === true && Date.now() - (sceneStartTime + sceneFailedTime) > 2000) {
-            drawButton("Try again (Enter)", 0.5, 0.5, () => {
+            drawButton("try-again", "Try again (Enter)", 0.5, 0.5, () => {
                 resetScene();
             });
         }
     }
 }
 
-function drawButton(text, x = 0.5, y = 0.5, callback) {
+function drawButton(id, text, x = 0.5, y = 0.5, callback) {
+
+    if (buttons[id] === undefined) {
+        buttons[id] = { clicked: false };
+    }
 
     const fontSize = 32;
     context.lineWidth = 2.0;
@@ -278,16 +284,20 @@ function drawButton(text, x = 0.5, y = 0.5, callback) {
     // button click
     if (controls.mousePixelX >= left && controls.mousePixelX <= right && controls.mousePixelY >= top && controls.mousePixelY <= bottom) {
         canvas.style.cursor = "pointer";
-        if (controls.mouseLeft) {
+        if (controls.mouseLeft && !buttons[id].clicked) {
+            buttons[id].clicked = true;
             callback();
         }
     }
-
     // touch
-    if (controls.touchX >= left && controls.touchX <= right && controls.touchY >= top && controls.touchY <= bottom) {
-        if (controls.leftTouch || controls.rightTouch) {
+    else if (controls.touchX >= left && controls.touchX <= right && controls.touchY >= top && controls.touchY <= bottom) {
+        if ((controls.leftTouch || controls.rightTouch) && !buttons[id].clicked) {
+            buttons[id].clicked = true;
             callback();
         }
+    }
+    else {
+        buttons[id].clicked = false;
     }
 }
 
@@ -1555,7 +1565,7 @@ function drawEnd() {
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     context.strokeStyle = "#686868";
-    context.setLineDash([32,(canvas.width-128),64,(canvas.height-128),64,(canvas.width-128),64,(canvas.height-128)]);
+    context.setLineDash([32, (canvas.width - 128), 64, (canvas.height - 128), 64, (canvas.width - 128), 64, (canvas.height - 128)]);
     context.lineWidth = 4.5;
     context.strokeRect(32, 32, canvas.width - 64, canvas.height - 64);
     context.setLineDash([]);
