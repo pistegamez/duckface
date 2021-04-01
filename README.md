@@ -67,8 +67,8 @@ And open your browser from http://localhost:8080
 - localization support
 - multiple collision boxes for sprites
 
-### Bugs
-- After first level, game skips to level 7 (tested on Edge)
+### Known Bugs
+- Still hiding...
 
 ### Editor features / bugs
 - deleting with delete key (on Windows)
@@ -76,4 +76,5 @@ And open your browser from http://localhost:8080
 
 ### Season 1
 - Additional hint to Lord of the Ring
+- Level where you need to walk through spikes (Fakir)
 
