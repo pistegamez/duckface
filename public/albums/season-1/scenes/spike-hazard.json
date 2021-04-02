@@ -1,0 +1,341 @@
+{
+    "id": "spike-hazard",
+    "version": "1.0",
+    "created": "2021-03-24T19:35:40.232Z",
+    "lastEdit": "2021-03-26T11:48:46.971Z",
+    "title": "Spike Hazard",
+    "author": "Nomll",
+    "bgColor": "#cceeff",
+    "themeSong": "theme-duckblues",
+    "captions": [
+     {
+      "text": "These spikes seem painfully sharp, can you overcome them?",
+      "delay": 1000,
+      "y": 0.7
+     }
+    ],
+    "endCaption": "Bliss!",
+    "top": 0,
+    "right": 1600,
+    "bottom": 600,
+    "left": 0,
+    "horizontalLoop": true,
+    "verticalLoop": true,
+    "effects": [
+     {
+      "type": "clouds",
+      "id": "clouds",
+      "layer": 1,
+      "props": {
+       "clouds": 8
+      }
+     }
+    ],
+    "sprites": [
+     {
+      "id": "20da958eaf",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "x": 136,
+      "y": 328,
+      "width": 64,
+      "height": 48
+     },
+     {
+      "id": "87d654a378",
+      "typeId": "spikes-up",
+      "x": 296,
+      "y": 456,
+      "width": 136,
+      "height": 24
+     },
+     {
+      "id": "7d59ee27c9",
+      "typeId": "spikes-up",
+      "x": 512,
+      "y": 344,
+      "width": 96,
+      "height": 32
+     },
+     {
+      "id": "c94d96090d",
+      "typeId": "spikes-up",
+      "x": 608,
+      "y": 344,
+      "width": 88,
+      "height": 32
+     },
+     {
+      "id": "ced86fc43f",
+      "typeId": "spikes-up",
+      "x": 704,
+      "y": 344,
+      "width": 80,
+      "height": 32
+     },
+     {
+      "id": "9c853ddaaf",
+      "typeId": "spikes-up",
+      "x": 792,
+      "y": 344,
+      "width": 88,
+      "height": 32
+     },
+     {
+      "id": "9650a1baff",
+      "typeId": "spikes-up",
+      "x": 888,
+      "y": 344,
+      "width": 88,
+      "height": 32
+     },
+     {
+      "id": "36fda746a2",
+      "typeId": "pill-plus",
+      "direction": 2,
+      "x": 624,
+      "y": 272,
+      "width": 24,
+      "height": 16
+     },
+     {
+      "id": "3880d70a94",
+      "typeId": "box",
+      "direction": 2,
+      "x": 1040,
+      "y": 336,
+      "width": 64,
+      "height": 40
+     },
+     {
+      "id": "4de5adb6b4",
+      "typeId": "pill-plus",
+      "direction": 2,
+      "x": 1456,
+      "y": 416,
+      "width": 24,
+      "height": 16
+     },
+     {
+      "id": "086ccd1d09",
+      "typeId": "spikes-up",
+      "x": 1368,
+      "y": 448,
+      "width": 128,
+      "height": 32
+     },
+     {
+      "id": "21ae1330fa",
+      "typeId": "spikes-up",
+      "x": 1184,
+      "y": 488,
+      "width": 136,
+      "height": 24
+     }
+    ],
+    "tiles": [
+     {
+      "id": "ae775962f6",
+      "color": "#eba361",
+      "x": 80,
+      "y": 144,
+      "width": 40,
+      "height": 232
+     },
+     {
+      "id": "c199666a0f",
+      "color": "#eba361",
+      "x": 80,
+      "y": 376,
+      "width": 216,
+      "height": 40
+     },
+     {
+      "id": "c72f53079a",
+      "color": "#eba361",
+      "x": 248,
+      "y": 416,
+      "width": 48,
+      "height": 104
+     },
+     {
+      "id": "0c62c7518f",
+      "color": "#eba361",
+      "x": 296,
+      "y": 480,
+      "width": 176,
+      "height": 40
+     },
+     {
+      "id": "ae41595bbf",
+      "color": "#eba361",
+      "x": 432,
+      "y": 376,
+      "width": 40,
+      "height": 104
+     },
+     {
+      "id": "5546057678",
+      "color": "#eba361",
+      "x": 472,
+      "y": 376,
+      "width": 632,
+      "height": 40
+     },
+     {
+      "id": "84a74050e0",
+      "color": "#eba361",
+      "x": 1104,
+      "y": 344,
+      "width": 80,
+      "height": 72
+     },
+     {
+      "id": "6d5d77a245",
+      "color": "#eba361",
+      "x": 1144,
+      "y": 416,
+      "width": 40,
+      "height": 128
+     },
+     {
+      "id": "428156d147",
+      "color": "#eba361",
+      "x": 1184,
+      "y": 512,
+      "width": 136,
+      "height": 32
+     },
+     {
+      "id": "247cea6818",
+      "color": "#eba361",
+      "x": 1320,
+      "y": 480,
+      "width": 72,
+      "height": 64
+     },
+     {
+      "id": "df5c3b0820",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 640,
+      "y": 416,
+      "width": 16,
+      "height": 128
+     },
+     {
+      "id": "e3d4e141cb",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 808,
+      "y": 416,
+      "width": 16,
+      "height": 80
+     },
+     {
+      "id": "81a6394ba2",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 944,
+      "y": 416,
+      "width": 16,
+      "height": 80
+     },
+     {
+      "id": "ac96eba4d8",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 960,
+      "y": 456,
+      "width": 16,
+      "height": 96
+     },
+     {
+      "id": "3ae0018580",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 656,
+      "y": 480,
+      "width": 16,
+      "height": 88
+     },
+     {
+      "id": "497e5dcf70",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 624,
+      "y": 464,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "a1e0071131",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 672,
+      "y": 520,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "37de84c3ca",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 792,
+      "y": 440,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "33cd59dce0",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 824,
+      "y": 456,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "7cb2877b07",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 928,
+      "y": 464,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "1c161f6e9e",
+      "color": "#b6dc70",
+      "stroke": "#38630e",
+      "x": 944,
+      "y": 520,
+      "width": 16,
+      "height": 8
+     },
+     {
+      "id": "9ccff035e6",
+      "color": "#eba361",
+      "x": 1392,
+      "y": 480,
+      "width": 72,
+      "height": 64
+     },
+     {
+      "id": "44e3fc79c8",
+      "color": "#eba361",
+      "x": 1464,
+      "y": 480,
+      "width": 72,
+      "height": 64
+     },
+     {
+      "id": "d0b809b80a",
+      "color": "#eba361",
+      "x": 1496,
+      "y": 272,
+      "width": 40,
+      "height": 208
+     }
+    ]
+   }
