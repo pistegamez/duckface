@@ -27,6 +27,7 @@ const editor = {
     showTileId: false,
 
     showSource: false,
+    prettyPrintSource: true,
 
     tileLayer: LAYERS.MIDDLE,
     tileMaterialId: "default",
@@ -41,10 +42,16 @@ const editor = {
 
     clearScene() {
         this.save();
+        this.idsOfSelectedTiles = [];
+        this.idsOfSelectedSprites = [];
+        scene.tiles.forEach(tile => {
+            removeTileCanvasById(tile.id);
+        });
         scene = new Scene({});
         this.resetCamera();
         this.updateUI();
         worker.postMessage({ action: "SET_SCENE", scene });
+        tileLayers.update = true;
     },
 
     async loadScene({ sceneId, albumId }) {
@@ -92,6 +99,11 @@ const editor = {
 
     toggleSource() {
         this.showSource = !this.showSource;
+        this.updateUI();
+    },
+
+    setPrettyPrintSource(value) {
+        this.prettyPrintSource = value;
         this.updateUI();
     },
 
@@ -536,7 +548,8 @@ const editor = {
 
     updateUI() {
 
-        document.getElementById("source").value = JSON.stringify(scene, null, ' ');
+        document.getElementById("source").value = JSON.stringify(scene, null, this.prettyPrintSource ? ' ' : undefined);
+        document.getElementById("pretty-print-source").checked = this.prettyPrintSource;
         //const dialog = document.getElementById("source-dialog");
         document.getElementById("source-dialog").style.display = this.showSource ? "" : "none";
 

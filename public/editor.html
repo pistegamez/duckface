@@ -381,6 +381,10 @@
                 <div>
                     <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
                 </div>
+                <div class="form-row">
+                    <label><input id="pretty-print-source" type="checkbox"
+                        onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print Source</label>
+            </div>
             </fieldset>
             <fieldset>
                 <legend>Camera</legend>
