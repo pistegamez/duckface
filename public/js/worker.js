@@ -530,7 +530,6 @@ function testCollisions(sprite, targets) {
 
             sprite.collision = true;
 
-
             if (collision.target.isSprite) {
                 sprite.collisionData.spriteIds.add(collision.target.id);
                 if (collision.target.isPlayer) {
@@ -546,7 +545,6 @@ function testCollisions(sprite, targets) {
 
 
             if (sprite.isStatic) {
-
             }
             else if (collision.targetShape === SHAPES.TOP_DOWN) {
                 if (sprite.velocity.y >= 0
@@ -791,6 +789,7 @@ function checkBoxToBoxCollision(box1, box2) {
 
 }
 
+// FIXME: Use collisionData.l,r,t,b instead of x + width and y + height
 function checkBoxMiddleToBoxCollision(box, slope) {
     return (box.x + box.width / 2 >= slope.x && box.x + box.width / 2 <= slope.x + slope.width &&
         box.y + box.height >= slope.y && box.y <= slope.y + slope.height);
@@ -837,20 +836,20 @@ function calculatePenetrationArea(box1, box2) {
     let area = {};
 
     area.left = Math.max(
-        box2.isSprite ? box2.collisionData.l : box2.x,
-        box1.isSprite ? box1.collisionData.l : box1.x,
+        box1.l,
+        box2.isSprite ? box2.collisionData.l : box2.x
     );
     area.right = Math.min(
-        box2.isSprite ? box2.collisionData.r : box2.x + box2.width,
-        box1.isSprite ? box1.collisionData.r : box1.x + box1.width
+        box1.r,
+        box2.isSprite ? box2.collisionData.r : box2.x + box2.width
     );
     area.top = Math.max(
+        box1.t,
         box2.isSprite ? box2.collisionData.t : box2.y,
-        box1.isSprite ? box1.collisionData.t : box1.y
     );
     area.bottom = Math.min(
+        box1.b,
         box2.isSprite ? box2.collisionData.b : box2.y + box2.height, 
-        box1.isSprite ? box1.collisionData.b : box1.y + box1.height
     );
     area.width = area.right - area.left;
     area.height = area.bottom - area.top;

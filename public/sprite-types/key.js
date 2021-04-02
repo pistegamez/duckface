@@ -10,7 +10,8 @@ spriteTypes.key = new SpriteType({
         weight: 0.25,
         isKey: true,
         width: 32,
-        height: 32
+        height: 32,
+        isObstacle: true
     },
     behaviours: ["blocks-completion", "removed-if-energy-0"],
     paths: {
