@@ -1303,7 +1303,7 @@ const onEditorKeyupListener = event => {
         onGameKeyupListener(event);
     }
 
-    if (event.code === 'Backspace') {
+    if (event.code === 'Backspace' || event.code === 'Delete') {
         editor.removeSelected();
     }
     else if (event.code === 'KeyU') {
