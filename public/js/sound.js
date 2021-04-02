@@ -161,7 +161,6 @@ const audio = {
         this.gainNode.gain.value = volume;
         this.gainNode.connect(this.context.destination);
         this.loadAudio("/audio/sfx.mp3", (buffer) => {
-            console.log('sfx loaded');
             this.sfxBuffer = buffer;
         });
     },
