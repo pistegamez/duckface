@@ -201,6 +201,12 @@
             createBorderVariationButtons();
         }
 
+        function clearScene() {
+            if (confirm("Just making sure, that you really want to clear all tiles and sprites?")) {
+                editor.clearScene();
+            }
+        }
+
         function renderSpriteTypeButtons() {
             const buttons = document.getElementById("sprite-type-buttons");
             buttons.innerHTML = "";
@@ -311,8 +317,15 @@
             <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
         </div>
         <form id="scene">
+            <div>
+                <button type="button" onclick="clearScene()">New Scene</button>
+            </div>
             <fieldset>
                 <legend>Scene</legend>
+                <div class="form-row">
+                    <label>ID / File Name</label>
+                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
+                </div>
                 <div class="form-row">
                     <label>Title </label>
                     <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />

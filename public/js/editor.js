@@ -39,6 +39,14 @@ const editor = {
     isPlayer: false,
     spriteDirection: DIRECTION.RIGHT,
 
+    clearScene() {
+        this.save();
+        scene = new Scene({});
+        this.resetCamera();
+        this.updateUI();
+        worker.postMessage({ action: "SET_SCENE", scene });
+    },
+
     async loadScene({ sceneId, albumId }) {
         await loadScene({ sceneId, albumId });
         scene.sprites.forEach(sprite => {
@@ -89,6 +97,12 @@ const editor = {
 
     stashScene() {
         localStorage.setItem("duckface-editor-scene", document.getElementById("source").value);
+    },
+
+    setSceneId(value) {
+        this.save();
+        scene.id = value;
+        this.updateUI();
     },
 
     setSceneTitle(value) {
@@ -528,6 +542,7 @@ const editor = {
 
         document.getElementById("use-game-camera").checked = camera.enabled;
 
+        document.getElementById("scene.id").value = scene.id;
         document.getElementById("scene.title").value = scene.title;
         document.getElementById("scene.author").value = scene.author;
         document.getElementById("scene.themeSong").value = scene.themeSong;
