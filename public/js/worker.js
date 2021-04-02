@@ -1,5 +1,6 @@
 'use strict';
 
+// Do not remove these comments, they are used in build
 // scripts-start
 importScripts('/js/common.js');
 importScripts('/js/behaviours.js');
@@ -29,7 +30,6 @@ let nextState = {};
 let scene = new Scene({});
 let tiles = [];
 let sprites = [];
-//let spriteTypes = {};
 
 const controls = {
     up: false,
@@ -117,7 +117,6 @@ function addSpriteTypes(types) {
         const patterns = JSON.parse(JSON.stringify(types[i].patterns));
 
         for (let pattern in patterns) {
-            //patterns[pattern].behaviours = patterns[pattern].behaviours.map(name => behaviours[name]);
             const behaviourList = [];
             patterns[pattern].behaviours.forEach(name => {
                 if (behaviours[name]) {
@@ -133,7 +132,6 @@ function addSpriteTypes(types) {
         spriteTypes[i] = new SpriteType({
             ...types[i],
             patterns
-            //behaviours: types[i].behaviours.map(name => behaviours[name])
         });
     }
 }
@@ -158,7 +156,6 @@ function setTiles(dataTiles) {
         return;
     }
 
-    const length = dataTiles.length;
     tiles = [];
 
     while (tiles.length < dataTiles.length) {
@@ -173,12 +170,11 @@ function setTiles(dataTiles) {
         });
     }
 
-    console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
+    // console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
 }
 
 function addTile(data, tiles) {
     if (data.blocks === false) {
-        //console.log(`tile ${data.id} removed: non blocking`);
         return;
     }
 
@@ -271,7 +267,6 @@ function mainloop() {
 
     sendData();
 
-    //requestAnimationFrame(mainloop);
     statistics.rounds++;
     const delta = Date.now() - startMs;
     statistics.ms += delta;
@@ -311,7 +306,6 @@ function move() {
             sprite.remove = true;
         }
 
-        //if (sprite.velocity.x <= 0.091 && sprite.velocity.x >= -0.091) {
         if (sprite.velocity.x <= 0.01 && sprite.velocity.x >= -0.01) {
             sprite.velocity.x = 0;
         }
@@ -353,7 +347,7 @@ function move() {
             }
 
             if (!sprite.collisionData.bottom && sprite.weight > 0) {
-                sprite.velocity.y += sprite.weight;//0.25;
+                sprite.velocity.y += sprite.weight;
             }
 
             sprite.x += sprite.velocity.x;
@@ -395,7 +389,6 @@ function move() {
     if (removeSprites) {
         sprites = sprites.filter(sprite => !sprite.remove);
     }
-    //sprites = sprites.filter(sprite => !sprite.remove);
 }
 
 
@@ -642,28 +635,8 @@ function testCollisions(sprite, targets) {
                 else {
                     sprite.collisionData.top = true;
 
-                    if (collision.target.isSprite) {
-                        //sprite.collisionData.velocity.y += Math.max(0, collision.target.velocity.y);
-                        //sprite.collisionData.velocity.y = -30;//Math.min(-30, collision.target.velocity.y * 2);
-                        //sprite.collisionData.velocity.y = Math.min(sprite.collisionData.velocity.y, collision.target.velocity.y);
-                    }
-                    /*
-                    //if (sprite.velocity.y < 0) {
-                        if (!collision.target.isSprite) {
-                            sprite.collisionData.velocity.y = 0;//-sprite.velocity.y / 4;
-                            //sprite.collisionData.velocity.y /= 2;
-                        }
-                        else {
-                            //sprite.collisionData.velocity.y = Math.min(sprite.collisionData.velocity.y, collision.target.velocity.y);
-                            sprite.collisionData.velocity.y *= 0.95;
-                            //sprite.collisionData.velocity.y -= collision.target.velocity.y;
-                        }
-                    //}
-                    */
-
                     if (sprite.velocity.y <= -3) {
                         sprite.collisionData.velocity.y = Math.max(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
-                        //postMessage({ type: "PLAY_SOUND", sound: "pst" });
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -680,9 +653,7 @@ function testCollisions(sprite, targets) {
                         sprite.collisionData.velocity.y = Math.max(0, sprite.collisionData.velocity.y);
                     }
 
-                    //if (collision.target.velocity?.y > 0) {
                     sprite.collisionData.y += collision.area.height;
-                    //}
                 }
             }
             else {
@@ -702,20 +673,8 @@ function testCollisions(sprite, targets) {
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                     }
                     else if (sprite.velocity.x > 0) {
-                        sprite.collisionData.velocity.x = 0;//Math.min(0, sprite.collisionData.velocity.x);
+                        sprite.collisionData.velocity.x = 0;
                     }
-
-                    /*
-                    if (sprite.velocity.x > 0) {
-                        
-                        if (sprite.velocity.x >= 1) {
-                            sprite.collisionData.velocity.x = -sprite.velocity.x / 2;//0
-                        }
-                        else {
-                            sprite.collisionData.velocity.x = 0;//0
-                            //sprite.collisionData.velocity.x /= 2;
-                        }
-                    }*/
                 }
                 else {
                     sprite.collisionData.left = true;
@@ -727,7 +686,6 @@ function testCollisions(sprite, targets) {
                         sprite.collisionData.x += collision.area.width;
                     }
 
-
                     if (sprite.velocity.x <= -1) {
                         sprite.collisionData.velocity.x = Math.max(-sprite.velocity.x / 2, sprite.collisionData.velocity.x);
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
@@ -735,33 +693,12 @@ function testCollisions(sprite, targets) {
                     else if (sprite.velocity.x < 0) {
                         sprite.collisionData.velocity.x = 0;//Math.max(0, sprite.collisionData.velocity.x);
                     }
-
-                    /*
-                    if (sprite.velocity.x < 0) {
-                        if (sprite.velocity.x <= -1) {
-                            sprite.collisionData.velocity.x = -sprite.velocity.x / 2;//0
-                        }
-                        else {
-                            sprite.collisionData.velocity.x = 0;
-                            //sprite.collisionData.velocity.x /= 2;
-                        }
-                    }*/
                 }
 
 
                 if (collision.target.isSprite) {
-                    //let colPercentage = collision.area.height / sprite.height;
                     let colPercentage = Math.min(1, collision.target.height / sprite.height);
                     sprite.collisionData.velocity.x += (collision.target.velocity.x / 1.1) * colPercentage;
-
-                    /*
-                    if (sprite.x < collision.target.x && collision.target.velocity.x < 1) {
-                        sprite.collisionData.velocity.x = collision.target.velocity.x * 0.5;
-                    }
-                    else if (sprite.x > collision.target.x && collision.target.velocity.x > 1) {
-                        sprite.collisionData.velocity.x = collision.target.velocity.x * 0.5;
-                    }*/
-                    //sprite.collisionData.velocity.x += collision.target.velocity.x * 0.5;
                 }
             }
 
@@ -769,16 +706,12 @@ function testCollisions(sprite, targets) {
         }
         rounds--;
     } while (collision !== null && rounds > 0);
-    if (rounds === 0) {
-        //console.log('xxx')
-    }
+
+    // if (rounds === 0) {
+    //    console.log('xxx')
+    //}
 }
-/*
-function checkBoxToBoxCollision(box1, box2) {
-    return (box1.x + box1.width >= box2.x && box1.x <= box2.x + box2.width &&
-        box1.y + box1.height >= box2.y && box1.y <= box2.y + box2.height);
-}
-*/
+
 function checkBoxToBoxCollision(box1, box2) {
     if (box2.isTile) {
         return (box1.r >= box2.l && box1.l <= box2.r &&
@@ -786,7 +719,6 @@ function checkBoxToBoxCollision(box1, box2) {
     }
     return (box1.r >= box2.collisionData.l && box1.l <= box2.collisionData.r &&
         box1.b >= box2.collisionData.t && box1.t <= box2.collisionData.b);
-
 }
 
 // FIXME: Use collisionData.l,r,t,b instead of x + width and y + height
@@ -880,7 +812,6 @@ function calculateSlopePenetrationArea(box, slope) {
     }
     area.left = Math.max(slope.x, box.x);
     area.right = Math.min(slope.x + slope.width, box.x + box.width);
-    //area.top = Math.max(slope.y+6, box.y);
     area.top = Math.max(slopeY, box.y);
     area.bottom = Math.min(box.y + box.height, slope.y + slope.height);
     area.width = area.right - area.left;
