@@ -64,6 +64,7 @@ And open your browser from http://localhost:8080
 - drag 'n drop file load
 - water
 - credits screen
+- ice cream -> freeze enemies
 - upside down slopes
 - duckface push animation 
 - localization support
