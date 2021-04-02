@@ -62,8 +62,10 @@ And open your browser from http://localhost:8080
 
 ### Game features
 - drag 'n drop file load
+- recording performance for replay
 - water
 - credits screen
+- version of Cheeks that blows upward
 - ice cream -> freeze enemies
 - upside down slopes
 - duckface push animation 
@@ -71,13 +73,10 @@ And open your browser from http://localhost:8080
 - multiple collision boxes for sprites
 
 ### Known Bugs
-- Still hiding...
+- skipping title with touch does not work
 
 ### Editor features / bugs
-- deleting with delete key (on Windows)
 - deleting a tile with a sprite collision crashes the editor
 
 ### Season 1
 - Additional hint to Lord of the Ring
-- Level where you need to walk through spikes (Fakir)
-
