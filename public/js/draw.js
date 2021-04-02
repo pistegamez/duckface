@@ -182,6 +182,7 @@ function drawGame() {
 
     context.translate(-camera.pixelX, -camera.pixelY);
     drawSprites(context, canvas);
+    //drawSpriteInfo(context);
     drawParticles(context, canvas);
     context.translate(camera.pixelX, camera.pixelY);
 
@@ -603,8 +604,6 @@ function drawRain(id, context, { drops = 200, color = "rgba(255,255,255,0.5)", v
 function drawLightning(context, { x, y, likeliness = 0.015, fork = false }) {
 
     if (Math.random() > 1 - likeliness) {
-
-        //debugger;
 
         if (!fork) {
             context.strokeStyle = "#ffffff";
@@ -1986,4 +1985,33 @@ function drawEditorStuff() {
         drawCaption({ text: "MOVE MODE (P)", y: 0.01 });
     }
 
+}
+
+function drawSpriteInfo(context) {
+
+    sprites.forEach(sprite => {
+        //if (sprite.collision) {
+
+        context.strokeStyle = "#ffffff";
+        context.lineWidth = 2;
+        context.strokeRect(
+            sprite.collisionData.l,
+            sprite.collisionData.t,
+            sprite.collisionData.r - sprite.collisionData.l,
+            sprite.collisionData.b - sprite.collisionData.t
+        );
+
+        if (sprite.collisionArea) {
+            context.strokeStyle = "#ff0000";
+            context.lineWidth = 4;
+
+            context.strokeRect(
+                sprite.collisionArea.left,
+                sprite.collisionArea.top,
+                sprite.collisionArea.width,
+                sprite.collisionArea.height
+            );
+        }
+        //}
+    });
 }
