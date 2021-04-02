@@ -2,7 +2,7 @@
   "id": "castle-of-keys",
   "version": "1.0",
   "created": "2021-04-01T09:46:12.185Z",
-  "lastEdit": "2021-04-02T11:00:15.821Z",
+  "lastEdit": "2021-04-02T11:48:52.822Z",
   "title": "Castle of keys",
   "author": "Felix44 & Janne",
   "bgColor": "#6b4db3",
@@ -387,9 +387,9 @@
       "id": "ef2d114620",
       "color": "#8777da",
       "x": 1248,
-      "y": 360,
+      "y": 352,
       "width": 176,
-      "height": 32,
+      "height": 40,
       "borders": {
         "t": false,
         "r": false,
@@ -426,7 +426,7 @@
       "x": 1248,
       "y": 240,
       "width": 128,
-      "height": 120,
+      "height": 112,
       "borders": {
         "t": true,
         "r": true,
@@ -858,7 +858,7 @@
       "x": 1376,
       "y": 240,
       "width": 48,
-      "height": 120,
+      "height": 112,
       "borders": {
         "t": true,
         "r": false,
