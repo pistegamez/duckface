@@ -378,13 +378,16 @@
                     <label><input id="scene.verticalLoop" type="checkbox"
                             onchange="editor.setSceneVerticalLooping(event.target.checked)" /> Loop vertically</label>
                 </div>
+            </fieldset>
+            <fieldset>
+                <legend>Scene source</legend>
                 <div>
                     <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
                 </div>
-                <div class="form-row">
+                <div>
                     <label><input id="pretty-print-source" type="checkbox"
-                        onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print Source</label>
-            </div>
+                        onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
+                </div>
             </fieldset>
             <fieldset>
                 <legend>Camera</legend>
