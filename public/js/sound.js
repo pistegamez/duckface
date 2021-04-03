@@ -48,7 +48,7 @@ const themes = {
         authors: "Awful Squares"
     },
     "theme-punk-1-orchestal": {
-        title: "Punk 1 (Orchestal)",
+        title: "Punk 1 (orchestral)",
         authors: "Janne Kivilahti"
     },
     "theme-punk-2": {
