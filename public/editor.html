@@ -3,8 +3,7 @@
 
 <head>
     <title>Editor</title>
-    <meta name="description"
-        content="Duckface level editor">
+    <meta name="description" content="Duckface level editor">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta http-equiv="Cache-Control" content="no-store">
     <script>
@@ -321,11 +320,7 @@
                 <button type="button" onclick="clearScene()">New Scene</button>
             </div>
             <fieldset>
-                <legend>Scene</legend>
-                <div class="form-row">
-                    <label>ID / File Name</label>
-                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
-                </div>
+                <legend>Scene properties</legend>
                 <div class="form-row">
                     <label>Title </label>
                     <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />
@@ -335,6 +330,29 @@
                     <input id="scene.author" type="text" value=""
                         onchange="editor.setSceneAuthor(event.target.value)" />
                 </div>
+                <div class="form-row">
+                    <label>ID</label>
+                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Version</label>
+                    <input id="scene.version" type="text" value=""
+                        onchange="editor.setSceneVersion(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Background <input id="scene.bgColor" type="color"
+                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Soundtrack</label>
+                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
+                        style="width:100%">
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Scene borders</legend>
                 <div class="form-row">
                     <label>Top:
                         <input id="scene.top" type="number" value="0"
@@ -358,17 +376,6 @@
                             onchange="editor.setSceneSize({left:event.target.value})" />
                     </label>
                 </div>
-                <div class="form-row">
-                    <label>Background <input id="scene.bgColor" type="color"
-                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Soundtrack</label>
-                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
-                        style="width:100%">
-                    </select>
-                </div>
                 <div>
                     <label><input id="scene.horizontalLoop" type="checkbox"
                             onchange="editor.setSceneHorizontalLooping(event.target.checked)" /> Loop
@@ -386,7 +393,7 @@
                 </div>
                 <div>
                     <label><input id="pretty-print-source" type="checkbox"
-                        onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
+                            onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
                 </div>
             </fieldset>
             <fieldset>
@@ -398,6 +405,9 @@
             </fieldset>
             <div>
                 <button type="button" onclick="saveScene({albumId})">Save Scene</button>
+            </div>
+            <div>
+                <button type="button" onclick="resetScene()">Reset game (R)</button>
             </div>
             <div>
                 <a class="button" onclick="editor.stashScene()" href="../game.html?scene=from-editor">Test Scene</a>
@@ -443,10 +453,12 @@
                     <label><input name="tile-layer" type="radio" value="2"
                             onclick="editor.setTileLayer(event.target.value)" checked />Middle</label>
                 </div>
+                <!--
                 <div>
                     <label><input name="tile-layer" type="radio" value="3"
                             onclick="editor.setTileLayer(event.target.value)" />Foreground</label>
                 </div>
+                -->
             </fieldset>
             <fieldset>
                 <legend>Tile Borders</legend>
@@ -546,76 +558,7 @@
             <fieldset>
                 <legend>Draw Sprites</legend>
                 <div id="sprite-type-buttons">
-
                 </div>
-                <!--
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-duckface" />Duckface</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-pighead" />Pigface</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-box" />Movable Box</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-pill-plus" />Grow Pill</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-burger" />Burger</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-pill-minus" />Shrink Pill</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-pill-placebo" />Placebo</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-pill-speed" />Speed Pill</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-chili" />Chili</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-heart" />Heart</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-flying-heart" />Flying Heart</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-exit-door" />Exit Door</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-living-stone" />Living Stone</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-torso" />Torso</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-zombie" />Zombie</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-1-eyed-zombie" />Zombie (One Eyed)</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-ghost" />
-                        Ghost</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-elevator-horizontal" />Horizontal
-                        Elevator</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-elevator-vertical" />Vertical
-                        Elevator</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-spikes-up" />Spikes Up</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="draw-sprite-chill-n-fire" />Chill 'n Fire</label>
-                </div>
-                -->
             </fieldset>
             <fieldset>
                 <legend>Sprite</legend>

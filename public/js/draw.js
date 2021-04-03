@@ -350,7 +350,7 @@ function drawTitle({ text, fillStyle = "#303030", shadow = false, fontSize, y = 
 
 function drawBackground(context, canvas) {
 
-    if (!state.completed || !isPlayerReady) {
+    if (!state.completed || !isPlayerReady || typeof editor !== "undefined") {
         context.fillStyle = scene.bgColor;
         context.fillRect(0, 0, canvas.width, canvas.height);
         return;
@@ -644,9 +644,14 @@ function drawTileLayer(layer, context, canvas) {
     }
 
     if (tileLayers.update) {
-        tileLayers[layer].canvas.width = 0;
-        tileLayers[layer].canvas.width = canvas.width;
-        tileLayers[layer].canvas.height = canvas.height;
+        if (tileLayers[layer].canvas.width !== canvas.width || tileLayers[layer].canvas.height !== canvas.height) {
+            tileLayers[layer].canvas.width = canvas.width;
+            tileLayers[layer].canvas.height = canvas.height;
+        }
+        else {
+            tileLayers[layer].context.clearRect(0, 0, tileLayers[layer].canvas.width, tileLayers[layer].canvas.height);
+        }
+
         tileLayers[layer].context.translate(-camera.pixelX, -camera.pixelY);
         drawTiles(layer, tileLayers[layer].context, tileLayers[layer].canvas);
         tileLayers[layer].context.translate(camera.pixelX, camera.pixelY);
@@ -1982,7 +1987,14 @@ function drawEditorStuff() {
         drawCaption({ text: "SCROLL MODE (P)", y: 0.01 });
     }
     else {
-        drawCaption({ text: "MOVE MODE (P)", y: 0.01 });
+        drawCaption({ text: "GAME MODE (P)", y: 0.01 });
+    }
+
+    if (state.completed) {
+        drawCaption({ text: "Level complete (Reset game)", y: 0.9 });
+    }
+    else if (state.failed) {
+        drawCaption({ text: "Game Over (Reset game)", y: 0.9 });
     }
 
 }

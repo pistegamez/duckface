@@ -20,6 +20,8 @@ setInterval(() => {
     statistics.ms = 0;
 }, 1000);
 
+let optimizeTiles = true;
+
 let state = {};
 let mode = {
     pause: false,
@@ -40,8 +42,9 @@ const controls = {
 
 onmessage = ({ data }) => {
 
+    //onsole.log(data.action);
+
     if (data.action === "SET_SCENE") {
-        console.log("SET SCENE");
         tiles = [];
         sprites = [];
         state = {};
@@ -95,7 +98,6 @@ onmessage = ({ data }) => {
         sprites = sprites.filter(sprite => !data.spriteIds.includes(sprite.id));
     }
     else if (data.action === "UPDATE") {
-        console.log("UPDATE SCENE");
         setTiles(data.tiles);
         if (data.sprites) {
             data.sprites.forEach(sprite => {
@@ -109,6 +111,9 @@ onmessage = ({ data }) => {
     }
     else if (data.action === "PAUSE_OFF") {
         mode.pause = false;
+    }
+    else if (data.action === "DISABLE_OPTIMIZATIONS") {
+        optimizeTiles = false;
     }
 }
 
@@ -151,12 +156,14 @@ function setTiles(dataTiles) {
         return;
     }
 
-    if (dataTiles.length === 1) {
-        tiles = [new Tile(dataTiles[0])];
+    if (dataTiles.length === 1 || optimizeTiles === false) {
+        //tiles = [new Tile(dataTiles[0])];
+        tiles = dataTiles.filter(tile => tile.blocks).map(tile => new Tile(tile));
         return;
     }
 
     tiles = [];
+    //const length = dataTiles.length;
 
     while (tiles.length < dataTiles.length) {
 
@@ -170,7 +177,7 @@ function setTiles(dataTiles) {
         });
     }
 
-    // console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
+    //console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
 }
 
 function addTile(data, tiles) {
@@ -781,7 +788,7 @@ function calculatePenetrationArea(box1, box2) {
     );
     area.bottom = Math.min(
         box1.b,
-        box2.isSprite ? box2.collisionData.b : box2.y + box2.height, 
+        box2.isSprite ? box2.collisionData.b : box2.y + box2.height,
     );
     area.width = area.right - area.left;
     area.height = area.bottom - area.top;

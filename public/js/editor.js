@@ -129,6 +129,12 @@ const editor = {
         this.updateUI();
     },
 
+    setSceneVersion(value) {
+        this.save();
+        scene.version = value;
+        this.updateUI();
+    },
+
     setSceneThemeSong(value) {
         this.save();
         scene.themeSong = value;
@@ -558,6 +564,7 @@ const editor = {
         document.getElementById("scene.id").value = scene.id;
         document.getElementById("scene.title").value = scene.title;
         document.getElementById("scene.author").value = scene.author;
+        document.getElementById("scene.version").value = scene.version;
         document.getElementById("scene.themeSong").value = scene.themeSong;
         document.getElementById("scene.top").value = scene.top;
         document.getElementById("scene.right").value = scene.right;
@@ -746,6 +753,7 @@ const onMouseUpListener = event => {
     let message = null;
 
     if (editor.dragMode === "RESIZE_TILES") {
+        editor.save();
         editor.idsOfSelectedTiles
             .map(id => scene.tiles.find(tile => tile.id === id))
             .forEach(tile => {
@@ -773,13 +781,15 @@ const onMouseUpListener = event => {
                     tile.height = bottom - top;
                     tile.y = top;
                 }
+                updateTileCanvas(tile);
+                tileLayers.update = true;
             });
 
         worker.postMessage({
             action: "UPDATE",
             tiles: scene.tiles
         });
-        updateTileCanvases(true);
+        //updateTileCanvases(true);
         // update JSON
     }
     else if (editor.dragMode === "MOVE_TILES") {
@@ -1391,6 +1401,9 @@ function onEditorTouchEnd(event) {
 const initEditor = async ({ sceneId, albumId }) => {
     init({ width: window.innerWidth - 8, height: window.innerHeight - 4 });
 
+    jitters = false;
+    audio.musicEnabled = false;
+
     canvas.addEventListener("mousedown", onMouseDownListener, false);
     document.addEventListener("mousemove", onMouseMoveListener, false);
     document.addEventListener("mouseup", onMouseUpListener, false);
@@ -1411,6 +1424,8 @@ const initEditor = async ({ sceneId, albumId }) => {
     };
 
     gameState.init(STATES.PLAY);
+
+    worker.postMessage({ action: "DISABLE_OPTIMIZATIONS" });
 
     if (sceneId) {
         await editor.loadScene({ sceneId, albumId });
