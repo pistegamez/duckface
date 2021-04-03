@@ -1,5 +1,8 @@
 {
   "id": "lord-of-the-ring",
+  "version": "1.0",
+  "created": "2021-04-03T12:10:37.088Z",
+  "lastEdit": "2021-04-03T12:15:04.171Z",
   "title": "Lord of the Ring",
   "author": "Janne Kivilahti",
   "bgColor": "#c9e6ad",
@@ -88,16 +91,31 @@
       "y": 344,
       "width": 56,
       "height": 16
+    },
+    {
+      "id": "cc56673450",
+      "typeId": "ghost",
+      "direction": 2,
+      "x": 248,
+      "y": 96,
+      "width": 56,
+      "height": 56
     }
   ],
   "tiles": [
     {
       "id": "374fd7c29e",
       "color": "#82b083",
-      "x": -80,
+      "x": -24,
       "y": 456,
-      "width": 960,
-      "height": 160
+      "width": 848,
+      "height": 144,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "fc6a3f633b",
