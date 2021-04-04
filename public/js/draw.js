@@ -12,6 +12,8 @@ const tileLayers = { update: true };
 
 const buttons = {};
 
+let showSpriteInfo = false;
+
 function updateTileCanvases(drawAll = false) {
 
     const zx = typeof editor !== "undefined" ? 0 : camera.pixelX;
@@ -182,7 +184,6 @@ function drawGame() {
 
     context.translate(-camera.pixelX, -camera.pixelY);
     drawSprites(context, canvas);
-    //drawSpriteInfo(context);
     drawParticles(context, canvas);
     context.translate(camera.pixelX, camera.pixelY);
 
@@ -192,6 +193,12 @@ function drawGame() {
 
     tileLayers.update = false;
     effects.redraw = false;
+
+    if (showSpriteInfo) {
+        context.translate(-camera.pixelX, -camera.pixelY);
+        drawSpriteInfo(context);
+        context.translate(camera.pixelX, camera.pixelY);
+    }
 
     if (typeof editor !== "undefined") {
         drawEditorStuff();
@@ -350,7 +357,7 @@ function drawTitle({ text, fillStyle = "#303030", shadow = false, fontSize, y = 
 
 function drawBackground(context, canvas) {
 
-    if (!state.completed || !isPlayerReady || typeof editor !== "undefined") {
+    if (!state.completed || !isPlayerReady || typeof editor !== "undefined") {
         context.fillStyle = scene.bgColor;
         context.fillRect(0, 0, canvas.width, canvas.height);
         return;
@@ -671,13 +678,13 @@ function drawSprites(context, canvas) {
             drawSprite(sprite, context);
 
             if (scene.horizontalLoop) {
-                if (sprite.x + sprite.width > scene.right) {
+                if (sprite.x + sprite.width >= scene.right) {
                     context.translate(-scene.width, 0);
                     randoms.restore();
                     drawSprite(sprite, context);
                     context.translate(scene.width, 0);
                 }
-                else if (sprite.x < scene.left) {
+                else if (sprite.x <= scene.left) {
                     context.translate(scene.width, 0);
                     randoms.restore();
                     drawSprite(sprite, context);
@@ -686,13 +693,13 @@ function drawSprites(context, canvas) {
             }
 
             if (scene.verticalLoop) {
-                if (sprite.y + sprite.height > scene.bottom) {
+                if (sprite.y + sprite.height >= scene.bottom) {
                     context.translate(0, -scene.height);
                     randoms.restore();
                     drawSprite(sprite, context);
                     context.translate(0, scene.height);
                 }
-                else if (sprite.y < scene.top) {
+                else if (sprite.y <= scene.top) {
                     context.translate(0, scene.height);
                     randoms.restore();
                     drawSprite(sprite, context);
@@ -2006,24 +2013,36 @@ function drawSpriteInfo(context) {
 
         context.strokeStyle = "#ffffff";
         context.lineWidth = 2;
-        context.strokeRect(
-            sprite.collisionData.l,
-            sprite.collisionData.t,
-            sprite.collisionData.r - sprite.collisionData.l,
-            sprite.collisionData.b - sprite.collisionData.t
-        );
+
+        sprite.collisionData.boxes.forEach(box => {
+            context.strokeRect(
+                box.l,
+                box.t,
+                box.r - box.l,
+                box.b - box.t
+            );
+        });
 
         if (sprite.collisionArea) {
             context.strokeStyle = "#ff0000";
             context.lineWidth = 4;
 
             context.strokeRect(
-                sprite.collisionArea.left,
-                sprite.collisionArea.top,
-                sprite.collisionArea.width,
-                sprite.collisionArea.height
+                sprite.collisionArea.left - 1,
+                sprite.collisionArea.top - 1,
+                sprite.collisionArea.width + 1,
+                sprite.collisionArea.height + 1
             );
         }
+
+        context.fillStyle = "#ffffff";
+        context.font = `10px Arial`;
+        context.fillText(`${sprite.id}`, sprite.x, sprite.y - 35);
+        context.fillText(`x = ${sprite.x}`, sprite.x, sprite.y - 20);
+        context.fillText(`y = ${sprite.y}`, sprite.x, sprite.y - 10);
+        context.fillText(`vx = ${sprite.velocity.x}`, sprite.x, sprite.y + sprite.height + 15);
+        context.fillText(`vy = ${sprite.velocity.y}`, sprite.x, sprite.y + sprite.height + 25);
+
         //}
     });
 }
