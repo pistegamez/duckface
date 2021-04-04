@@ -1,5 +1,8 @@
 {
   "id": "dungeon",
+  "version": "2.0",
+  "created": "2021-04-04T13:14:45.204Z",
+  "lastEdit": "2021-04-04T13:15:59.180Z",
   "title": "Danger Dungeon",
   "author": "Janne Kivilahti",
   "bgColor": "#507477",
@@ -18,6 +21,7 @@
   "left": 0,
   "horizontalLoop": false,
   "verticalLoop": true,
+  "effects": [],
   "sprites": [
     {
       "id": "f0df7ecc52",
@@ -40,18 +44,20 @@
     {
       "id": "e0c0efbfdf",
       "typeId": "zombie",
-      "x": 360,
+      "x": 408,
       "y": 360,
       "width": 80,
-      "height": 80
+      "height": 80,
+      "direction": 4
     },
     {
       "id": "675505230c",
       "typeId": "zombie",
-      "x": 600,
+      "x": 664,
       "y": 408,
       "width": 32,
-      "height": 32
+      "height": 32,
+      "direction": 4
     },
     {
       "id": "9873b49ca5",
