@@ -67,10 +67,10 @@ And open your browser from http://localhost:8080
 - credits screen
 - version of Cheeks that blows upward
 - ice cream -> freeze enemies
-- upside down slopes
+- actual collisions upside down slopes
 - duckface push animation 
 - localization support
-- multiple collision boxes for sprites
+- add sprite and or tile collision info to collisionboxes 
 
 ### Known Bugs
 - skipping title with touch does not work
@@ -79,4 +79,7 @@ And open your browser from http://localhost:8080
 - deleting a tile with a sprite collision crashes the editor
 
 ### Season 1
-- Additional hint to Lord of the Ring
+- Make easier
+
+### Season 2
+- Put harder levels here
