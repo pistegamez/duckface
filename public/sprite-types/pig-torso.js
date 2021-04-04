@@ -4,7 +4,7 @@ spriteTypes.torso = new SpriteType({
     "resizable": true,
     "spriteProps": {
         "maxVelocity": {
-            "x": 0.5,
+            "x": 0.65,
             "y": 6
         },
         "isObstacle": true,
