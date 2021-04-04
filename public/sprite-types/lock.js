@@ -3,7 +3,7 @@ spriteTypes.lock = new SpriteType({
     name: "Lock",
     shape: SHAPES.BOX,
     resizable: true,
-    collidesWithObstacles: true,
+    collidesWithObstacles: false,
     spriteProps: {
         isObstacle: true,
         weight: 0,
