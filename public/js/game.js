@@ -147,6 +147,9 @@ const onGameKeydownListener = event => {
                 audio.loadMusic(scene.themeSong);
             }
         }
+        else if (event.code === 'KeyO') {
+            showSpriteInfo = !showSpriteInfo;
+        }
         else {
             startPlaying();
             //audio.loadMusic(scene.themeSong);
