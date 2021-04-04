@@ -40,6 +40,17 @@ const controls = {
     left: false
 }
 
+const recording = {
+    rounds: 0,
+    actions: [],
+    recordAction(action) {
+        this.actions.push({
+            action,
+            r: this.rounds
+        });
+    }
+};
+
 onmessage = ({ data }) => {
 
     //onsole.log(data.action);
@@ -251,6 +262,8 @@ function mainloop() {
 
     const startMs = Date.now();
 
+    recording.rounds++;
+
     if (!mode.pause && mode.run) {
 
         nextState = {
@@ -360,6 +373,7 @@ function move() {
             sprite.x += sprite.velocity.x;
             sprite.y += sprite.velocity.y;
 
+            
             if (scene.verticalLoop) {
                 if (sprite.y + sprite.height >= scene.bottom) {
                     sprite.y -= scene.height;
@@ -377,6 +391,27 @@ function move() {
                     sprite.x += scene.width;
                 }
             }
+            
+           /*
+            if (scene.verticalLoop) {
+                if (sprite.y + sprite.height >= scene.bottom) {
+                    sprite.y -= scene.height;
+                }
+                else if (sprite.y <= scene.top) {
+                    sprite.y += scene.height;
+                }
+            }
+
+            if (scene.horizontalLoop) {
+                if (sprite.x >= scene.right) {
+                    sprite.x -= scene.width;
+                }
+                else if (sprite.x + sprite.width <= scene.left) {
+                    sprite.x += scene.width;
+                }
+            }
+            */
+            
 
             sprite.velocity.y = Math.floor(sprite.velocity.y * 10) / 10;
 
@@ -407,6 +442,71 @@ function collide() {
 
     sprites.forEach(sprite => {
         sprite.resetCollisionData();
+
+        /*
+        if (scene.verticalLoop) {
+            if (sprite.y + sprite.height >= scene.bottom) {
+                sprite.y -= scene.height;
+            }
+            else if (sprite.y <= scene.top) {
+                sprite.y += scene.height;
+            }
+        }
+
+        if (scene.horizontalLoop) {
+            if (sprite.x + sprite.width >= scene.right) {
+                sprite.x -= scene.width;
+            }
+            else if (sprite.x <= scene.left) {
+                sprite.x += scene.width;
+            }
+        }*/
+
+        sprite.collisionData.boxes.forEach(box => {
+            // TODO: vertical!!!!!!!!!!
+            // also move boxes after sprite collisions?
+            if (scene.horizontalLoop) {
+                if (box.r >= scene.right) {
+                    sprite.collisionData.boxes.push({
+                        shape: box.shape,
+                        t: box.t,
+                        r: box.r - scene.width,
+                        b: box.b,
+                        l: box.l - scene.width
+                    });
+                }
+                else if (box.l <= scene.left) {
+                    sprite.collisionData.boxes.push({
+                        shape: box.shape,
+                        t: box.t,
+                        r: box.r + scene.width,
+                        b: box.b,
+                        l: box.l + scene.width
+                    });
+                }
+            }
+            if (scene.verticalLoop) {
+                if (box.b >= scene.bottom) {
+                    sprite.collisionData.boxes.push({
+                        shape: box.shape,
+                        t: box.t - scene.height,
+                        r: box.r,
+                        b: box.b - scene.height,
+                        l: box.l
+                    });
+                }
+                else if (box.t <= scene.top) {
+                    sprite.collisionData.boxes.push({
+                        shape: box.shape,
+                        t: box.t + scene.height,
+                        r: box.r,
+                        b: box.b + scene.height,
+                        l: box.l
+                    });
+                }
+            }
+        });
+
     });
 
     sprites.forEach(sprite => {
@@ -416,8 +516,16 @@ function collide() {
     });
 
     sprites.forEach(sprite => {
+        /*
+        sprite.collisionData.boxes.forEach(box => {
+            box.l += sprite.collisionData.x - sprite.x;
+            box.r += sprite.collisionData.x - sprite.x;
+            box.t += sprite.collisionData.y - sprite.y;
+            box.b += sprite.collisionData.y - sprite.y;
+        });*/
         sprite.x = sprite.collisionData.x;
-        sprite.y = Math.floor(sprite.collisionData.y);
+        //sprite.y = Math.floor(sprite.collisionData.y);
+        sprite.y = sprite.collisionData.y;
     });
 
     sprites.forEach(sprite => {
@@ -430,20 +538,23 @@ function collide() {
         sprite.x = sprite.collisionData.x;
         //sprite.collisionData.y = Math.ceil(sprite.collisionData.y);
         //sprite.y = Math.round(sprite.collisionData.y);
+
         sprite.y = Math.floor(sprite.collisionData.y);
+        //sprite.y = Math.round(sprite.collisionData.y);
         sprite.velocity.x = sprite.collisionData.velocity.x;
         sprite.velocity.y = sprite.collisionData.velocity.y;
     });
 }
 
 function testCollisions(sprite, targets) {
-    let rounds = 7;
+    let rounds = 9;
     let collision = null;
+    let slopeCollision = false;
 
     do {
         collision = null;
 
-        for (let i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length && !slopeCollision; i++) {
 
             let target = targets[i];
 
@@ -451,84 +562,106 @@ function testCollisions(sprite, targets) {
                 && !sprite.collisionData.spriteIds.has(target.id)
                 && !sprite.collisionData.tileIds.has(target.id)) {
 
-                let targetShape = target.isSprite ? spriteTypes[target.typeId].shape : target.shape;
-                let spriteShape = spriteTypes[sprite.typeId].shape;
+                //let targetShape = target.isSprite ? spriteTypes[target.typeId].shape : target.shape;
+                //let spriteShape = spriteTypes[sprite.typeId].shape;
 
-                if (spriteShape === SHAPES.BOX || spriteShape === SHAPES.TOP_DOWN) {
-                    if ((targetShape === SHAPES.BOX || targetShape === SHAPES.TOP_DOWN)
-                        && checkBoxToBoxCollision(sprite.collisionData, target)) {
+                sprite.collisionData.boxes.forEach(collisionBox => {
 
-                        // movedByOtherSprites
+                    if (target.isSprite) {
 
-                        if (target.isTile && target.isObstacle && spriteTypes[sprite.typeId].collidesWithObstacles) {
-                            let area = calculatePenetrationArea(sprite.collisionData, target);
+                        target.collisionData.boxes.forEach(targetCollisionBox => {
+
+                            if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.BOX) {
+                                if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
+
+                                    // TODO: just use one? collidesWithObstacles || movedByOtherSprites
+                                    if (target.isObstacle
+                                        && spriteTypes[sprite.typeId].collidesWithObstacles
+                                        && spriteTypes[sprite.typeId].movedByOtherSprites) {
+
+                                        let area = calculatePenetrationArea(collisionBox, targetCollisionBox);
+
+                                        if (collision === null || collision.area.size < area.size) {
+                                            collision = { target, area, targetShape: targetCollisionBox.shape };
+                                        }
+                                    }
+                                    else {
+
+                                        sprite.collisionData.spriteIds.add(target.id);
+
+                                        if (target.isPlayer) {
+                                            sprite.collisionData.playerHits++;
+                                        }
+
+                                        if (target.isEnemy) {
+                                            sprite.collisionData.enemyHits++;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.CIRCLE) {
+                                if (checkBoxToCircleCollision(collisionBox, targetCollisionBox)) {
+
+                                    sprite.collisionData.spriteIds.add(target.id);
+
+                                    if (target.isPlayer) {
+                                        sprite.collisionData.playerHits++;
+                                    }
+
+                                    if (target.isEnemy) {
+                                        sprite.collisionData.enemyHits++;
+                                    }
+                                }
+                            }
+                            else if (collisionBox.shape === SHAPES.CIRCLE && targetCollisionBox.shape === SHAPES.BOX) {
+                                if (checkBoxToCircleCollision(targetCollisionBox, collisionBox)) {
+
+                                    sprite.collisionData.spriteIds.add(target.id);
+
+                                    if (target.isPlayer) {
+                                        sprite.collisionData.playerHits++;
+                                    }
+                                    if (target.isEnemy) {
+                                        sprite.collisionData.enemyHits++;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    // TODO: circle shaped sprite vs tile
+                    else if (spriteTypes[sprite.typeId].collidesWithObstacles && collisionBox.shape === SHAPES.BOX) {
+                        if ((target.shape === SHAPES.BOX || target.shape === SHAPES.TOP_DOWN)
+                            && checkBoxToBoxCollision(collisionBox, target)) {
+
+                            let area = calculatePenetrationArea(collisionBox, target);
                             if (collision === null || collision.area.size < area.size) {
-                                collision = { target, area, targetShape };
+                                collision = { target, area, targetShape: target.shape };
                             }
-                        }
-                        else if (target.isSprite && spriteTypes[sprite.typeId].movedByOtherSprites && target.isObstacle && spriteTypes[sprite.typeId].collidesWithObstacles) {
-                            let area = calculatePenetrationArea(sprite.collisionData, target);
-                            if (collision === null || collision.area.size < area.size) {
-                                collision = { target, area, targetShape };
-                            }
-                        }
-                        else if (target.isSprite) {
-                            sprite.collisionData.spriteIds.add(target.id);
-                            if (target.isPlayer) {
-                                sprite.collisionData.playerHits++;
-                            }
-                            if (target.isEnemy) {
-                                sprite.collisionData.enemyHits++;
-                            }
-                        }
-                        else if (target.isTile) {
-                            sprite.collisionData.tileIds.add(target.id);
-                        }
-                    }
-                    else if (targetShape === SHAPES.CIRCLE && checkBoxToCircleCollision(sprite.collisionData, target)) {
-                        if (target.isSprite) {
-                            sprite.collisionData.spriteIds.add(target.id);
-                            if (target.isPlayer) {
-                                sprite.collisionData.playerHits++;
-                            }
-                            if (target.isEnemy) {
-                                sprite.collisionData.enemyHits++;
-                            }
-                        }
-                    }
-                    else if (targetShape === SHAPES.SLOPE_LEFT || targetShape === SHAPES.SLOPE_RIGHT) {
-                        if (checkBoxMiddleToBoxCollision(sprite.collisionData, target)) {
-                            if (checkBoxToSlopeCollision(sprite.collisionData, target)) {
 
-                                let area = calculateSlopePenetrationArea(sprite.collisionData, target);
-                                //if (collision === null || collision.area.size < area.size) {
-                                collision = { target, area, targetShape };
-                                //}
-                            }
-                            rounds = 0;
-                            break;
+                            //sprite.collisionData.tileIds.add(target.id);
                         }
-                    }
-                }
-                else if (spriteShape === SHAPES.CIRCLE) {
-                    if (targetShape === SHAPES.BOX && checkBoxToCircleCollision(target, sprite.collisionData)) {
-                        if (target.isSprite) {
-                            sprite.collisionData.spriteIds.add(target.id);
-                            if (target.isPlayer) {
-                                sprite.collisionData.playerHits++;
-                            }
-                            if (target.isEnemy) {
-                                sprite.collisionData.enemyHits++;
+                        else if (target.shape === SHAPES.SLOPE_LEFT || target.shape === SHAPES.SLOPE_RIGHT) {
+                            if (checkBoxMiddleToBoxCollision(collisionBox, target)) {
+                                if (checkBoxToSlopeCollision(collisionBox, target)) {
+
+                                    let area = calculateSlopePenetrationArea(collisionBox, target);
+                                    //if (collision === null || collision.area.size < area.size) {
+                                    collision = { target, area, targetShape: target.shape };
+                                    //}
+                                }
+                                rounds = 0;
+                                slopeCollision = true;
                             }
                         }
                     }
-                }
+                });
             }
         };
 
         if (collision !== null) {
 
             sprite.collision = true;
+            sprite.collisionArea = collision.area;
 
             if (collision.target.isSprite) {
                 sprite.collisionData.spriteIds.add(collision.target.id);
@@ -550,7 +683,9 @@ function testCollisions(sprite, targets) {
                 if (sprite.velocity.y >= 0
                     && sprite.y + sprite.height - 5 <= collision.target.y) {
                     sprite.collisionData.bottom = true;
-                    sprite.collisionData.y -= collision.area.height;
+                    sprite.collisionData.y -= Math.round(collision.area.height);
+                    sprite.collisionData.t -= collision.area.height;
+                    sprite.collisionData.b -= collision.area.height;
                     if (sprite.velocity.y >= 3) {
                         sprite.collisionData.velocity.y = Math.min(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
@@ -602,9 +737,9 @@ function testCollisions(sprite, targets) {
                         }
                     }
 
-                    //sprite.collisionArea = collision.area;
-
                     sprite.collisionData.y -= Math.round(collision.area.height);
+                    sprite.collisionData.t -= Math.round(collision.area.height);
+                    sprite.collisionData.b -= Math.round(collision.area.height);
 
                     //if (sprite.velocity.y > 0) {
 
@@ -660,7 +795,10 @@ function testCollisions(sprite, targets) {
                         sprite.collisionData.velocity.y = Math.max(0, sprite.collisionData.velocity.y);
                     }
 
-                    sprite.collisionData.y += collision.area.height;
+                    sprite.collisionData.y += Math.round(collision.area.height);
+                    sprite.collisionData.t += collision.area.height;
+                    sprite.collisionData.b += collision.area.height;
+
                 }
             }
             else {
@@ -670,9 +808,15 @@ function testCollisions(sprite, targets) {
 
                     if (collision.target.isTile) {
                         sprite.collisionData.x -= collision.area.width;
+                        sprite.collisionData.l -= collision.area.width;
+                        sprite.collisionData.r -= collision.area.width;
+
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
                         sprite.collisionData.x -= collision.area.width;
+                        sprite.collisionData.l -= collision.area.width;
+                        sprite.collisionData.r -= collision.area.width;
+
                     }
 
                     if (sprite.velocity.x >= 1) {
@@ -688,9 +832,14 @@ function testCollisions(sprite, targets) {
 
                     if (collision.target.isTile) {
                         sprite.collisionData.x += collision.area.width;
+                        sprite.collisionData.l += collision.area.width;
+                        sprite.collisionData.r += collision.area.width;
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
                         sprite.collisionData.x += collision.area.width;
+                        sprite.collisionData.l += collision.area.width;
+                        sprite.collisionData.r += collision.area.width;
+
                     }
 
                     if (sprite.velocity.x <= -1) {
@@ -720,20 +869,26 @@ function testCollisions(sprite, targets) {
 }
 
 function checkBoxToBoxCollision(box1, box2) {
-    if (box2.isTile) {
-        return (box1.r >= box2.l && box1.l <= box2.r &&
-            box1.b >= box2.t && box1.t <= box2.b);
-    }
-    return (box1.r >= box2.collisionData.l && box1.l <= box2.collisionData.r &&
-        box1.b >= box2.collisionData.t && box1.t <= box2.collisionData.b);
+    return (box1.r >= box2.l && box1.l <= box2.r &&
+        box1.b >= box2.t && box1.t <= box2.b);
 }
 
 // FIXME: Use collisionData.l,r,t,b instead of x + width and y + height
+/*
 function checkBoxMiddleToBoxCollision(box, slope) {
     return (box.x + box.width / 2 >= slope.x && box.x + box.width / 2 <= slope.x + slope.width &&
         box.y + box.height >= slope.y && box.y <= slope.y + slope.height);
 }
-
+*/
+function checkBoxMiddleToBoxCollision(box, slope) {
+    return (
+        box.l + (box.r - box.l) / 2 >= slope.l &&
+        box.l + (box.r - box.l) / 2 <= slope.r &&
+        box.b >= slope.t &&
+        box.t <= slope.b
+    );
+}
+/*
 function checkBoxToSlopeCollision(box, slope) {
     let slopeY = slope.y;
     if (slope.shape === SHAPES.SLOPE_LEFT) {
@@ -747,7 +902,22 @@ function checkBoxToSlopeCollision(box, slope) {
     return (box.x + box.width / 2 >= slope.x && box.x + box.width / 2 <= slope.x + slope.width &&
         box.y + box.height >= slopeY - 1 && box.y <= slope.y + slope.height);
 }
+*/
+function checkBoxToSlopeCollision(box, slope) {
+    let slopeY = slope.y;
+    if (slope.shape === SHAPES.SLOPE_LEFT) {
+        slopeY = slope.y + ((slope.x + slope.width) - (box.l + (box.r - box.l) / 2)) / (slope.width / slope.height);
+    }
+    else if (slope.shape === SHAPES.SLOPE_RIGHT) {
+        slopeY = slope.y + ((box.l + (box.r - box.l) / 2) - slope.x) / (slope.width / slope.height);
+    }
+    slopeY = Math.min(slopeY, slope.y + slope.height);
+    slopeY = Math.max(slopeY, slope.y) - 1;
+    return (box.l + (box.r - box.l) / 2 >= slope.x && box.l + (box.r - box.l) / 2 <= slope.x + slope.width &&
+        box.b >= slopeY - 1 && box.t <= slope.y + slope.height);
+}
 
+/*
 function checkBoxToCircleCollision(box, circle) {
 
     let testX = circle.x + circle.width / 2;
@@ -770,25 +940,50 @@ function checkBoxToCircleCollision(box, circle) {
     }
     return false;
 }
+*/
+function checkBoxToCircleCollision(box, circle) {
+
+    const circleCenterX = circle.l + (circle.r - circle.l) / 2;
+    const circleCenterY = circle.t + (circle.b - circle.t) / 2;
+    let testX = circleCenterX;
+    let testY = circleCenterY;
+
+    // which edge is closest?
+    if (circleCenterX < box.l) testX = box.l;       // test left edge
+    else if (circleCenterX > box.r) testX = box.r;  // right edge
+    if (circleCenterY < box.t) testY = box.t;       // top edge
+    else if (circleCenterY > box.b) testY = box.b;  // bottom edge
+
+    // get distance from closest edges
+    let distX = circleCenterX - testX;
+    let distY = circleCenterY - testY;
+    let distance = Math.sqrt((distX * distX) + (distY * distY));
+
+    // if the distance is less than the radius, collision!
+    if (distance <= (circle.r - circle.l) / 2) {
+        return true;
+    }
+    return false;
+}
 
 function calculatePenetrationArea(box1, box2) {
     let area = {};
 
     area.left = Math.max(
         box1.l,
-        box2.isSprite ? box2.collisionData.l : box2.x
+        box2.l
     );
     area.right = Math.min(
         box1.r,
-        box2.isSprite ? box2.collisionData.r : box2.x + box2.width
+        box2.r
     );
     area.top = Math.max(
         box1.t,
-        box2.isSprite ? box2.collisionData.t : box2.y,
+        box2.t
     );
     area.bottom = Math.min(
         box1.b,
-        box2.isSprite ? box2.collisionData.b : box2.y + box2.height,
+        box2.b
     );
     area.width = area.right - area.left;
     area.height = area.bottom - area.top;
@@ -808,6 +1003,7 @@ function calculatePenetrationAreaOld(box1, box2) {
     return area;
 }
 
+/*
 function calculateSlopePenetrationArea(box, slope) {
     let area = {};
     let slopeY = slope.y;
@@ -821,6 +1017,25 @@ function calculateSlopePenetrationArea(box, slope) {
     area.right = Math.min(slope.x + slope.width, box.x + box.width);
     area.top = Math.max(slopeY, box.y);
     area.bottom = Math.min(box.y + box.height, slope.y + slope.height);
+    area.width = area.right - area.left;
+    area.height = area.bottom - area.top;
+    area.size = area.width * area.height;
+    return area;
+}*/
+
+function calculateSlopePenetrationArea(box, slope) {
+    let area = {};
+    let slopeY = slope.t;
+    if (slope.shape === SHAPES.SLOPE_LEFT) {
+        slopeY = slope.t + (slope.r - (box.l + (box.r - box.l) / 2)) / (slope.width / slope.height);
+    }
+    else if (slope.shape === SHAPES.SLOPE_RIGHT) {
+        slopeY = slope.t + ((box.l + (box.r - box.l) / 2) - slope.l) / (slope.width / slope.height);
+    }
+    area.left = Math.max(slope.l, box.l);
+    area.right = Math.min(slope.r, box.r);
+    area.top = Math.max(slopeY, box.t);
+    area.bottom = Math.min(box.b, slope.b);
     area.width = area.right - area.left;
     area.height = area.bottom - area.top;
     area.size = area.width * area.height;

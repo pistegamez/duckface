@@ -220,12 +220,15 @@
                 context.strokeStyle = "#ff6060";
                 context.lineWidth = 1.5;
                 context.setLineDash([8, 2]);
-                context.strokeRect(
-                    sprite.width * spriteType.collisionBox.l,
-                    sprite.height * spriteType.collisionBox.t,
-                    sprite.width * (spriteType.collisionBox.r - spriteType.collisionBox.l),
-                    sprite.height * (spriteType.collisionBox.b - spriteType.collisionBox.t)
-                );
+                spriteType.collisionBoxes.forEach(box => {
+                    context.strokeRect(
+                        sprite.width * box.l,
+                        sprite.height * box.t,
+                        sprite.width * (box.r - box.l),
+                        sprite.height * (box.b - box.t)
+                    );
+                });
+
             }
 
             context.restore();

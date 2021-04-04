@@ -132,7 +132,8 @@ class SpriteType {
         collidesWithObstacles = true,
         collisidesWithSprites = true,
         movedByOtherSprites = true,
-        collisionBox = { t: 0, l: 0, r: 1, b: 1 },
+        collisionBox,
+        collisionBoxes,
         paths = {},
         patterns,
         behaviours = [],
@@ -152,8 +153,6 @@ class SpriteType {
         this.collidesWithObstacles = collidesWithObstacles;
         this.collisidesWithSprites = collisidesWithSprites;
         this.movedByOtherSprites = movedByOtherSprites;
-        this.collisionBox = collisionBox;
-        //this.behaviours = behaviours;
         this.damageType = damageType;
         this.shaded = shaded;
         this.colors = colors;
@@ -180,6 +179,16 @@ class SpriteType {
                     behaviours: [...behaviours]
                 }
             };
+        }
+
+        if (collisionBox) {
+            this.collisionBoxes = [collisionBox];
+        }
+        else if (collisionBoxes) {
+            this.collisionBoxes = collisionBoxes;
+        }
+        else {
+            this.collisionBoxes = [{ shape, t: 0, l: 0, r: 1, b: 1 }];
         }
     }
 
@@ -223,8 +232,8 @@ class SpriteType {
         if (data.shape === SHAPES.BOX) {
             data.shape = undefined;
         }
-        if (data.collisionBox.t === 0 && data.collisionBox.l === 0 && data.collisionBox.r === 1 && data.collisionBox.b === 1) {
-            data.collisionBox = undefined;
+        if (data.collisionBoxes.length === 1 && data.collisionBoxes[0].t === 0 && data.collisionBoxes[0].l === 0 && data.collisionBoxes[0].r === 1 && data.collisionBoxes[0].b === 1) {
+            data.collisionBoxes = undefined;
         }
 
         return data;
@@ -339,10 +348,15 @@ class Sprite {
             right: false,
             bottom: false,
             top: false,
-            t: this.y + Math.floor(this.height * type.collisionBox.t),
-            r: this.x + Math.floor(this.width * type.collisionBox.r),
-            b: this.y + Math.floor(this.height * type.collisionBox.b),
-            l: this.x + Math.floor(this.width * type.collisionBox.l),
+            boxes: type.collisionBoxes.map(box => {
+                return {
+                    shape: box.shape || type.shape || SHAPES.BOX,
+                    t: this.y + Math.floor(this.height * box.t),
+                    r: this.x + this.width * box.r,
+                    b: this.y + Math.floor(this.height * box.b),
+                    l: this.x + this.width * box.l
+                }
+            }),
             x: this.x,
             y: this.y,
             width: this.width,
