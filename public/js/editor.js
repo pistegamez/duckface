@@ -789,6 +789,7 @@ const onMouseUpListener = event => {
             action: "UPDATE",
             tiles: scene.tiles
         });
+        tileLayers.update = true;
         //updateTileCanvases(true);
         // update JSON
     }
@@ -804,6 +805,7 @@ const onMouseUpListener = event => {
             action: "UPDATE",
             tiles: scene.tiles
         });
+        tileLayers.update = true;
     }
     else if (editor.dragMode === "RESIZE_SPRITES") {
         editor.idsOfSelectedSprites
