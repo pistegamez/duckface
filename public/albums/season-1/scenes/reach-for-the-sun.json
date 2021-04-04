@@ -1,8 +1,8 @@
 {
   "id": "reach-for-the-sun",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-25T20:06:08.541Z",
-  "lastEdit": "2021-03-31T16:53:13.736Z",
+  "lastEdit": "2021-04-03T20:11:22.645Z",
   "title": "Reach for the Sun",
   "author": "Janne Kivilahti",
   "bgColor": "#ffdda3",
@@ -34,24 +34,6 @@
     }
   ],
   "sprites": [
-    {
-      "id": "49f5fbeebb",
-      "typeId": "box",
-      "direction": 2,
-      "x": 680,
-      "y": 488,
-      "width": 8,
-      "height": 8
-    },
-    {
-      "id": "a326f863c2",
-      "typeId": "box",
-      "direction": 2,
-      "x": 392,
-      "y": 320,
-      "width": 8,
-      "height": 8
-    },
     {
       "id": "b343ad9497",
       "typeId": "box",
@@ -179,15 +161,6 @@
       "direction": 2,
       "x": 208,
       "y": 528,
-      "width": 8,
-      "height": 8
-    },
-    {
-      "id": "e072755de3",
-      "typeId": "box",
-      "direction": 2,
-      "x": 320,
-      "y": 160,
       "width": 8,
       "height": 8
     }
