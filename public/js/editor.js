@@ -1178,21 +1178,25 @@ const onMouseUpListener = event => {
         }
         else {
 
-            const selectedSprites = sprites.filter(sprite =>
+            let selectedSprites = sprites.filter(sprite =>
                 sprite.x + sprite.width >= area.x && sprite.x <= area.x + area.width &&
                 sprite.y + sprite.height >= area.y && sprite.y <= area.y + area.height
             );
 
-            const selectedTiles = scene.tiles.filter(tile =>
+            let selectedTiles = scene.tiles.filter(tile =>
                 tile.x <= area.x && tile.x + tile.width >= area.x + area.width &&
                 tile.y <= area.y && tile.y + tile.height >= area.y + area.height
-            )
+            );
+
+            selectedTiles = selectedTiles.sort((t1,t2) => t1.layer - t2.layer);
 
             if (selectedSprites.length > 0) {
                 editor.selectSprites([selectedSprites[selectedSprites.length - 1]]);
             }
             else if (selectedTiles.length > 0) {
-                editor.selectTiles([selectedTiles[selectedTiles.length - 1]]);
+                editor.selectTiles([
+                    selectedTiles[selectedTiles.length - 1]
+                ]);
             }
             else if (tool === "draw-sprite-pill-plus") {
                 editor.addSprite({
