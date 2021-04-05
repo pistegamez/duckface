@@ -224,7 +224,7 @@ function init({ width, height }) {
     context.font = FONT;
 }
 
-const initGame = async ({ sceneId, albumId, width, height, scale = 1, volume }) => {
+const initGame = async ({ sceneId, albumId, url, width, height, scale = 1, volume }) => {
 
     init({ width, height });
 
@@ -298,7 +298,7 @@ const initGame = async ({ sceneId, albumId, width, height, scale = 1, volume }) 
     gameState.init(STATES.TITLE);
 
     if (sceneId) {
-        await loadScene({ sceneId, albumId });
+        await loadScene({ url, sceneId, albumId });
         resetCamera();
     }
 

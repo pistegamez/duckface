@@ -69,6 +69,8 @@ class Scene {
         tiles = [],
         effects = [],
         themeSong = "theme-punk-1",
+        actionDifficulty = 0.5,
+        puzzleDifficulty = 0.5,
     }) {
         this.id = id;
         this.version = version;
@@ -87,6 +89,8 @@ class Scene {
         this.horizontalLoop = horizontalLoop;
         this.verticalLoop = verticalLoop;
         this.effects = effects;
+        this.actionDifficulty = actionDifficulty;
+        this.puzzleDifficulty = puzzleDifficulty;
         this.sprites = sprites;
         this.tiles = tiles.map(tile => new Tile(tile));
     }

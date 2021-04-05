@@ -54,8 +54,8 @@ const editor = {
         tileLayers.update = true;
     },
 
-    async loadScene({ sceneId, albumId }) {
-        await loadScene({ sceneId, albumId });
+    async loadScene({ sceneId, albumId, url }) {
+        await loadScene({ sceneId, albumId, url });
         scene.sprites.forEach(sprite => {
             // in old scenes not all sprites have width and height
             if (sprite.width === undefined) {
@@ -69,6 +69,102 @@ const editor = {
         this.updateUI();
     },
 
+    async saveSceneToServer() {
+        const authorKey = document.getElementById("author-key").value;
+        const requestId = generateId();
+
+        if (authorKey === "") {
+            alert("You need an author key to save scenes to the server. Request one from Janne Kivilahti at Discord or at the Piste Gamez forum.")
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://api.duckface.lol/v1/scene`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    scene,
+                    requestId,
+                    authorKey
+                })
+            });
+
+            if (response.ok) {
+                alert(`Scene ${scene.id} saved to server.`);
+                const data = await response.json();
+                scene = new Scene(data.scene);
+                this.updateUI();
+            }
+            else if (response.status === 400 || response.status === 403) {
+                const message = await response.text();
+                alert(`Saving failed: ${response.status} ${message}`);
+            }
+            else {
+                alert(`Error ${response.status} saving scene. Report id ${requestId} to Discord or Piste Gamez forum.`);
+            }
+        }
+        catch (error) {
+            console.log(error);
+            alert(`Saving failed: ${error.message}`);
+        }
+    },
+
+    async loadSceneFromServer() {
+        const response = await fetch(`https://api.duckface.lol/v1/scenes`);
+        if (response.ok) {
+            alert(`Scene ${scene.id} saved to server. Remember the id!`);
+        }
+    },
+
+    async deleteSceneFromServer() {
+
+        if (!confirm("Just making sure you really want to delete scene " + scene.title + "?")) {
+            return;
+        }
+
+        const authorKey = document.getElementById("author-key").value;
+        const requestId = generateId();
+
+        if (authorKey === "") {
+            alert("You need an author key to save scenes to the server. Request one from Janne Kivilahti at Discord or at the Piste Gamez forum.")
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://api.duckface.lol/v1/scene/${scene.id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    requestId,
+                    authorKey
+                })
+            });
+
+            if (response.ok) {
+                alert(`Scene ${scene.id} deleted.`);
+            }
+            else if (response.status === 400 || response.status === 403) {
+                const message = await response.text();
+                alert(`Deleting failed: ${response.status} ${message}`);
+            }
+            else {
+                alert(`Error ${response.status} deleting scene. Report id ${requestId} to Discord or Piste Gamez forum.`);
+            }
+        }
+        catch (error) {
+            console.log(error);
+            alert(`Saving failed: ${error.message}`);
+        }
+    },
+
+    setAuthorKey(value) {
+        localStorage.setItem("duckface-author-key", value);
+    },
+
     resetCamera() {
         camera.x = Math.floor((scene.width / 2 - canvas.width / 2) / editor.grid.width) * editor.grid.width;
         camera.y = Math.floor((scene.height / 2 - canvas.height / 2) / editor.grid.height) * editor.grid.height;
@@ -79,6 +175,8 @@ const editor = {
         scene = new Scene(JSON.parse(json));
         this.updateUI();
         worker.postMessage({ action: "SET_SCENE", scene });
+        tileLayers.update = true;
+        resetScene();
     },
 
     save() {
@@ -588,6 +686,8 @@ const editor = {
         document.getElementById('sprite-is-player').checked = this.isPlayer;
         document.getElementById('sprite-direction-left').checked = this.spriteDirection === DIRECTION.LEFT;
         document.getElementById('sprite-direction-right').checked = this.spriteDirection === DIRECTION.RIGHT;
+
+        document.getElementById('author-key').value = localStorage.getItem("duckface-author-key") || "";
 
         const fillPaletteElement = document.getElementById("fill-color-palette");
         fillPaletteElement.innerHTML = "";
@@ -1190,7 +1290,7 @@ const onMouseUpListener = event => {
                 tile.y <= area.y && tile.y + tile.height >= area.y + area.height
             );
 
-            selectedTiles = selectedTiles.sort((t1,t2) => t1.layer - t2.layer);
+            selectedTiles = selectedTiles.sort((t1, t2) => t1.layer - t2.layer);
 
             if (selectedSprites.length > 0) {
                 editor.selectSprites([selectedSprites[selectedSprites.length - 1]]);
@@ -1347,7 +1447,7 @@ const onEditorKeyupListener = event => {
         onGameKeyupListener(event);
     }
 
-    if (event.code === 'Backspace' || event.code === 'Delete') {
+    if (event.code === 'Backspace' || event.code === 'Delete') {
         editor.removeSelected();
     }
     else if (event.code === 'KeyU') {
@@ -1404,7 +1504,7 @@ function onEditorTouchEnd(event) {
     console.log(event);
 }
 
-const initEditor = async ({ sceneId, albumId }) => {
+const initEditor = async ({ sceneId, albumId, url }) => {
     init({ width: window.innerWidth - 8, height: window.innerHeight - 4 });
 
     jitters = false;
@@ -1434,7 +1534,7 @@ const initEditor = async ({ sceneId, albumId }) => {
     worker.postMessage({ action: "DISABLE_OPTIMIZATIONS" });
 
     if (sceneId) {
-        await editor.loadScene({ sceneId, albumId });
+        await editor.loadScene({ sceneId, albumId, url });
         worker.postMessage({ action: "PAUSE_ON" });
     }
     else {
@@ -1463,6 +1563,8 @@ const initEditor = async ({ sceneId, albumId }) => {
     audio.init();
 
     requestAnimationFrame(mainloop);
+
+    editor.updateUI();
 
     //editor.updateUI();
 }

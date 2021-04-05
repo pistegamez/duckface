@@ -104,6 +104,7 @@
             border-color: #cacaca;
             border-radius: 8px;
             border-style: solid;
+            margin-top: 0.3em;
         }
 
         div.form-row {
@@ -122,17 +123,31 @@
         }
 
         input[type="text"] {
-            width: 100%;
+            padding: 4px;
+            width: -webkit-fill-available;
         }
 
         input[type="range"] {
             width: 100%;
         }
 
+        select {
+            padding: 4px;
+        }
+
         button {
             margin-top: 0.3em;
             margin-bottom: 0.3em;
             width: 100%;
+            padding: 0.3em;
+            border: 1px solid #888;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 0.9em;
         }
 
         #border-variation-buttons {
@@ -158,7 +173,6 @@
             background-color: #c8eaff;
             border-radius: 0.2em;
             margin-top: 0.3em;
-            width: 100%;
             display: block;
             padding-top: 0.3em;
             padding-bottom: 0.3em;
@@ -192,10 +206,17 @@
 
         let albumId = new URL(window.location.href).searchParams.get("album") || "season-1";
         let sceneId = new URL(window.location.href).searchParams.get("scene");
+        let source = new URL(window.location.href).searchParams.get("source");
 
         async function onLoad() {
             createThemeSongOptions();
-            await initEditor({ sceneId, albumId });
+            if (source === "server") {
+                await initEditor({ sceneId, url: `https://api.duckface.lol/v1/scenes/${sceneId}` });
+                document.getElementById('test-link').href = "../game.html?scene=from-editor&source=server";
+            }
+            else {
+                await initEditor({ sceneId, albumId });
+            }
             renderSpriteTypeButtons();
             createBorderVariationButtons();
         }
@@ -316,9 +337,20 @@
             <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
         </div>
         <form id="scene">
-            <div>
-                <button type="button" onclick="clearScene()">New Scene</button>
-            </div>
+            <fieldset>
+                <legend>Actions</legend>
+                <div>
+                    <button type="button" onclick="clearScene()">New Scene</button>
+                </div>
+                <div>
+                    <button type="button" onclick="resetScene()">Reset game (R)</button>
+                </div>
+                <div>
+                    <a id="test-link" class="button" onclick="editor.stashScene()"
+                        href="../game.html?scene=from-editor">Test Scene</a>
+                </div>
+            </fieldset>
+
             <fieldset>
                 <legend>Scene properties</legend>
                 <div class="form-row">
@@ -340,15 +372,15 @@
                         onchange="editor.setSceneVersion(event.target.value)" />
                 </div>
                 <div class="form-row">
-                    <label>Background <input id="scene.bgColor" type="color"
-                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
-                    </label>
-                </div>
-                <div class="form-row">
                     <label>Soundtrack</label>
                     <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
                         style="width:100%">
                     </select>
+                </div>
+                <div class="form-row">
+                    <label>Background <input id="scene.bgColor" type="color"
+                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
+                    </label>
                 </div>
             </fieldset>
             <fieldset>
@@ -403,15 +435,25 @@
                             onchange="editor.onUseGameCameraChange(event.target.checked)" /> Game Camera</label>
                 </div>
             </fieldset>
-            <div>
-                <button type="button" onclick="saveScene({albumId})">Save Scene</button>
-            </div>
-            <div>
-                <button type="button" onclick="resetScene()">Reset game (R)</button>
-            </div>
-            <div>
-                <a class="button" onclick="editor.stashScene()" href="../game.html?scene=from-editor">Test Scene</a>
-            </div>
+            <fieldset>
+                <legend>Server</legend>
+                <div class="form-row">
+                    <label>Author Key</label>
+                    <input id="author-key" type="text" value="" onchange="editor.setAuthorKey(event.target.value)" />
+                </div>
+                <div>
+                    <button type="button" onclick="editor.saveSceneToServer()">Save</button>
+                </div>
+                <div>
+                    <button type="button" onclick="editor.deleteSceneFromServer()">Delete</button>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Local Server</legend>
+                <div>
+                    <button type="button" onclick="saveScene({albumId})">Save Scene</button>
+                </div>
+            </fieldset>
         </form>
 
         <form id="tools">
