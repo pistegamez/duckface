@@ -71,8 +71,10 @@ And open your browser from http://localhost:8080
 - duckface push animation 
 - localization support
 - add sprite and or tile collision info to collisionboxes 
+- different death animations for different damage types
 
 ### Known Bugs
+- it seems that pressing reset at a precise moment after winning sets speed record to 0
 - skipping title with touch does not work
 
 ### Editor features / bugs
