@@ -2,7 +2,7 @@
   "id": "raging-rabbits",
   "version": "1.0",
   "created": "2021-03-28T12:50:18.369Z",
-  "lastEdit": "2021-03-31T11:11:45.507Z",
+  "lastEdit": "2021-04-09T16:33:49.836Z",
   "title": "Raging Rabbits",
   "author": "Janne Kivilahti",
   "bgColor": "#f5f5f5",
@@ -60,6 +60,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "ed90ae9b50",
@@ -165,7 +167,7 @@
       "id": "1d04ca0b71",
       "typeId": "rabbit",
       "direction": 4,
-      "x": 1392,
+      "x": 1416,
       "y": 432,
       "width": 64,
       "height": 56
