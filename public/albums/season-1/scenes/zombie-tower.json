@@ -1,8 +1,8 @@
 {
   "id": "zombie-tower",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-29T17:18:33.497Z",
-  "lastEdit": "2021-03-29T17:48:57.436Z",
+  "lastEdit": "2021-04-09T16:07:52.646Z",
   "title": "Zombie Tower",
   "author": "Janne Kivilahti",
   "bgColor": "#a4a4bc",
@@ -22,6 +22,8 @@
   "horizontalLoop": false,
   "verticalLoop": true,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "2328acf527",
@@ -52,9 +54,9 @@
     {
       "id": "0d9374c85f",
       "typeId": "zombie",
-      "x": 400,
+      "x": 408,
       "y": 456,
-      "width": 88,
+      "width": 80,
       "height": 32
     },
     {
@@ -258,9 +260,9 @@
     {
       "id": "00314044e3",
       "color": "#b08080",
-      "x": 440,
+      "x": 438,
       "y": 680,
-      "width": 40,
+      "width": 42,
       "height": 40
     },
     {
