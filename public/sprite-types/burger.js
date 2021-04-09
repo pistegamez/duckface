@@ -9,12 +9,14 @@ spriteTypes.burger = new SpriteType({
     spriteProps: {
         transform: {
             width: 6,
-            height: 6
+            height: 6,
+            weight: 0.05,
+            maxVelocityX: -0.1
         },
         weight: 0.5,
         isObstacle: true
     },
-    behaviours: ["changes-collectors-size", "removed-if-energy-0", "blocks-completion"],
+    behaviours: ["changes-collectors-size", "changes-collectors-weight", "throttle-players-max-speed", "removed-if-energy-0", "blocks-completion"],
     paths: {
         burger: {
             fill: "#f0cf80",
