@@ -14,14 +14,18 @@ let debugMode = true;
 
 let album = null;
 
+let recordedActions;
+
 let sprites = [];
 let state = {};
 let mode = {};
 let particles = [];
 
+let sceneLoading = false;
 let isPlayerReady = false;
 
 let showCaptions = true;
+let sceneLoadingStartedTime = -1;
 let sceneLoadedTime = Date.now();
 let sceneStartTime = -1;
 let sceneCompletionTime = -1;
@@ -94,12 +98,16 @@ worker.onmessage = ({ data }) => {
     if (data.type === "STATUS") {
         dataFromWorker = data;
     }
-
-    if (data.type === "PLAY_SOUND") {
+    else if (data.type === "STATUS") {
+        dataFromWorker = data;
+    }
+    else if (data.type === "RECORDING_DONE") {
+        recordedActions = data.actions;
+    }
+    else if (data.type === "PLAY_SOUND") {
         audio.playSound(data);
     }
-
-    if (data.type === "EMIT_PARTICLES") {
+    else if (data.type === "EMIT_PARTICLES") {
         emitParticles(data);
     }
 }
@@ -125,6 +133,20 @@ const controls = {
 const onGameKeydownListener = event => {
 
     if (gameState.state === STATES.PLAY) {
+
+        if (event.code === 'KeyP') {
+            worker.postMessage({ action: mode.pause ? "PAUSE_OFF" : "PAUSE_ON" });
+            if (!mode.pause) {
+                audio.pauseMusic();
+            }
+            else {
+                audio.loadMusic(scene.themeSong);
+            }
+        }
+        else {
+            startPlaying();
+        }
+
         if (event.code === 'ArrowLeft' || event.key === 'a') {
             worker.postMessage({ action: "START_CONTROL_LEFT" });
         }
@@ -138,24 +160,9 @@ const onGameKeydownListener = event => {
             worker.postMessage({ action: "START_CONTROL_DOWN" });
         }
 
-        if (event.code === 'KeyP') {
-            worker.postMessage({ action: mode.pause ? "PAUSE_OFF" : "PAUSE_ON" });
-            if (!mode.pause) {
-                audio.pauseMusic();
-            }
-            else {
-                audio.loadMusic(scene.themeSong);
-            }
-        }
-        else if (event.code === 'KeyO') {
+        if (event.code === 'KeyO') {
             showSpriteInfo = !showSpriteInfo;
         }
-        else {
-            startPlaying();
-            //audio.loadMusic(scene.themeSong);
-        }
-
-        
     }
 
     event.preventDefault();
@@ -187,18 +194,20 @@ const onGameKeyupListener = event => {
         if (event.code === 'KeyR' && typeof editor === "undefined") {
             resetScene();
         }
+        
+        // if (event.code === 'KeyT') {
+        //    replayScene();
+        // }
         //else if (event.code === 'KeyE' && typeof editor === "undefined") {
         //    gameState.setState(STATES.END);
         //}
-        else if (event.code === 'Enter') {
-            
+        else if (event.code === 'Enter' && !sceneLoading) {
             if (state.completed) {
                 openNext();
             }
             else if (state.failed) {
                 resetScene();
             }
-
         }
     }
     event.preventDefault();
@@ -320,8 +329,13 @@ async function loadScene({ url, sceneId, albumId }) {
         url = `/albums/${albumId}/scenes/${sceneId}.json`;
     }
 
+    sceneLoading = true;
+    sceneLoadingStartedTime = Date.now();
+
     const result = await fetch(url);
     scene = new Scene(await result.json());
+
+    sceneLoading = false;
 
     resetScene();
 }
@@ -357,6 +371,32 @@ const resetScene = () => {
 
     gameState.resetCurrentState();
 }
+
+const replayScene = () => {
+
+    worker.postMessage({ action: "STOP" });
+    updateTileCanvases(true);
+    worker.postMessage({ action: "SET_SCENE", scene, spriteTypes });
+
+    showCaptions = false;
+    isPlayerReady = true;
+    worker.postMessage({ action: "REPLAY", recordedActions });
+
+    if (typeof editor === "undefined") {
+        resetCamera();
+    }
+
+    sceneLoadedTime = Date.now();
+
+    particles = [];
+
+    tileLayers.update = true;
+
+    effects.redraw = true;
+
+    gameState.resetCurrentState();
+}
+
 
 function startPlaying() {
 
