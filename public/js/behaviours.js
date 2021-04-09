@@ -368,6 +368,24 @@ const behaviours = {
         }
     },
 
+    "changes-collectors-weight": {
+        init(sprite) {
+            sprite.transform = sprite.transform || {};
+            sprite.transform.weight = sprite.transform.weight || 0.5; 
+        },
+        do({ sprite, sprites }) {
+            sprite.collisionData.spriteIds.forEach(id => {
+                const target = sprites.find(sprite => sprite.id === id);
+                if (target && !target.isEnemy && target.isCollector && target.pattern === "default") {
+                    //target.pattern = sprite.transform.pattern;
+                    target.weight += sprite.transform.weight;
+                    postMessage({ type: "PLAY_SOUND", sound: "transform-up", x: target.x, y: target.y });
+                    target.freezeCounter = 30;
+                }
+            });
+        }
+    },
+
     "changes-collectors-pattern": {
         do({ sprite, sprites }) {
             sprite.collisionData.spriteIds.forEach(id => {
