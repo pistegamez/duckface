@@ -8,7 +8,7 @@ spriteTypes.pighead = new SpriteType({
     spriteProps: {
         maxJump: 20,
         isObstacle: true,
-        weight: 0.3,
+        weight: 0.25,
         maxVelocity: { x: 2, y: 6 },
     },
     patterns: {
