@@ -33,7 +33,7 @@ const tileMaterials = {
     default: {
         id: "default",
         name: "Clay",
-        inertia: 0.97
+        inertia: 0.95//0.97
     },
     ice: {
         id: "ice",
