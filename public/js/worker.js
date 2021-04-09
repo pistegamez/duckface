@@ -53,7 +53,7 @@ const recording = {
     },
     stopRecording() {
         this.on = false;
-        console.log(this.actions);
+        //console.log(this.actions);
         postMessage({
             type: "RECORDING_DONE",
             actions: recording.actions,
@@ -69,7 +69,7 @@ const recording = {
                 this.actions[this.frame] = action;
             }
         }
-        console.log(this.frame + " " + action);
+        //console.log(this.frame + " " + action);
     },
     loadRecording(actions) {
         this.frame = 0;
