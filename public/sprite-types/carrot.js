@@ -25,7 +25,7 @@ spriteTypes["carrot"] = new SpriteType({
             ]
         },
         body: {
-            fill: "#ff8030",
+            fill: "#ffa030",
             stroke: "#303030",
             commands: [
                 { c: "mt", x:  0.0, y: 0.1 },
