@@ -458,55 +458,8 @@
         }
 
         async function openFirst() {
-            sceneId = album.scenes[0].id;
-            await loadScene({ sceneId, albumId });
-            gameState.setState(STATES.TITLE);
-            resetCamera();
-            updateTitle();
-            updateButtons();
-            updateLinks();
-            audio.loadMusic(scene.themeSong);
-            localStorage.setItem("duckface-last-scene-id", sceneId);
-        }
-
-        async function openPrevious() {
-            const index = album.scenes.findIndex(scene => scene.id === sceneId);
-            if (gameState.state !== STATES.END) {
-                sceneId = album.scenes[Math.max(0, index - 1)].id;
-            }
-
-            await loadScene({ sceneId, albumId });
-            gameState.setState(STATES.TITLE);
-            resetCamera();
-            updateTitle();
-            updateButtons();
-            updateLinks();
-            audio.loadMusic(scene.themeSong);
-            localStorage.setItem("duckface-last-scene-id", sceneId);
-
-        }
-
-        async function openRandom() {
-            let index = 0;
-            do {
-                index = Math.floor(Math.random() * album.scenes.length);
-            } while (album.scenes[index].id === sceneId);
-            sceneId = album.scenes[index].id;
-            await loadScene({ sceneId, albumId });
-            gameState.setState(STATES.TITLE);
-            resetCamera();
-            updateTitle();
-            updateButtons();
-            updateLinks();
-            audio.loadMusic(scene.themeSong);
-            localStorage.setItem("duckface-last-scene-id", sceneId);
-        }
-
-        async function openNext() {
-
-            const index = album.scenes.findIndex(scene => scene.id === sceneId);
-            if (index < album.scenes.length - 1) {
-                sceneId = album.scenes[Math.min(album.scenes.length - 1, index + 1)].id;
+            if (!sceneLoading) {
+                sceneId = album.scenes[0].id;
                 await loadScene({ sceneId, albumId });
                 gameState.setState(STATES.TITLE);
                 resetCamera();
@@ -516,24 +469,79 @@
                 audio.loadMusic(scene.themeSong);
                 localStorage.setItem("duckface-last-scene-id", sceneId);
             }
-            else {
-                worker.postMessage({ action: "STOP" });
-                gameState.setState(STATES.END);
-                audio.loadMusic(album.endTheme || "theme-punk-1-orchestal");
+        }
+
+        async function openPrevious() {
+            if (!sceneLoading) {
+                const index = album.scenes.findIndex(scene => scene.id === sceneId);
+                if (gameState.state !== STATES.END) {
+                    sceneId = album.scenes[Math.max(0, index - 1)].id;
+                }
+
+                await loadScene({ sceneId, albumId });
+                gameState.setState(STATES.TITLE);
+                resetCamera();
+                updateTitle();
                 updateButtons();
+                updateLinks();
+                audio.loadMusic(scene.themeSong);
+                localStorage.setItem("duckface-last-scene-id", sceneId);
+            }
+        }
+
+        async function openRandom() {
+            if (!sceneLoading) {
+                let index = 0;
+                do {
+                    index = Math.floor(Math.random() * album.scenes.length);
+                } while (album.scenes[index].id === sceneId);
+                sceneId = album.scenes[index].id;
+                await loadScene({ sceneId, albumId });
+                gameState.setState(STATES.TITLE);
+                resetCamera();
+                updateTitle();
+                updateButtons();
+                updateLinks();
+                audio.loadMusic(scene.themeSong);
+                localStorage.setItem("duckface-last-scene-id", sceneId);
+            }
+        }
+
+        async function openNext() {
+            if (!sceneLoading) {
+                const index = album.scenes.findIndex(scene => scene.id === sceneId);
+                if (index < album.scenes.length - 1) {
+                    sceneId = album.scenes[Math.min(album.scenes.length - 1, index + 1)].id;
+                    await loadScene({ sceneId, albumId });
+                    gameState.setState(STATES.TITLE);
+                    resetCamera();
+                    updateTitle();
+                    updateButtons();
+                    updateLinks();
+                    audio.loadMusic(scene.themeSong);
+                    localStorage.setItem("duckface-last-scene-id", sceneId);
+                }
+                else {
+                    worker.postMessage({ action: "STOP" });
+                    gameState.setState(STATES.END);
+                    audio.loadMusic(album.endTheme || "theme-punk-1-orchestal");
+                    updateButtons();
+                }
             }
         }
 
         async function openLast() {
-            sceneId = album.scenes[album.scenes.length - 1].id;
-            await loadScene({ sceneId, albumId });
-            gameState.setState(STATES.TITLE);
-            resetCamera();
-            updateTitle();
-            updateButtons();
-            updateLinks();
-            audio.loadMusic(scene.themeSong);
-            localStorage.setItem("duckface-last-scene-id", sceneId);
+            if (!sceneLoading) {
+                sceneId = album.scenes[album.scenes.length - 1].id;
+                await loadScene({ sceneId, albumId });
+                gameState.setState(STATES.TITLE);
+                resetCamera();
+                updateTitle();
+                updateButtons();
+                updateLinks();
+                audio.loadMusic(scene.themeSong);
+                localStorage.setItem("duckface-last-scene-id", sceneId);
+            }
         }
 
         function openFullScreen() {
