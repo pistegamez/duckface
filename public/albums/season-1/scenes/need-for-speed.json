@@ -2,7 +2,7 @@
   "id": "need-for-speed",
   "version": "1.0",
   "created": "2021-03-27T18:32:05.599Z",
-  "lastEdit": "2021-03-27T18:36:36.441Z",
+  "lastEdit": "2021-04-09T16:20:32.936Z",
   "title": "Need for Speed",
   "author": "",
   "bgColor": "#f0f0ff",
@@ -43,8 +43,10 @@
         "color": "#f8f8f8",
         "z": 0.1
       }
-    } 
+    }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "0cac07c90e",
@@ -358,14 +360,6 @@
       "height": 24
     },
     {
-      "id": "2c92714520",
-      "typeId": "spikes-up",
-      "x": 2776,
-      "y": 544,
-      "width": 56,
-      "height": 24
-    },
-    {
       "id": "4f932cbff2",
       "typeId": "spikes-up",
       "x": -80,
@@ -550,9 +544,9 @@
     {
       "id": "d65ec349b4",
       "color": "#e2c96f",
-      "x": 2832,
+      "x": 2776,
       "y": 488,
-      "width": 368,
+      "width": 424,
       "height": 112
     },
     {
@@ -560,7 +554,7 @@
       "color": "#e2c96f",
       "x": 2712,
       "y": 568,
-      "width": 120,
+      "width": 64,
       "height": 32
     },
     {
