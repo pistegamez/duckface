@@ -206,34 +206,39 @@ function drawGame() {
     else {
         drawCaptions();
 
-        if (state.completed && Date.now() - (sceneStartTime + sceneCompletionTime) > 2000) {
-            drawButton("complete-try-again", "Try again (R)", 0.5, 0.34, () => {
-                resetScene();
-            });
-
-            drawButton("next", "Next (Enter)", 0.5, 0.50, () => {
-                openNext();
-            });
-
-            drawButton("replay", "Watch replay", 0.5, 0.66, () => {
-                replayScene();
-            });
-        }
-        else if (state.failed === true && Date.now() - (sceneStartTime + sceneFailedTime) > 2000) {
-            drawButton("failed-try-again", "Try again (Enter)", 0.5, 0.42, () => {
-                resetScene();
-            });
-            drawButton("failed-replay", "Watch replay", 0.5, 0.58, () => {
-                replayScene();
-            });
+        if (sceneLoading && (Date.now() - sceneLoadingStartedTime) > 1000) {
+            drawCaption({ text: "Loading", y: 0.5 });
         }
         else {
-            buttons = {};
+            drawGameButtons();
         }
+    }
+}
 
-        if (sceneLoading && (Date.now() - sceneLoadingStartedTime) > 1000 ) {
-            drawCaption({text: "Loading", y: 0.5});
-        }
+function drawGameButtons(context) {
+    if (state.completed && Date.now() - (sceneStartTime + sceneCompletionTime) > 2000) {
+        drawButton("complete-try-again", "Try again (R)", 0.5, 0.34, () => {
+            resetScene();
+        });
+
+        drawButton("next", "Next (Enter)", 0.5, 0.50, () => {
+            openNext();
+        });
+
+        drawButton("replay", "Watch replay", 0.5, 0.66, () => {
+            replayScene();
+        });
+    }
+    else if (state.failed === true && Date.now() - (sceneStartTime + sceneFailedTime) > 2000) {
+        drawButton("failed-try-again", "Try again (Enter)", 0.5, 0.42, () => {
+            resetScene();
+        });
+        drawButton("failed-replay", "Watch replay", 0.5, 0.58, () => {
+            replayScene();
+        });
+    }
+    else {
+        buttons = {};
     }
 }
 
