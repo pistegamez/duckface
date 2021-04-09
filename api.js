@@ -220,7 +220,7 @@ server.put('/v1/scene', (req, res) => {
                                 );
                             }
                             else {
-                                res.status(403).send("Author key does not match");
+                                res.status(403).send(`Use another id. Id ${scene.id} is already used in ${scene.title} by ${scene.author}.`);
                             }
                         }
                     }
