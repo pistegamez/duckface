@@ -41,13 +41,61 @@ const controls = {
 }
 
 const recording = {
-    rounds: 0,
+    frame: 0,
     actions: [],
-    recordAction(action) {
-        this.actions.push({
-            action,
-            r: this.rounds
+    on: false,
+    replaying: false,
+    startRecording() {
+        this.on = true;
+        this.frame = 0;
+        this.actions = {};
+        this.replaying = false;
+    },
+    stopRecording() {
+        this.on = false;
+        console.log(this.actions);
+        postMessage({
+            type: "RECORDING_DONE",
+            actions: recording.actions,
+            frames: recording.frames
         });
+    },
+    record(action) {
+        if (this.on) {
+            if (this.actions[this.frame]) {
+                this.actions[this.frame] += "," + action;
+            }
+            else {
+                this.actions[this.frame] = action;
+            }
+        }
+        console.log(this.frame + " " + action);
+    },
+    loadRecording(actions) {
+        this.frame = 0;
+        this.actions = actions;
+    },
+    rewind() {
+        this.frame = 0;
+    },
+    startReplay() {
+        this.frame = 0;
+        this.replaying = true;
+    },
+    replay() {
+        if (this.actions[this.frame]) {
+            this.actions[this.frame].split(",").forEach(command => {
+                switch (command) {
+                    case "<": controls.left = true; break;
+                    case "^": controls.up = true; break;
+                    case ">": controls.right = true; break;
+                    case "<.": controls.left = false; break;
+                    case "^.": controls.up = false; break;
+                    case ">.": controls.right = false; break;
+                    default: break;
+                }
+            });
+        }
     }
 };
 
@@ -56,6 +104,10 @@ onmessage = ({ data }) => {
     //onsole.log(data.action);
 
     if (data.action === "SET_SCENE") {
+        controls.left = false;
+        controls.right = false;
+        controls.up = false;
+        controls.down = false;
         tiles = [];
         sprites = [];
         state = {};
@@ -66,37 +118,66 @@ onmessage = ({ data }) => {
         data.scene.sprites.forEach(sprite => {
             addSprite(sprite);
         });
+
         setTiles(data.scene.tiles);
+    }
+    else if (data.action === "REPLAY") {
+        mode.run = true;
+        recording.loadRecording(data.recordedActions);
+        recording.startReplay();
     }
     else if (data.action === "RUN") {
         mode.run = true;
+        recording.startRecording();
     }
     else if (data.action === "STOP") {
         mode.run = false;
     }
-    else if (data.action === "START_CONTROL_UP") {
+    else if (mode.run && data.action === "START_CONTROL_UP" && !recording.replaying) {
+        if (!controls.up) {
+            recording.record("^");
+        }
         controls.up = true;
     }
-    else if (data.action === "START_CONTROL_RIGHT") {
+    else if (mode.run && data.action === "START_CONTROL_RIGHT" && !recording.replaying) {
+        if (!controls.right) {
+            recording.record(">");
+        }
         controls.right = true;
+
     }
-    else if (data.action === "START_CONTROL_DOWN") {
+    else if (mode.run && data.action === "START_CONTROL_DOWN" && !recording.replaying) {
         controls.down = true;
     }
-    else if (data.action === "START_CONTROL_LEFT") {
+    else if (mode.run && data.action === "START_CONTROL_LEFT" && !recording.replaying) {
+        if (!controls.left) {
+            recording.record("<");
+        }
         controls.left = true;
+
     }
-    else if (data.action === "STOP_CONTROL_UP") {
+    else if (mode.run && data.action === "STOP_CONTROL_UP" && !recording.replaying) {
+        if (controls.up) {
+            recording.record("^.");
+        }
         controls.up = false;
     }
-    else if (data.action === "STOP_CONTROL_RIGHT") {
+    else if (mode.run && data.action === "STOP_CONTROL_RIGHT" && !recording.replaying) {
+        if (controls.right) {
+            recording.record(">.");
+        }
         controls.right = false;
+
     }
-    else if (data.action === "STOP_CONTROL_DOWN") {
+    else if (mode.run && data.action === "STOP_CONTROL_DOWN" && !recording.replaying) {
         controls.down = false;
     }
-    else if (data.action === "STOP_CONTROL_LEFT") {
+    else if (mode.run && data.action === "STOP_CONTROL_LEFT" && !recording.replaying) {
+        if (controls.left) {
+            recording.record("<.");
+        }
         controls.left = false;
+
     }
     else if (data.action === "ADD_TILE") {
         addTile(data.tile, tiles);
@@ -128,143 +209,15 @@ onmessage = ({ data }) => {
     }
 }
 
-function addSpriteTypes(types) {
-    for (let i in types) {
-        const patterns = JSON.parse(JSON.stringify(types[i].patterns));
-
-        for (let pattern in patterns) {
-            const behaviourList = [];
-            patterns[pattern].behaviours.forEach(name => {
-                if (behaviours[name]) {
-                    behaviourList.push(behaviours[name]);
-                }
-                else {
-                    console.error(`Behaviour ${name} not found for type ${i}`);
-                }
-            });
-            patterns[pattern].behaviours = behaviourList;
-        }
-
-        spriteTypes[i] = new SpriteType({
-            ...types[i],
-            patterns
-        });
-    }
-}
-
-function addSprite(data) {
-    const sprite = new Sprite(data);
-    sprites.push(sprite);
-}
-
-function setTiles(dataTiles) {
-
-    if (dataTiles === undefined) {
-        return;
-    }
-    if (dataTiles.length === 0) {
-        tiles = [];
-        return;
-    }
-
-    if (dataTiles.length === 1 || optimizeTiles === false) {
-        //tiles = [new Tile(dataTiles[0])];
-        tiles = dataTiles.filter(tile => tile.blocks).map(tile => new Tile(tile));
-        return;
-    }
-
-    tiles = [];
-    //const length = dataTiles.length;
-
-    while (tiles.length < dataTiles.length) {
-
-        if (tiles.length > 0) {
-            dataTiles = [...tiles];
-            tiles = [];
-        }
-
-        dataTiles.forEach(tile => {
-            addTile(tile, tiles);
-        });
-    }
-
-    //console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
-}
-
-function addTile(data, tiles) {
-    if (data.blocks === false) {
-        return;
-    }
-
-    for (let i = 0; i < tiles.length; i++) {
-
-        let tile = tiles[i];
-
-        if (data.shape === SHAPES.BOX && tile.shape === SHAPES.BOX) {
-            // tile is inside another
-            if (data.x >= tile.x && data.x + data.width <= tile.x + tile.width
-                && data.y >= tile.y && data.y + data.height <= tile.y + tile.height) {
-                //console.log(`tile ${data.id} removed: inside tile ${tile.id}`);
-                return;
-            }
-            // tiles inside this tile
-            if (data.x <= tile.x && data.x + data.width >= tile.x + tile.width
-                && data.y <= tile.y && data.y + data.height >= tile.y + tile.height) {
-                tile.x = data.x;
-                tile.y = data.y;
-                tile.width = data.width;
-                tile.height = data.height;
-                //console.log(`tile ${data.id} removed: size merged to tile ${tile.id}`);
-                return;
-            }
-            // same left, same height
-            if (data.x === tile.x + tile.width
-                && data.y === tile.y
-                && data.y + data.height === tile.y + tile.height) {
-                tile.width += data.width;
-                //console.log(`tile ${data.id} removed: width merged to tile ${tile.id}`);
-                return;
-            }
-            // same right, same height
-            if (data.x + data.width === tile.x
-                && data.y === tile.y
-                && data.y + data.height === tile.y + tile.height) {
-                tile.x = data.x;
-                tile.width += data.width;
-                //console.log(`tile ${data.id} removed: width merged to tile ${tile.id}`);
-                return;
-            }
-            // same bottom, same width
-            if (data.y + data.height === tile.y
-                && data.x === tile.x
-                && data.x + data.width === tile.x + tile.width) {
-                tile.y = data.y;
-                tile.height += data.height;
-                //console.log(`tile ${data.id} removed: height merged to tile ${tile.id}`);
-                return;
-            }
-            // same top, same width
-            if (data.y === tile.y + tile.height
-                && data.x === tile.x
-                && data.x + data.width === tile.x + tile.width) {
-                tile.height += data.height;
-                //console.log(`tile ${data.id} removed: height merged to tile ${tile.id}`);
-                return;
-            }
-        }
-
-    }
-
-    tiles.push(new Tile(data));
-}
-
 function mainloop() {
 
     const startMs = Date.now();
 
-    recording.rounds++;
-
     if (!mode.pause && mode.run) {
+
+        if (recording.replaying) {
+            recording.replay();
+        }
 
         nextState = {
             completed: true,
@@ -283,6 +236,13 @@ function mainloop() {
 
         state = nextState;
 
+        if (recording.on) {
+            if (state.completed || state.failed) {
+                recording.stopRecording();
+            }
+        }
+
+        recording.frame++;
     }
 
     sendData();
@@ -290,7 +250,6 @@ function mainloop() {
     statistics.rounds++;
     const delta = Date.now() - startMs;
     statistics.ms += delta;
-
 
     setTimeout(mainloop, Math.max(0, ROUND_MAX_TIMEOUT_MS - delta));
 }
@@ -345,7 +304,7 @@ function move() {
             if (sprite.collisionData.bottom) {
 
                 if (sprite.collisionData.tileIds.size === 0) {
-                    sprite.velocity.x *= 0.97;
+                    sprite.velocity.x *= 0.95;
                 }
                 else {
                     let inertia = 1;
@@ -373,7 +332,7 @@ function move() {
             sprite.x += sprite.velocity.x;
             sprite.y += sprite.velocity.y;
 
-            
+
             if (scene.verticalLoop) {
                 if (sprite.y + sprite.height >= scene.bottom) {
                     sprite.y -= scene.height;
@@ -391,27 +350,27 @@ function move() {
                     sprite.x += scene.width;
                 }
             }
-            
-           /*
-            if (scene.verticalLoop) {
-                if (sprite.y + sprite.height >= scene.bottom) {
-                    sprite.y -= scene.height;
-                }
-                else if (sprite.y <= scene.top) {
-                    sprite.y += scene.height;
-                }
-            }
 
-            if (scene.horizontalLoop) {
-                if (sprite.x >= scene.right) {
-                    sprite.x -= scene.width;
-                }
-                else if (sprite.x + sprite.width <= scene.left) {
-                    sprite.x += scene.width;
-                }
-            }
-            */
-            
+            /*
+             if (scene.verticalLoop) {
+                 if (sprite.y + sprite.height >= scene.bottom) {
+                     sprite.y -= scene.height;
+                 }
+                 else if (sprite.y <= scene.top) {
+                     sprite.y += scene.height;
+                 }
+             }
+ 
+             if (scene.horizontalLoop) {
+                 if (sprite.x >= scene.right) {
+                     sprite.x -= scene.width;
+                 }
+                 else if (sprite.x + sprite.width <= scene.left) {
+                     sprite.x += scene.width;
+                 }
+             }
+             */
+
 
             sprite.velocity.y = Math.floor(sprite.velocity.y * 10) / 10;
 
@@ -681,7 +640,7 @@ function testCollisions(sprite, targets) {
             }
             else if (collision.targetShape === SHAPES.TOP_DOWN) {
                 if (sprite.velocity.y >= 0
-                    && sprite.y + sprite.height - 5 <= collision.target.y) {
+                    && sprite.y + sprite.height - 6.5 <= collision.target.y) {
                     sprite.collisionData.bottom = true;
                     sprite.collisionData.y -= Math.round(collision.area.height);
                     sprite.collisionData.t -= collision.area.height;
@@ -1040,4 +999,134 @@ function calculateSlopePenetrationArea(box, slope) {
     area.height = area.bottom - area.top;
     area.size = area.width * area.height;
     return area;
+}
+
+function addSpriteTypes(types) {
+    for (let i in types) {
+        const patterns = JSON.parse(JSON.stringify(types[i].patterns));
+
+        for (let pattern in patterns) {
+            const behaviourList = [];
+            patterns[pattern].behaviours.forEach(name => {
+                if (behaviours[name]) {
+                    behaviourList.push(behaviours[name]);
+                }
+                else {
+                    console.error(`Behaviour ${name} not found for type ${i}`);
+                }
+            });
+            patterns[pattern].behaviours = behaviourList;
+        }
+
+        spriteTypes[i] = new SpriteType({
+            ...types[i],
+            patterns
+        });
+    }
+}
+
+function addSprite(data) {
+    const sprite = new Sprite(data);
+    sprites.push(sprite);
+}
+
+function setTiles(dataTiles) {
+
+    if (dataTiles === undefined) {
+        return;
+    }
+    if (dataTiles.length === 0) {
+        tiles = [];
+        return;
+    }
+
+    if (dataTiles.length === 1 || optimizeTiles === false) {
+        //tiles = [new Tile(dataTiles[0])];
+        tiles = dataTiles.filter(tile => tile.blocks).map(tile => new Tile(tile));
+        return;
+    }
+
+    tiles = [];
+    //const length = dataTiles.length;
+
+    while (tiles.length < dataTiles.length) {
+
+        if (tiles.length > 0) {
+            dataTiles = [...tiles];
+            tiles = [];
+        }
+
+        dataTiles.forEach(tile => {
+            addTile(tile, tiles);
+        });
+    }
+
+    //console.log(`${tiles.length} tiles added, ${length - tiles.length} merged / removed`);
+}
+
+function addTile(data, tiles) {
+    if (data.blocks === false) {
+        return;
+    }
+
+    for (let i = 0; i < tiles.length; i++) {
+
+        let tile = tiles[i];
+
+        if (data.shape === SHAPES.BOX && tile.shape === SHAPES.BOX) {
+            // tile is inside another
+            if (data.x >= tile.x && data.x + data.width <= tile.x + tile.width
+                && data.y >= tile.y && data.y + data.height <= tile.y + tile.height) {
+                //console.log(`tile ${data.id} removed: inside tile ${tile.id}`);
+                return;
+            }
+            // tiles inside this tile
+            if (data.x <= tile.x && data.x + data.width >= tile.x + tile.width
+                && data.y <= tile.y && data.y + data.height >= tile.y + tile.height) {
+                tile.x = data.x;
+                tile.y = data.y;
+                tile.width = data.width;
+                tile.height = data.height;
+                //console.log(`tile ${data.id} removed: size merged to tile ${tile.id}`);
+                return;
+            }
+            // same left, same height
+            if (data.x === tile.x + tile.width
+                && data.y === tile.y
+                && data.y + data.height === tile.y + tile.height) {
+                tile.width += data.width;
+                //console.log(`tile ${data.id} removed: width merged to tile ${tile.id}`);
+                return;
+            }
+            // same right, same height
+            if (data.x + data.width === tile.x
+                && data.y === tile.y
+                && data.y + data.height === tile.y + tile.height) {
+                tile.x = data.x;
+                tile.width += data.width;
+                //console.log(`tile ${data.id} removed: width merged to tile ${tile.id}`);
+                return;
+            }
+            // same bottom, same width
+            if (data.y + data.height === tile.y
+                && data.x === tile.x
+                && data.x + data.width === tile.x + tile.width) {
+                tile.y = data.y;
+                tile.height += data.height;
+                //console.log(`tile ${data.id} removed: height merged to tile ${tile.id}`);
+                return;
+            }
+            // same top, same width
+            if (data.y === tile.y + tile.height
+                && data.x === tile.x
+                && data.x + data.width === tile.x + tile.width) {
+                tile.height += data.height;
+                //console.log(`tile ${data.id} removed: height merged to tile ${tile.id}`);
+                return;
+            }
+        }
+
+    }
+
+    tiles.push(new Tile(data));
 }
