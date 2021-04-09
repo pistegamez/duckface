@@ -1,24 +1,31 @@
 {
-    "id": "birth",
-    "title": "Birth of Duckface",
-    "author": "",
-    "bgColor": "#f0f0ff",
-    "captions": [
-     {
+  "id": "birth",
+  "version": "1.0",
+  "created": "2021-04-09T21:03:18.458Z",
+  "lastEdit": "2021-04-09T21:05:44.907Z",
+  "title": "Birth of Duckface",
+  "author": "Janne Kivilahti",
+  "bgColor": "#f0f0ff",
+  "themeSong": "theme-jollypop",
+  "captions": [
+    {
       "text": "Are you ready?",
       "y": 0.5,
       "delay": 1000
-     }
-    ],
-    "endCaption": "Happy birthday Duckface!",
-    "top": -1120,
-    "right": 800,
-    "bottom": 600,
-    "left": 0,
-    "horizontalLoop": false,
-    "verticalLoop": false,
-    "sprites": [
-     {
+    }
+  ],
+  "endCaption": "Happy birthday Duckface!",
+  "top": -1120,
+  "right": 800,
+  "bottom": 600,
+  "left": 0,
+  "horizontalLoop": false,
+  "verticalLoop": false,
+  "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
+  "sprites": [
+    {
       "id": "7bc582870f",
       "typeId": "egg",
       "isPlayer": true,
@@ -27,8 +34,8 @@
       "y": -1216,
       "width": 40,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "7bd85b7879",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -37,8 +44,8 @@
       "y": -824,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "6153124f50",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -47,8 +54,8 @@
       "y": -600,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "5ab6cc6287",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -57,8 +64,8 @@
       "y": -408,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "0d9282060d",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -67,8 +74,8 @@
       "y": -256,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "38da481297",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -77,8 +84,8 @@
       "y": -168,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "fc6a189814",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -87,8 +94,8 @@
       "y": -32,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "6a1b676eba",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -97,8 +104,8 @@
       "y": 72,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "2f783670b1",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -107,8 +114,8 @@
       "y": 184,
       "width": 16,
       "height": 16
-     },
-     {
+    },
+    {
       "id": "9e26189f99",
       "typeId": "pill-plus",
       "color": "#eeca8c",
@@ -117,10 +124,10 @@
       "y": 304,
       "width": 16,
       "height": 16
-     }
-    ],
-    "tiles": [
-     {
+    }
+  ],
+  "tiles": [
+    {
       "id": "ca377aca71",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -132,101 +139,119 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "7de82378a1",
-      "color": "#92f070",
-      "x": -32,
+      "color": "#97e57b",
+      "x": 0,
       "y": 448,
-      "width": 864,
-      "height": 192
-     },
-     {
+      "width": 800,
+      "height": 152,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
       "id": "b6ed5b11f9",
       "color": "#eeca8c",
       "x": 272,
       "y": -1024,
       "width": 40,
-      "height": 1432
-     },
-     {
+      "height": 1432,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
       "id": "68870ee5bf",
       "color": "#eeca8c",
       "x": 192,
       "y": 408,
       "width": 136,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "01b85f7d83",
       "color": "#eeca8c",
       "x": 512,
       "y": -1024,
       "width": 40,
-      "height": 1432
-     },
-     {
+      "height": 1432,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
       "id": "a3a223cf0f",
       "color": "#eeca8c",
       "x": 488,
       "y": 408,
       "width": 120,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "4708bb8c71",
       "color": "#eeca8c",
       "x": 608,
       "y": 408,
       "width": 40,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "f04fc27be8",
       "color": "#eeca8c",
       "x": 648,
       "y": 408,
       "width": 8,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "50258e3826",
       "color": "#eeca8c",
       "x": 160,
       "y": 408,
       "width": 32,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "7dc44d9eed",
       "color": "#eeca8c",
       "x": 144,
       "y": 408,
       "width": 16,
       "height": 40
-     },
-     {
+    },
+    {
       "id": "d804989872",
       "color": "#ffffff",
       "x": 224,
       "y": -1280,
       "width": 136,
       "height": 256
-     },
-     {
+    },
+    {
       "id": "ced702cd49",
       "color": "#ffffff",
       "x": 464,
       "y": -1280,
       "width": 128,
       "height": 256
-     },
-     {
+    },
+    {
       "id": "29cf4f0d4d",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -237,8 +262,8 @@
       "height": 128,
       "layer": 1,
       "blocks": false
-     },
-     {
+    },
+    {
       "id": "0513ecd37d",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -250,13 +275,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "d722c80354",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -268,13 +293,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "fcc3f75c75",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -286,13 +311,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": true,
-       "l": false
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
       }
-     },
-     {
+    },
+    {
       "id": "dc16ea306b",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -304,13 +329,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": false,
-       "r": true,
-       "b": true,
-       "l": true
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "19d0359f5f",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -321,8 +346,8 @@
       "height": 64,
       "layer": 1,
       "blocks": false
-     },
-     {
+    },
+    {
       "id": "65d55c2ba1",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -334,13 +359,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "611a5130bb",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -352,13 +377,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "523f3a9b44",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -370,13 +395,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": true,
-       "l": false
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
       }
-     },
-     {
+    },
+    {
       "id": "b077d280c0",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -388,13 +413,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": false,
-       "b": true,
-       "l": true
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "5e4c74c121",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -406,13 +431,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "3d005bb8c4",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -423,8 +448,8 @@
       "height": 36,
       "layer": 1,
       "blocks": false
-     },
-     {
+    },
+    {
       "id": "e157fbfb6b",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -436,13 +461,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "96be78b7b2",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -454,13 +479,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "f4ee16bc3c",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -472,13 +497,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "235f39ba63",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -489,8 +514,8 @@
       "height": 14,
       "layer": 1,
       "blocks": false
-     },
-     {
+    },
+    {
       "id": "611524428e",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -501,8 +526,8 @@
       "height": 30,
       "layer": 1,
       "blocks": false
-     },
-     {
+    },
+    {
       "id": "c265e60098",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -514,13 +539,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "8c7c4ea1cb",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -532,13 +557,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "da5aad7147",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -550,13 +575,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "022b6e8524",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -568,13 +593,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "fe3abe8c98",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -586,13 +611,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": false,
-       "r": true,
-       "b": true,
-       "l": true
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "9c6c54c71d",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -604,13 +629,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "1daa16aa8e",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -622,13 +647,13 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     },
-     {
+    },
+    {
       "id": "2efddcd7e7",
       "color": "#f7f3f3",
       "stroke": "#c7c7c7",
@@ -640,12 +665,39 @@
       "layer": 1,
       "blocks": false,
       "borders": {
-       "t": true,
-       "r": true,
-       "b": false,
-       "l": true
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
       }
-     }
-    ],
-    "themeSong": "theme-jollypop"
-   }
+    },
+    {
+      "id": "06db59e9ad",
+      "color": "#eeca8c",
+      "x": 248,
+      "y": -168,
+      "width": 32,
+      "height": 48,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": true
+      }
+    },
+    {
+      "id": "7db3191990",
+      "color": "#eeca8c",
+      "x": 544,
+      "y": -168,
+      "width": 32,
+      "height": 48,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
+      }
+    }
+  ]
+}
