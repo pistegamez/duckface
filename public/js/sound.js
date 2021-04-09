@@ -236,6 +236,7 @@ const audio = {
     },
 
     async loadMusic(song) {
+        //console.log("loadMusic " + song);
         if (this.musicEnabled) {
             if (song !== undefined && song !== this.song) {
                 this.loadAudio(`/audio/${song}.mp3`, (buffer) => {
@@ -245,8 +246,8 @@ const audio = {
                         this.musicPlaying = false;
                     }
                     this.startMusic();
-                    this.song = song;
                 });
+                this.song = song;
             }
             else {
                 this.startMusic();
@@ -255,9 +256,9 @@ const audio = {
     },
 
     async startMusic() {
-
+        //console.log("startMusic");
         if (!this.musicBuffer) {
-            console.error("Could not start music, because buffer is not loaded.");
+            console.log("Could not start music, because buffer is not loaded (yet).");
             return;
         }
 
@@ -278,6 +279,7 @@ const audio = {
     },
 
     async loadAudio(filePath, success) {
+        //console.log("loadAudio" + filePath);
         const response = await fetch(filePath);
         const arrayBuffer = await response.arrayBuffer();
         this.context.decodeAudioData(
@@ -290,6 +292,7 @@ const audio = {
     },
 
     createSourceNode(audioBuffer, volume = 1.0, pan = 0) {
+        //console.log("createSourceNode");
         const sourceNode = this.context.createBufferSource();
         const gainNode = this.context.createGain();
         let pannerNode;
