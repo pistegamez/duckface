@@ -40,6 +40,7 @@ spriteTypes.duckface = new SpriteType({
             spriteProps: {
                 reloadCounter: 0,
                 color: "#ff8080",
+                fireBallSize: 20
             }
         },
         "dead": {
