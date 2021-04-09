@@ -10,7 +10,7 @@ const effects = { redraw: true };
 
 const tileLayers = { update: true };
 
-const buttons = {};
+let buttons = {};
 
 let showSpriteInfo = false;
 
@@ -207,18 +207,32 @@ function drawGame() {
         drawCaptions();
 
         if (state.completed && Date.now() - (sceneStartTime + sceneCompletionTime) > 2000) {
-            drawButton("try-again", "Try again (R)", 0.5, 0.42, () => {
+            drawButton("complete-try-again", "Try again (R)", 0.5, 0.34, () => {
                 resetScene();
             });
 
-            drawButton("next", "Next (Enter)", 0.5, 0.58, () => {
+            drawButton("next", "Next (Enter)", 0.5, 0.50, () => {
                 openNext();
+            });
+
+            drawButton("replay", "Watch replay", 0.5, 0.66, () => {
+                replayScene();
             });
         }
         else if (state.failed === true && Date.now() - (sceneStartTime + sceneFailedTime) > 2000) {
-            drawButton("try-again", "Try again (Enter)", 0.5, 0.5, () => {
+            drawButton("failed-try-again", "Try again (Enter)", 0.5, 0.42, () => {
                 resetScene();
             });
+            drawButton("failed-replay", "Watch replay", 0.5, 0.58, () => {
+                replayScene();
+            });
+        }
+        else {
+            buttons = {};
+        }
+
+        if (sceneLoading && (Date.now() - sceneLoadingStartedTime) > 1000 ) {
+            drawCaption({text: "Loading", y: 0.5});
         }
     }
 }
