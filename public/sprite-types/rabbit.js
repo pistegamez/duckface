@@ -4,7 +4,7 @@ spriteTypes.rabbit = new SpriteType({
     shape: SHAPES.BOX,
     resizable: true,
     collidesWithObstacles: true,
-    collisionBox: { t: 0.0, r: 0.98, b: 1.0, l: 0.02,},
+    collisionBox: { t: 0.0, r: 0.95, b: 1.0, l: 0.05,},
     spriteProps: {
         isEnemy: true,
         isObstacle: true,
