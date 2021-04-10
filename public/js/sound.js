@@ -87,6 +87,14 @@ const themes = {
         title: "Summer Funk",
         authors: "Janne Kivilahti"
     },
+    "theme-fat-and-blue-pt-1": {
+        title: "Fat and Blue (Part 1)",
+        authors: "Crudelis Diabolus"
+    },
+    "theme-fat-and-blue-pt-2": {
+        title: "Fat and Blue (Part 2)",
+        authors: "Crudelis Diabolus"
+    },
 };
 
 const audio = {
