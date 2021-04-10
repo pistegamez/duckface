@@ -127,7 +127,8 @@ const controls = {
     touchY: 0,
     rightTouch: false,
     leftTouch: false,
-    doubleTouch: true
+    doubleTouch: true,
+    touchStartTime: -1
 }
 
 const onGameKeydownListener = event => {
@@ -194,7 +195,7 @@ const onGameKeyupListener = event => {
         if (event.code === 'KeyR' && typeof editor === "undefined") {
             resetScene();
         }
-        
+
         // if (event.code === 'KeyT') {
         //    replayScene();
         // }
@@ -214,12 +215,77 @@ const onGameKeyupListener = event => {
     event.stopPropagation();
 };
 
+const onGameTouchStartListener = event => {
+
+    if (gameState.state === STATES.PLAY) {
+        if (event.touches.length > 1) {
+            controls.doubleTouch = true;
+            worker.postMessage({ action: "START_CONTROL_UP" });
+            if (Date.now() - controls.touchStartTime < 50) {
+                if (controls.rightTouch) {
+                    worker.postMessage({ action: "STOP_CONTROL_RIGHT" });
+                    controls.rightTouch = false;
+                }
+                if (controls.leftTouch) {
+                    worker.postMessage({ action: "STOP_CONTROL_LEFT" });
+                    controls.leftTouch = false;
+                }
+            }
+        }
+        else {
+
+            controls.touchStartTime = Date.now();
+            if (event.touches[0].clientX > document.body.getBoundingClientRect().width / 2) {
+                controls.rightTouch = true;
+                controls.touchX = event.touches[0].clientX - canvas.offsetLeft;
+                controls.touchY = event.touches[0].clientY - canvas.offsetTop;
+                worker.postMessage({ action: "START_CONTROL_RIGHT" });
+            }
+            if (event.touches[0].clientX < document.body.getBoundingClientRect().width / 2) {
+                controls.leftTouch = true;
+                controls.touchX = event.touches[0].clientX - canvas.offsetLeft;
+                controls.touchY = event.touches[0].clientY - canvas.offsetTop;
+                worker.postMessage({ action: "START_CONTROL_LEFT" });
+            }
+        }
+        startPlaying();
+    }
+    event.preventDefault();
+};
+
+const onGameTouchEndListener = event => {
+
+    if (gameState.state === STATES.TITLE) {
+        gameState.setState(STATES.PLAY);
+        audio.loadMusic(scene.themeSong);
+    }
+    else if (gameState.state === STATES.END) {}
+    else if (gameState.state === STATES.PLAY) {
+        if (controls.doubleTouch) {
+            controls.doubleTouch = false;
+            worker.postMessage({ action: "STOP_CONTROL_UP" });
+        }
+        else {
+            if (controls.rightTouch) {
+                controls.rightTouch = false;
+                worker.postMessage({ action: "STOP_CONTROL_RIGHT" });
+            }
+            if (controls.leftTouch) {
+                controls.leftTouch = false;
+                worker.postMessage({ action: "STOP_CONTROL_LEFT" });
+            }
+        }
+    }
+
+    event.preventDefault();
+};
+
 async function loadAlbum(id) {
     try {
         const res = await fetch(`/albums/${id}/album.json`);
         return await res.json();
     }
-    catch(error) {
+    catch (error) {
         console.error(error);
         throw new Error(`Looks like there is no album ${id}`);
     }
@@ -251,54 +317,8 @@ const initGame = async ({ sceneId, albumId, url, width, height, scale = 1, volum
 
     document.addEventListener("keydown", onGameKeydownListener, false);
     document.addEventListener("keyup", onGameKeyupListener, false);
-
-    document.getElementById("game-canvas").addEventListener("touchstart", (event) => {
-        //console.log(event);
-        //console.log();
-
-        if (event.touches.length > 1) {
-            controls.doubleTouch = true;
-            worker.postMessage({ action: "START_CONTROL_UP" });
-        }
-        else {
-            if (event.touches[0].clientX > document.body.getBoundingClientRect().width / 2) {
-                controls.rightTouch = true;
-                controls.touchX = event.touches[0].clientX - canvas.offsetLeft;
-                controls.touchY = event.touches[0].clientY - canvas.offsetTop;
-                worker.postMessage({ action: "START_CONTROL_RIGHT" });
-            }
-            if (event.touches[0].clientX < document.body.getBoundingClientRect().width / 2) {
-                controls.leftTouch = true;
-                controls.touchX = event.touches[0].clientX - canvas.offsetLeft;
-                controls.touchY = event.touches[0].clientY - canvas.offsetTop;
-                worker.postMessage({ action: "START_CONTROL_LEFT" });
-            }
-        }
-        startPlaying();
-        event.preventDefault();
-    });
-
-    document.getElementById("game-canvas").addEventListener("touchend", (event) => {
-        //console.log(event);
-
-        if (controls.doubleTouch) {
-            controls.doubleTouch = false;
-            worker.postMessage({ action: "STOP_CONTROL_UP" });
-        }
-        else {
-            if (controls.rightTouch) {
-                controls.rightTouch = false;
-                worker.postMessage({ action: "STOP_CONTROL_RIGHT" });
-            }
-            if (controls.leftTouch) {
-                controls.leftTouch = false;
-                worker.postMessage({ action: "STOP_CONTROL_LEFT" });
-            }
-        }
-
-
-        event.preventDefault();
-    });
+    document.getElementById("game-canvas").addEventListener("touchstart", onGameTouchStartListener);
+    document.getElementById("game-canvas").addEventListener("touchend", onGameTouchEndListener);
 
     if (!localStorage.getItem("duckface-best-times")) {
         localStorage.setItem("duckface-best-times", "{}");
@@ -461,13 +481,13 @@ function mainloop() {
 }
 
 function getSceneBestTime(sceneId, version) {
-    const bestTimes = JSON.parse(localStorage.getItem("duckface-best-times") || "{}");
+    const bestTimes = JSON.parse(localStorage.getItem("duckface-best-times") || "{}");
     const majorVersionNumber = version.split(".")[0];
     return bestTimes[`${album.id}-${sceneId}-${majorVersionNumber}`];
 }
 
 function saveSceneBestTime(sceneId, version = "1.0", sceneCompletionTime) {
-    const bestTimes = JSON.parse(localStorage.getItem("duckface-best-times") || "{}");
+    const bestTimes = JSON.parse(localStorage.getItem("duckface-best-times") || "{}");
     const majorVersionNumber = version.split(".")[0];
     bestTimes[`${album.id}-${sceneId}-${majorVersionNumber}`] = sceneCompletionTime;
     localStorage.setItem("duckface-best-times", JSON.stringify(bestTimes));
