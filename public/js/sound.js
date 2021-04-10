@@ -3,25 +3,29 @@
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const themes = {
-    "theme-enigma": {
-        title: "Enigma",
+    "theme-duckbeat": {
+        title: "Duckbeat",
         authors: "Janne Kivilahti"
     },
-    "theme-riddles": {
-        title: "Riddles",
-        authors: "Janne Kivilahti"
-    },
-    "theme-horror-1": {
-        title: "Oh, Horror",
-        authors: "Janne Kivilahti"
-    },
-    "theme-horror-2": {
-        title: "There Are No Ghosts",
-        authors: "Janne Kivilahti"
+    "theme-duckfunk": {
+        title: "Duckfunk",
+        authors: "FX Ducks"
     },
     "theme-horror-3": {
         title: "Ducks 'n Goblins",
         authors: "Janne Kivilahti"
+    },
+    "theme-enigma": {
+        title: "Enigma",
+        authors: "Janne Kivilahti"
+    },
+    "theme-fat-and-blue-pt-1": {
+        title: "Fat and Blue (Part 1)",
+        authors: "Crudelis Diabolus"
+    },
+    "theme-fat-and-blue-pt-2": {
+        title: "Fat and Blue (Part 2)",
+        authors: "Crudelis Diabolus"
     },
     "theme-jollypop": {
         title: "Jollypop",
@@ -35,12 +39,32 @@ const themes = {
         title: "Kuoleman jalkeiset liikamaksut (excerpt)",
         authors: "Kyarhem"
     },
-    "theme-duckbeat": {
-        title: "Duckbeat",
+    "theme-slow-dungeon": {
+        title: "Last Dungeon",
         authors: "Janne Kivilahti"
+    },
+    "theme-country": {
+        title: "No Country for Old Squares",
+        authors: "FX Ducks"
     },
     "theme-nostalgia": {
         title: "Nostalgia",
+        authors: "Janne Kivilahti"
+    },
+    "theme-secret-agent": {
+        title: "Not So Secret Agents",
+        authors: "Janne Kivilahti"
+    },
+    "theme-horror-1": {
+        title: "Oh, Horror",
+        authors: "Janne Kivilahti"
+    },
+    "theme-kazoo": {
+        title: "Please Wait and Listen to Kazoo",
+        authors: "FX Ducks"
+    },
+    "theme-trance": {
+        title: "Power Up",
         authors: "Janne Kivilahti"
     },
     "theme-punk-1": {
@@ -55,45 +79,21 @@ const themes = {
         title: "Punk 2",
         authors: "Awful Squares"
     },
-    "theme-secret-agent": {
-        title: "Not So Secret Agents",
+    "theme-riddles": {
+        title: "Riddles",
         authors: "Janne Kivilahti"
-    },
-    "theme-slow-dungeon": {
-        title: "Last Dungeon",
-        authors: "Janne Kivilahti"
-    },
-    "theme-trance": {
-        title: "Power Up",
-        authors: "Janne Kivilahti"
-    },
-    "theme-duckfunk": {
-        title: "Duckfunk",
-        authors: "FX Ducks"
-    },
-    "theme-duckblues": {
-        title: "Super Duck Bros",
-        authors: "FX Ducks"
-    },
-    "theme-kazoo": {
-        title: "Please Wait and Listen to Kazoo",
-        authors: "FX Ducks"
-    },
-    "theme-country": {
-        title: "No Country for Old Squares",
-        authors: "FX Ducks"
     },
     "theme-summer-funk": {
         title: "Summer Funk",
         authors: "Janne Kivilahti"
     },
-    "theme-fat-and-blue-pt-1": {
-        title: "Fat and Blue (Part 1)",
-        authors: "Crudelis Diabolus"
+    "theme-duckblues": {
+        title: "Super Duck Bros",
+        authors: "FX Ducks"
     },
-    "theme-fat-and-blue-pt-2": {
-        title: "Fat and Blue (Part 2)",
-        authors: "Crudelis Diabolus"
+    "theme-horror-2": {
+        title: "There Are No Ghosts",
+        authors: "Janne Kivilahti"
     },
 };
 
