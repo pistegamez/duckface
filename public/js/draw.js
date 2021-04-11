@@ -1664,7 +1664,7 @@ function drawEditorStuff() {
         });
     }
 
-
+    // cursor style
 
     scene.tiles.forEach(tile => {
         if (controls.mouseX >= tile.x && controls.mouseX <= tile.x + tile.width
@@ -1687,63 +1687,55 @@ function drawEditorStuff() {
             context.setLineDash([6, 3]);
             context.lineWidth = 2;
             context.strokeStyle = "#ffffff";
+            context.globalCompositeOperation = "difference";
 
             context.strokeRect(tile.x, tile.y, tile.width, tile.height);
 
             context.setLineDash([]);
-            context.lineWidth = 1;
-            context.strokeStyle = "#ffffff";
-            const handleWidth = Math.max(tile.width / 4, RESIZE_HANDLE_WIDTH);
-            const handleHeight = Math.max(tile.height / 4, RESIZE_HANDLE_HEIGHT);
+            context.lineWidth = 2;
 
-            if (editor.dragMode === "MOVE_TILES") {
+            if (editor.dragMode === "MOVE") {
                 context.strokeRect(
                     tile.x + controls.endMouseX - controls.startMouseX,
                     tile.y + controls.endMouseY - controls.startMouseY,
                     tile.width, tile.height);
                 canvas.style.cursor = "grabbing";
             }
-            else if (editor.dragMode !== "RESIZE_TILES") {
-                context.strokeRect(tile.x, tile.y, handleWidth, tile.height);
-                context.strokeRect(tile.x + tile.width - handleWidth, tile.y, handleWidth, tile.height);
-                context.strokeRect(tile.x, tile.y, tile.width, handleHeight);
-                context.strokeRect(tile.x, tile.y + tile.height - handleHeight, tile.width, handleHeight);
+            else if (editor.dragMode !== "RESIZE") {
+                context.fillStyle = "#ffffff";
+                context.strokeStyle = "#000000";
+                context.globalCompositeOperation = "source-over";
 
-                if (controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + handleWidth
-                    && controls.mousePixelY >= tile.y && controls.mousePixelY < tile.y + tile.height) {
-                    canvas.style.cursor = "col-resize";
-                }
-                else if (controls.mousePixelX >= tile.x + tile.width - handleWidth && controls.mousePixelX <= tile.x + tile.width
-                    && controls.mousePixelY >= tile.y && controls.mousePixelY < tile.y + tile.height) {
-                    canvas.style.cursor = "col-resize";
-                }
-                else if (controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + tile.width
-                    && controls.mousePixelY >= tile.y && controls.mousePixelY < tile.y + handleHeight) {
-                    canvas.style.cursor = "row-resize";
-                }
-                else if (controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + tile.width
-                    && controls.mousePixelY >= tile.y + tile.height - handleHeight && controls.mousePixelY <= tile.y + tile.height) {
-                    canvas.style.cursor = "row-resize";
-                }
-                else if (controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + tile.width
+                if (controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + tile.width
                     && controls.mousePixelY >= tile.y && controls.mousePixelY <= tile.y + tile.height) {
                     canvas.style.cursor = "grab";
                 }
+
+                drawResizeHandle({ context, x: tile.x, y: tile.y + tile.height / 2, cursor: "col-resize", resizeDirection: DIRECTION.LEFT });
+                drawResizeHandle({ context, x: tile.x + tile.width, y: tile.y + tile.height / 2, cursor: "col-resize", resizeDirection: DIRECTION.RIGHT });
+                drawResizeHandle({ context, x: tile.x + tile.width / 2, y: tile.y, cursor: "row-resize", resizeDirection: DIRECTION.TOP });
+                drawResizeHandle({ context, x: tile.x + tile.width / 2, y: tile.y + tile.height, cursor: "row-resize", resizeDirection: DIRECTION.BOTTOM });
+
+                if (!editor.dragHandle && controls.mouseLeft &&
+                    controls.mousePixelX >= tile.x && controls.mousePixelX <= tile.x + tile.width
+                    && controls.mousePixelY >= tile.y && controls.mousePixelY <= tile.y + tile.height) {
+                    editor.startMove();
+                }
             }
-            else if (editor.dragMode === "RESIZE_TILES") {
+            else if (editor.dragMode === "RESIZE") {
                 if (editor.resizeDirection === DIRECTION.LEFT) {
                     context.strokeRect(
                         tile.x + controls.endMouseX - controls.startMouseX,
                         tile.y,
-                        handleWidth,
+                        tile.width + controls.startMouseX - controls.endMouseX,
                         tile.height
                     );
                 }
                 else if (editor.resizeDirection === DIRECTION.RIGHT) {
                     context.strokeRect(
-                        tile.x + tile.width + controls.endMouseX - controls.startMouseX - handleWidth,
+                        tile.x,
                         tile.y,
-                        handleWidth,
+                        tile.width + controls.endMouseX - controls.startMouseX,
                         tile.height
                     );
                 }
@@ -1752,78 +1744,19 @@ function drawEditorStuff() {
                         tile.x,
                         tile.y + controls.endMouseY - controls.startMouseY,
                         tile.width,
-                        handleHeight
+                        tile.height + controls.startMouseY - controls.endMouseY
                     );
                 }
                 else if (editor.resizeDirection === DIRECTION.BOTTOM) {
                     context.strokeRect(
                         tile.x,
-                        tile.y + tile.height + controls.endMouseY - controls.startMouseY - handleHeight,
+                        tile.y,
                         tile.width,
-                        handleHeight
+                        tile.height + controls.endMouseY - controls.startMouseY
                     );
                 }
             }
-            /*
-            if (tile.collision === true) {
-                context.fillStyle = "#ff0000";
-            }
-            else {
-                //context.fillStyle = "#b08080";
-                context.fillStyle = tile.color;
-            }*/
         });
-    /*
-        tiles.forEach(tile => {
-    
-            if (tile.collision === true) {
-                context.setLineDash([]);
-                context.lineWidth = 1;
-                context.strokeStyle = "#000000";
-                //context.fillRect(tile.x, tile.y, tile.width, tile.height);
-            }
-            if (editor.idsOfSelectedTiles.includes(tile.id)) {
-                context.setLineDash([4, 2]);
-                context.lineWidth = 2;
-                context.strokeStyle = "#ffffff";
-                //context.fillRect(tile.x, tile.y, tile.width, tile.height);
-            }
-            else {
-                context.setLineDash([]);
-                context.lineWidth = 1;
-                context.strokeStyle = "#000000";
-            }
-    
-    
-            if (tile.shape === SHAPES.BOX) {
-                context.strokeRect(tile.x, tile.y, tile.width, tile.height);
-            }
-            else if (tile.shape === SHAPES.SLOPE_LEFT) {
-                context.beginPath();
-                context.moveTo(tile.x + tile.width, tile.y);
-                context.lineTo(tile.x + tile.width, tile.y + tile.height);
-                context.lineTo(tile.x, tile.y + tile.height);
-                context.closePath();
-                context.stroke();
-            }
-            else if (tile.shape === SHAPES.SLOPE_RIGHT) {
-                context.beginPath();
-                context.moveTo(tile.x, tile.y);
-                context.lineTo(tile.x + tile.width, tile.y + tile.height);
-                context.lineTo(tile.x, tile.y + tile.height);
-                context.closePath();
-                context.stroke();
-            }
-    
-            //context.strokeRect(tile.x, tile.y, tile.width, tile.height);
-        });
-    */
-
-
-    context.lineWidth = 1.5;
-    context.setLineDash([8, 4]);
-    context.strokeStyle = "#ffffff";
-    context.globalCompositeOperation = "difference";
 
     editor.idsOfSelectedSprites.forEach(id => {
         let sprite = sprites.find(sprite => sprite.id === id);
@@ -1831,113 +1764,93 @@ function drawEditorStuff() {
         if (sprite) {
             let spriteOrigin = scene.sprites.find(sprite => sprite.id === id);
             let type = spriteTypes[sprite.typeId];
-            const handleWidth = Math.max(sprite.width / 4, RESIZE_HANDLE_WIDTH);
-            const handleHeight = Math.max(sprite.height / 4, RESIZE_HANDLE_HEIGHT);
+
+            context.setLineDash([6, 3]);
+            context.lineWidth = 2;
+            context.strokeStyle = "#ffffff";
+            context.globalCompositeOperation = "difference";
 
             if (type.shape === SHAPES.BOX) {
-                context.strokeStyle = "#ffffff";
                 context.strokeRect(Math.floor(sprite.x), Math.floor(sprite.y), sprite.width, sprite.height);
-
-                context.strokeStyle = "#ffffff";
                 context.strokeRect(spriteOrigin.x, spriteOrigin.y, spriteOrigin.width, spriteOrigin.height);
 
                 context.beginPath();
                 context.moveTo(spriteOrigin.x + spriteOrigin.width / 2, spriteOrigin.y + spriteOrigin.height / 2);
                 context.lineTo(sprite.x + sprite.width / 2, sprite.y + sprite.height / 2);
                 context.stroke();
-
-                /*
-                context.strokeStyle = "#000000";
-                context.strokeRect(Math.floor(sprite.x), Math.floor(sprite.y), sprite.width, sprite.height);
-                */
             }
             else if (type.shape === SHAPES.CIRCLE) {
                 context.beginPath();
                 context.arc(sprite.x + sprite.width / 2, sprite.y + sprite.height / 2, sprite.width / 2, 0, Math.PI * 2);
                 context.closePath();
-                context.strokeStyle = "#ffffff";
                 context.stroke();
-                /*
-                context.beginPath();
-                context.arc(sprite.x + sprite.width / 2 + 1, sprite.y + sprite.height / 2 + 1, sprite.width / 2, 0, Math.PI * 2);
-                context.closePath();
-                context.strokeStyle = "#000000";
-                context.stroke();
-                */
             }
 
             context.setLineDash([]);
             context.lineWidth = 1;
-            context.strokeStyle = "#ffffff";
 
-            if (editor.dragMode === "MOVE_SPRITES") {
+            if (editor.dragMode === "MOVE") {
                 context.strokeRect(
                     spriteOrigin.x + controls.endMouseX - controls.startMouseX,
                     spriteOrigin.y + controls.endMouseY - controls.startMouseY,
                     spriteOrigin.width, spriteOrigin.height);
                 canvas.style.cursor = "grabbing";
             }
-            else if (editor.dragMode !== "RESIZE_SPRITES") {
-                context.strokeRect(spriteOrigin.x, spriteOrigin.y, handleWidth, spriteOrigin.height);
-                context.strokeRect(spriteOrigin.x + spriteOrigin.width - handleWidth, spriteOrigin.y, handleWidth, spriteOrigin.height);
-                context.strokeRect(spriteOrigin.x, spriteOrigin.y, spriteOrigin.width, handleHeight);
-                context.strokeRect(spriteOrigin.x, spriteOrigin.y + spriteOrigin.height - handleHeight, spriteOrigin.width, handleHeight);
+            else if (editor.dragMode !== "RESIZE") {
 
-                if (controls.mousePixelX >= spriteOrigin.x && controls.mousePixelX <= spriteOrigin.x + spriteOrigin.width
-                    && controls.mousePixelY >= spriteOrigin.y && controls.mousePixelY <= spriteOrigin.y + spriteOrigin.height) {
+                context.fillStyle = "#ffffff";
+                context.strokeStyle = "#000000";
+                context.globalCompositeOperation = "source-over";
+
+                if (controls.mousePixelX >= sprite.x && controls.mousePixelX <= sprite.x + sprite.width
+                    && controls.mousePixelY >= sprite.y && controls.mousePixelY <= sprite.y + sprite.height) {
                     canvas.style.cursor = "grab";
                 }
+
                 if (type.resizable) {
-                    if (controls.mousePixelX >= spriteOrigin.x && controls.mousePixelX <= spriteOrigin.x + handleWidth
-                        && controls.mousePixelY >= spriteOrigin.y && controls.mousePixelY < spriteOrigin.y + spriteOrigin.height) {
-                        canvas.style.cursor = "col-resize";
-                    }
-                    else if (controls.mousePixelX >= spriteOrigin.x + spriteOrigin.width - handleWidth && controls.mousePixelX <= spriteOrigin.x + spriteOrigin.width
-                        && controls.mousePixelY >= spriteOrigin.y && controls.mousePixelY < spriteOrigin.y + spriteOrigin.height) {
-                        canvas.style.cursor = "col-resize";
-                    }
-                    else if (controls.mousePixelX >= spriteOrigin.x && controls.mousePixelX <= spriteOrigin.x + spriteOrigin.width
-                        && controls.mousePixelY >= spriteOrigin.y && controls.mousePixelY < spriteOrigin.y + handleHeight) {
-                        canvas.style.cursor = "row-resize";
-                    }
-                    else if (controls.mousePixelX >= spriteOrigin.x && controls.mousePixelX <= spriteOrigin.x + spriteOrigin.width
-                        && controls.mousePixelY >= spriteOrigin.y + spriteOrigin.height - handleHeight && controls.mousePixelY <= spriteOrigin.y + spriteOrigin.height) {
-                        canvas.style.cursor = "row-resize";
-                    }
+                    drawResizeHandle({ context, x: sprite.x, y: sprite.y + sprite.height / 2, cursor: "col-resize", resizeDirection: DIRECTION.LEFT });
+                    drawResizeHandle({ context, x: sprite.x + sprite.width, y: sprite.y + sprite.height / 2, cursor: "col-resize", resizeDirection: DIRECTION.RIGHT });
+                    drawResizeHandle({ context, x: sprite.x + sprite.width / 2, y: sprite.y, cursor: "row-resize", resizeDirection: DIRECTION.TOP });
+                    drawResizeHandle({ context, x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height, cursor: "row-resize", resizeDirection: DIRECTION.BOTTOM });
                 }
 
+                if (!editor.dragHandle && controls.mouseLeft &&
+                    controls.mousePixelX >= sprite.x && controls.mousePixelX <= sprite.x + sprite.width
+                    && controls.mousePixelY >= sprite.y && controls.mousePixelY <= sprite.y + sprite.height) {
+                    editor.startMove();
+                }
             }
-            else if (editor.dragMode === "RESIZE_SPRITES") {
+            else if (editor.dragMode === "RESIZE") {
                 if (editor.resizeDirection === DIRECTION.LEFT) {
                     context.strokeRect(
-                        spriteOrigin.x + controls.endMouseX - controls.startMouseX,
-                        spriteOrigin.y,
-                        handleWidth,
-                        spriteOrigin.height
+                        sprite.x + controls.endMouseX - controls.startMouseX,
+                        sprite.y,
+                        sprite.width + controls.startMouseX - controls.endMouseX,
+                        sprite.height
                     );
                 }
                 else if (editor.resizeDirection === DIRECTION.RIGHT) {
                     context.strokeRect(
-                        spriteOrigin.x + spriteOrigin.width + controls.endMouseX - controls.startMouseX - handleWidth,
-                        spriteOrigin.y,
-                        handleWidth,
-                        spriteOrigin.height
+                        sprite.x,
+                        sprite.y,
+                        sprite.width + controls.endMouseX - controls.startMouseX,
+                        sprite.height
                     );
                 }
                 else if (editor.resizeDirection === DIRECTION.TOP) {
                     context.strokeRect(
-                        spriteOrigin.x,
-                        spriteOrigin.y + controls.endMouseY - controls.startMouseY,
-                        spriteOrigin.width,
-                        handleHeight
+                        sprite.x,
+                        sprite.y + controls.endMouseY - controls.startMouseY,
+                        sprite.width,
+                        sprite.height + controls.startMouseY - controls.endMouseY
                     );
                 }
                 else if (editor.resizeDirection === DIRECTION.BOTTOM) {
                     context.strokeRect(
-                        spriteOrigin.x,
-                        spriteOrigin.y + spriteOrigin.height + controls.endMouseY - controls.startMouseY - handleHeight,
-                        spriteOrigin.width,
-                        handleHeight
+                        sprite.x,
+                        sprite.y,
+                        sprite.width,
+                        sprite.height + controls.endMouseY - controls.startMouseY
                     );
                 }
             }
@@ -1973,6 +1886,7 @@ function drawEditorStuff() {
 
     context.lineWidth = 1;
     context.strokeStyle = "#ffffff";
+    context.globalCompositeOperation = "difference";
     context.setLineDash([editor.grid.width, editor.grid.width]);
     context.strokeRect(scene.left, scene.top, scene.width, scene.height);
 
@@ -2023,6 +1937,33 @@ function drawEditorStuff() {
         drawCaption({ text: "Game Over (Reset game)", y: 0.9 });
     }
 
+}
+
+function drawResizeHandle({ context, x, y, cursor, radius = 14, resizeDirection }) {
+
+    context.fillStyle = "#ffffff";
+    context.strokeStyle = "#000000";
+
+    if (!editor.dragHandle &&
+        controls.mousePixelX >= x - radius / 2 &&
+        controls.mousePixelX <= x + radius / 2 &&
+        controls.mousePixelY >= y - radius / 2 &&
+        controls.mousePixelY <= y + radius / 2) {
+        context.canvas.style.cursor = cursor;
+        context.fillStyle = "#80ff80";
+        if (controls.mouseLeft) {
+            editor.startResize({ resizeDirection });
+        }
+    }
+
+    if (editor.dragHandle) {
+        return;
+    }
+
+    context.beginPath();
+    context.arc(x, y, radius / 2, 0, Math.PI * 2);
+    context.stroke();
+    context.fill();
 }
 
 function drawSpriteInfo(context) {

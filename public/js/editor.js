@@ -40,6 +40,163 @@ const editor = {
     isPlayer: false,
     spriteDirection: DIRECTION.RIGHT,
 
+    startResize({ dragMode, resizeDirection, lockWidth = false, lockHeight = false }) {
+        if (!this.dragHandle) {
+            this.dragHandle = {
+                startX: Math.round(controls.mouseX / this.grid.width) * this.grid.width,
+                startY: Math.round(controls.mouseY / this.grid.height) * this.grid.height,
+                lockWidth,
+                lockHeight
+            };
+            this.dragMode = "RESIZE";
+            this.resizeDirection = resizeDirection;
+        }
+    },
+
+    endResize() {
+        this.save();
+
+        if (this.idsOfSelectedTiles.length > 0) {
+            this.idsOfSelectedTiles
+                .map(id => scene.tiles.find(tile => tile.id === id))
+                .forEach(tile => {
+                    if (this.resizeDirection === DIRECTION.LEFT) {
+                        const left = Math.min(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
+                        const right = Math.max(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
+                        tile.width = right - left;
+                        tile.x = left;
+                    }
+                    if (this.resizeDirection === DIRECTION.RIGHT) {
+                        const left = Math.min(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
+                        const right = Math.max(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
+                        tile.width = right - left;
+                        tile.x = left;
+                    }
+                    if (this.resizeDirection === DIRECTION.TOP) {
+                        const top = Math.min(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
+                        const bottom = Math.max(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
+                        tile.height = bottom - top;
+                        tile.y = top;
+                    }
+                    if (this.resizeDirection === DIRECTION.BOTTOM) {
+                        const top = Math.min(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
+                        const bottom = Math.max(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
+                        tile.height = bottom - top;
+                        tile.y = top;
+                    }
+                    updateTileCanvas(tile);
+                    tileLayers.update = true;
+                });
+
+            worker.postMessage({
+                action: "UPDATE",
+                tiles: scene.tiles
+            });
+            tileLayers.update = true;
+        }
+
+        if (this.idsOfSelectedSprites.length > 0) {
+            this.idsOfSelectedSprites
+                .map(id => scene.sprites.find(sprite => sprite.id === id))
+                .filter(sprite => spriteTypes[sprite.typeId].resizable)
+                .forEach(sprite => {
+                    if (this.resizeDirection === DIRECTION.LEFT) {
+                        const left = Math.min(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
+                        const right = Math.max(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
+                        sprite.width = right - left;
+                        sprite.x = left;
+                    }
+                    if (this.resizeDirection === DIRECTION.RIGHT) {
+                        const left = Math.min(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
+                        const right = Math.max(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
+                        sprite.width = right - left;
+                        sprite.x = left;
+                    }
+                    if (this.resizeDirection === DIRECTION.TOP) {
+                        const top = Math.min(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
+                        const bottom = Math.max(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
+                        sprite.height = bottom - top;
+                        sprite.y = top;
+                    }
+                    if (this.resizeDirection === DIRECTION.BOTTOM) {
+                        const top = Math.min(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
+                        const bottom = Math.max(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
+                        sprite.height = bottom - top;
+                        sprite.y = top;
+                    }
+                });
+
+            worker.postMessage({
+                action: "UPDATE",
+                sprites: this.idsOfSelectedSprites.map(id => {
+                    let sceneSprite = scene.sprites.find(sprite => sprite.id === id);
+                    let gameSprite = sprites.find(sprite => sprite.id === id);
+                    // shouldn't really modify the sprites-array here : /
+
+                    if (this.resizeDirection === DIRECTION.LEFT) {
+                        gameSprite.x += gameSprite.width - sceneSprite.width;
+                    }
+
+                    if (this.resizeDirection === DIRECTION.UP) {
+                        gameSprite.y += gameSprite.height - sceneSprite.height;
+                    }
+                    gameSprite.width = sceneSprite.width;
+                    gameSprite.height = sceneSprite.height;
+                    return gameSprite;
+                })
+            });
+        }
+
+        this.dragHandle = undefined;
+        this.updateUI();
+    },
+
+    startMove() {
+        if (!this.dragMode) {
+            this.dragMode = "MOVE";
+        }
+    },
+
+    endMove() {
+        this.save();
+        if (this.idsOfSelectedTiles.length > 0) {
+            this.idsOfSelectedTiles
+                .map(id => scene.tiles.find(tile => tile.id === id))
+                .forEach(tile => {
+                    tile.x += controls.endMouseX - controls.startMouseX;
+                    tile.y += controls.endMouseY - controls.startMouseY;
+                });
+
+            worker.postMessage({
+                action: "UPDATE",
+                tiles: scene.tiles
+            });
+            tileLayers.update = true;
+        }
+
+        if (this.idsOfSelectedSprites.length > 0) {
+            this.idsOfSelectedSprites
+                .map(id => scene.sprites.find(sprite => sprite.id === id))
+                .forEach(sprite => {
+                    let gameSprite = sprites.find(s => s.id === sprite.id);
+                    if (gameSprite) {
+                        if (gameSprite.x === sprite.x && gameSprite.y === sprite.y) {
+                            gameSprite.x += controls.endMouseX - controls.startMouseX;
+                            gameSprite.y += controls.endMouseY - controls.startMouseY;
+                        }
+                        sprite.x += controls.endMouseX - controls.startMouseX;
+                        sprite.y += controls.endMouseY - controls.startMouseY;
+                    }
+                });
+
+            worker.postMessage({
+                action: "UPDATE",
+                sprites: this.idsOfSelectedSprites.map(id => sprites.find(sprite => sprite.id === id))
+            });
+        }
+        this.updateUI();
+    },
+
     clearScene() {
         this.save();
         this.idsOfSelectedTiles = [];
@@ -280,6 +437,7 @@ const editor = {
         worker.postMessage({ action: "ADD_TILE", tile: props });
         updateTileCanvas(tile, true);
         tileLayers.update = true;
+        this.updateUI();
     },
 
     addSprite(props) {
@@ -290,6 +448,7 @@ const editor = {
         };
         scene.sprites.push(sprite);
         worker.postMessage({ action: "ADD_SPRITE", sprite });
+        this.updateUI();
     },
 
     removeSelected() {
@@ -309,6 +468,7 @@ const editor = {
         this.idsOfSelectedTiles = [];
         this.idsOfSelectedSprites = [];
         tileLayers.update = true;
+        this.updateUI();
     },
 
     setTileLayer(value) {
@@ -407,6 +567,7 @@ const editor = {
             });
         }
         tileLayers.update = true;
+        this.updateUI();
     },
 
     setTileFillColor(color) {
@@ -583,6 +744,7 @@ const editor = {
             */
         }
         tileLayers.update = true;
+        this.updateUI();
     },
 
     moveToFront() {
@@ -610,6 +772,7 @@ const editor = {
             */
         }
         tileLayers.update = true;
+        this.updateUI();
     },
 
     setWidth(value) {
@@ -629,6 +792,7 @@ const editor = {
 
         document.getElementById("width").value = value;
         tileLayers.update = true;
+        this.updateUI();
     },
 
     setHeight(value) {
@@ -648,6 +812,7 @@ const editor = {
 
         document.getElementById("height").value = value;
         tileLayers.update = true;
+        this.updateUI();
     },
 
     updateUI() {
@@ -754,7 +919,7 @@ const onMouseDownListener = event => {
         editor.dragMode = "DRAW";
     }
     else if (clickedTiles.length > 0) {
-
+        /*
         clickedTiles.forEach(tile => {
             if (controls.mouseX < tile.x + Math.max(tile.width / 4, RESIZE_HANDLE_WIDTH)) {
                 editor.resizeDirection = DIRECTION.LEFT;
@@ -776,8 +941,10 @@ const onMouseDownListener = event => {
                 editor.dragMode = "MOVE_TILES";
             }
         });
+        */
     }
     else if (clickedSprites.length > 0) {
+        /*
         clickedSprites.forEach(sprite => {
             if (spriteTypes[sprite.typeId].resizable) {
                 if (controls.mouseX < sprite.x + Math.max(sprite.width / 4, RESIZE_HANDLE_WIDTH)) {
@@ -802,7 +969,7 @@ const onMouseDownListener = event => {
             } else {
                 editor.dragMode = "MOVE_SPRITES";
             }
-        });
+        });*/
     }
 
     event.preventDefault();
@@ -852,61 +1019,13 @@ const onMouseUpListener = event => {
 
     let message = null;
 
-    if (editor.dragMode === "RESIZE_TILES") {
-        editor.save();
-        editor.idsOfSelectedTiles
-            .map(id => scene.tiles.find(tile => tile.id === id))
-            .forEach(tile => {
-                if (editor.resizeDirection === DIRECTION.LEFT) {
-                    const left = Math.min(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
-                    const right = Math.max(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
-                    tile.width = right - left;
-                    tile.x = left;
-                }
-                if (editor.resizeDirection === DIRECTION.RIGHT) {
-                    const left = Math.min(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
-                    const right = Math.max(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
-                    tile.width = right - left;
-                    tile.x = left;
-                }
-                if (editor.resizeDirection === DIRECTION.TOP) {
-                    const top = Math.min(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
-                    const bottom = Math.max(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
-                    tile.height = bottom - top;
-                    tile.y = top;
-                }
-                if (editor.resizeDirection === DIRECTION.BOTTOM) {
-                    const top = Math.min(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
-                    const bottom = Math.max(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
-                    tile.height = bottom - top;
-                    tile.y = top;
-                }
-                updateTileCanvas(tile);
-                tileLayers.update = true;
-            });
-
-        worker.postMessage({
-            action: "UPDATE",
-            tiles: scene.tiles
-        });
-        tileLayers.update = true;
-        //updateTileCanvases(true);
-        // update JSON
+    if (editor.dragMode === "RESIZE") {
+        editor.endResize();
     }
-    else if (editor.dragMode === "MOVE_TILES") {
-        editor.idsOfSelectedTiles
-            .map(id => scene.tiles.find(tile => tile.id === id))
-            .forEach(tile => {
-                tile.x += controls.endMouseX - controls.startMouseX;
-                tile.y += controls.endMouseY - controls.startMouseY;
-            });
-
-        worker.postMessage({
-            action: "UPDATE",
-            tiles: scene.tiles
-        });
-        tileLayers.update = true;
+    else if (editor.dragMode === "MOVE") {
+        editor.endMove();
     }
+    /*
     else if (editor.dragMode === "RESIZE_SPRITES") {
         editor.idsOfSelectedSprites
             .map(id => scene.sprites.find(sprite => sprite.id === id))
@@ -978,6 +1097,7 @@ const onMouseUpListener = event => {
             sprites: editor.idsOfSelectedSprites.map(id => sprites.find(sprite => sprite.id === id))
         });
     }
+    */
     else if (editor.dragMode === "DRAW" && controls.mouseLeft) {
 
         if (!event.shiftKey) {
@@ -1258,11 +1378,21 @@ const onMouseUpListener = event => {
                 });
             }
             else if (tool.startsWith("draw-sprite")) {
-                editor.addSprite({
-                    typeId: tool.split("draw-sprite-")[1],
-                    direction: editor.spriteDirection,
-                    ...area
-                });
+                const typeId = tool.split("draw-sprite-")[1];
+                const type = spriteTypes[typeId];
+                if (type.resizable) {
+                    editor.addSprite({
+                        typeId,
+                        direction: editor.spriteDirection,
+                        ...area
+                    });
+                }
+                else {
+                    editor.addSprite({
+                        typeId,
+                        direction: editor.spriteDirection
+                    });
+                }
             }
             else if (tool === "select-tiles") {
                 editor.selectTiles(scene.tiles.filter(tile =>
@@ -1357,7 +1487,7 @@ const onMouseUpListener = event => {
     editor.dragMode = undefined;
     editor.resizeDirection = undefined;
 
-    document.getElementById("source").value = JSON.stringify(scene, null, ' ');
+    //document.getElementById("source").value = JSON.stringify(scene, null, ' ');
 };
 
 /*
