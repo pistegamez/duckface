@@ -310,7 +310,9 @@ function move() {
                     let inertia = 1;
                     sprite.collisionData.tileIds.forEach(tileId => {
                         const tile = tiles.find(tile => tile.id === tileId);
-                        inertia = Math.min(inertia, tileMaterials[tile.materialId].inertia);
+                        if (tile) {
+                            inertia = Math.min(inertia, tileMaterials[tile.materialId].inertia);
+                        }
                     });
                     sprite.velocity.x *= inertia;
                 }
