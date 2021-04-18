@@ -1,8 +1,8 @@
 {
   "id": "oh-horror",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-29T19:14:35.128Z",
-  "lastEdit": "2021-03-31T08:30:39.250Z",
+  "lastEdit": "2021-04-11T17:52:06.280Z",
   "title": "Oh, the Horror!",
   "author": "Janne Kivilahti",
   "bgColor": "#5a4568",
@@ -22,6 +22,8 @@
   "horizontalLoop": true,
   "verticalLoop": true,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "c218540bee",
@@ -47,15 +49,17 @@
       "x": 408,
       "y": 216,
       "width": 64,
-      "height": 8
+      "height": 8,
+      "direction": 4
     },
     {
       "id": "08472e4b01",
       "typeId": "platform-horizontal",
-      "x": 304,
+      "x": 536,
       "y": 488,
       "width": 136,
-      "height": 24
+      "height": 24,
+      "direction": 4
     },
     {
       "id": "0051c86530",
@@ -297,7 +301,13 @@
       "x": -24,
       "y": -16,
       "width": 64,
-      "height": 48
+      "height": 48,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": false
+      }
     },
     {
       "id": "29fffcec29",
@@ -481,7 +491,13 @@
       "x": -32,
       "y": 320,
       "width": 72,
-      "height": 296
+      "height": 296,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "f0cb0db328",
@@ -489,7 +505,13 @@
       "x": 704,
       "y": 80,
       "width": 120,
-      "height": 24
+      "height": 24,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "7f9cb9212d",
@@ -497,7 +519,13 @@
       "x": 768,
       "y": 320,
       "width": 56,
-      "height": 304
+      "height": 48,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "d9c15e648c",
@@ -505,7 +533,13 @@
       "x": -32,
       "y": 80,
       "width": 92,
-      "height": 32
+      "height": 32,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
+      }
     },
     {
       "id": "fb22616a27",
@@ -546,7 +580,13 @@
       "x": 744,
       "y": 368,
       "width": 24,
-      "height": 40
+      "height": 40,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "32ac8221fc",
@@ -650,7 +690,13 @@
       "x": 768,
       "y": -24,
       "width": 48,
-      "height": 56
+      "height": 56,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "e7dea60e40",
@@ -701,6 +747,34 @@
       "y": 488,
       "width": 24,
       "height": 24
+    },
+    {
+      "id": "d059de66b9",
+      "color": "#a482b0",
+      "x": 768,
+      "y": 368,
+      "width": 56,
+      "height": 40,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "0e89f81168",
+      "color": "#a482b0",
+      "x": 768,
+      "y": 408,
+      "width": 56,
+      "height": 208,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": true
+      }
     }
   ]
 }
