@@ -1,5 +1,8 @@
 {
   "id": "living-stones",
+  "version": "1.1",
+  "created": "2021-04-11T19:18:01.432Z",
+  "lastEdit": "2021-04-12T15:15:34.875Z",
   "title": "Living Stones",
   "author": "Janne Kivilahti",
   "bgColor": "#abb3bf",
@@ -32,6 +35,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "cc01c0e55f",
@@ -236,7 +241,13 @@
       "x": -16,
       "y": 344,
       "width": 304,
-      "height": 264
+      "height": 256,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "2f61ca3f1f",
@@ -244,7 +255,13 @@
       "x": 288,
       "y": 384,
       "width": 336,
-      "height": 224
+      "height": 216,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "4991d5faad",
@@ -252,7 +269,13 @@
       "x": 624,
       "y": 424,
       "width": 376,
-      "height": 184
+      "height": 176,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "8ede1ebc36",
@@ -260,11 +283,11 @@
       "x": 1000,
       "y": 384,
       "width": 184,
-      "height": 224,
+      "height": 216,
       "borders": {
         "t": true,
         "r": false,
-        "b": true,
+        "b": false,
         "l": true
       }
     },
@@ -299,11 +322,11 @@
       "x": 1360,
       "y": 328,
       "width": 232,
-      "height": 288,
+      "height": 272,
       "borders": {
         "t": true,
         "r": true,
-        "b": true,
+        "b": false,
         "l": false
       }
     },
@@ -313,11 +336,11 @@
       "x": 1184,
       "y": 384,
       "width": 176,
-      "height": 224,
+      "height": 216,
       "borders": {
         "t": false,
         "r": false,
-        "b": true,
+        "b": false,
         "l": false
       }
     },
@@ -334,24 +357,30 @@
       "color": "#7c96a2",
       "x": 1784,
       "y": 328,
-      "width": 240,
+      "width": 216,
       "height": 56
     },
     {
       "id": "f50b5913c6",
       "color": "#7c96a2",
       "x": 1976,
-      "y": -16,
-      "width": 32,
-      "height": 344
+      "y": 0,
+      "width": 24,
+      "height": 328,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "ba192c5bd7",
       "color": "#7c96a2",
       "x": 1816,
       "y": 480,
-      "width": 192,
-      "height": 128
+      "width": 184,
+      "height": 120
     },
     {
       "id": "6dfac33110",
@@ -359,7 +388,7 @@
       "x": 1592,
       "y": 560,
       "width": 240,
-      "height": 48
+      "height": 40
     },
     {
       "id": "eb51c54abc",
@@ -510,7 +539,7 @@
       "color": "#7c96a2",
       "x": 1976,
       "y": 384,
-      "width": 32,
+      "width": 24,
       "height": 96
     },
     {
@@ -1240,10 +1269,16 @@
     {
       "id": "50659bb8ec",
       "color": "#7c96a2",
-      "x": -48,
+      "x": -40,
       "y": -16,
-      "width": 40,
-      "height": 360
+      "width": 32,
+      "height": 360,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "30efde8e28",
@@ -1314,10 +1349,10 @@
       "id": "89833c5765",
       "color": "#f2f9b8",
       "opacity": 0.2,
-      "x": 1696,
+      "x": 1880,
       "y": 0,
-      "width": 56,
-      "height": 560,
+      "width": 64,
+      "height": 328,
       "blocks": false,
       "borders": {
         "t": false,
