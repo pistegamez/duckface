@@ -1,8 +1,8 @@
 {
   "id": "lord-of-the-ring",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-04-03T12:10:37.088Z",
-  "lastEdit": "2021-04-03T12:15:04.171Z",
+  "lastEdit": "2021-04-11T15:55:10.929Z",
   "title": "Lord of the Ring",
   "author": "Janne Kivilahti",
   "bgColor": "#c9e6ad",
@@ -41,6 +41,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "b90574d0ea",
@@ -276,27 +278,12 @@
       }
     },
     {
-      "id": "298e769ce7",
-      "shape": 2,
-      "color": "#bababa",
-      "x": 48,
-      "y": 392,
-      "width": 128,
-      "height": 64
-    },
-    {
       "id": "7165901f54",
       "color": "#bababa",
       "x": 176,
       "y": 392,
       "width": 56,
-      "height": 64,
-      "borders": {
-        "t": true,
-        "r": true,
-        "b": false,
-        "l": false
-      }
+      "height": 64
     },
     {
       "id": "132d58e8cd",
@@ -354,6 +341,30 @@
       "height": 96,
       "layer": 1,
       "blocks": false
+    },
+    {
+      "id": "a2aa64124d",
+      "color": "#bababa",
+      "x": 112,
+      "y": 424,
+      "width": 56,
+      "height": 32
+    },
+    {
+      "id": "38c8356ade",
+      "color": "#bababa",
+      "x": 96,
+      "y": 448,
+      "width": 16,
+      "height": 8
+    },
+    {
+      "id": "7f5ba0e077",
+      "color": "#bababa",
+      "x": 144,
+      "y": 440,
+      "width": 64,
+      "height": 16
     }
   ]
 }
