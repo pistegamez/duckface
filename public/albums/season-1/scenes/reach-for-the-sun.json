@@ -1,8 +1,8 @@
 {
   "id": "reach-for-the-sun",
-  "version": "2.0",
+  "version": "3.0",
   "created": "2021-03-25T20:06:08.541Z",
-  "lastEdit": "2021-04-03T20:11:22.645Z",
+  "lastEdit": "2021-04-11T11:54:12.859Z",
   "title": "Reach for the Sun",
   "author": "Janne Kivilahti",
   "bgColor": "#ffdda3",
@@ -33,6 +33,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "b343ad9497",
@@ -170,9 +172,9 @@
       "id": "daca7e9bad",
       "shape": 5,
       "color": "#bd8f8f",
-      "x": 888,
+      "x": 840,
       "y": 408,
-      "width": 112,
+      "width": 160,
       "height": 192,
       "layer": 1,
       "borders": {
@@ -235,7 +237,7 @@
       "x": 328,
       "y": 272,
       "width": 168,
-      "height": 352,
+      "height": 328,
       "layer": 1
     },
     {
@@ -245,7 +247,7 @@
       "x": 200,
       "y": 328,
       "width": 208,
-      "height": 296,
+      "height": 272,
       "layer": 1
     },
     {
@@ -268,7 +270,13 @@
       "x": 168,
       "y": 536,
       "width": 184,
-      "height": 72
+      "height": 64,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "a4209b42ed",
@@ -276,7 +284,13 @@
       "x": 448,
       "y": 512,
       "width": 80,
-      "height": 88
+      "height": 88,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "be625d2839",
@@ -284,14 +298,20 @@
       "x": 624,
       "y": 512,
       "width": 80,
-      "height": 88
+      "height": 88,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "beb16876d7",
       "color": "#b08080",
       "x": 976,
       "y": 240,
-      "width": 40,
+      "width": 24,
       "height": 168,
       "borders": {
         "t": true,
@@ -303,9 +323,9 @@
     {
       "id": "a9ef759736",
       "color": "#b08080",
-      "x": -16,
+      "x": 0,
       "y": 144,
-      "width": 24,
+      "width": 8,
       "height": 352,
       "borders": {
         "t": true,
@@ -342,7 +362,13 @@
       "x": 352,
       "y": 584,
       "width": 96,
-      "height": 24
+      "height": 16,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "ba97747ce2",
@@ -350,7 +376,13 @@
       "x": 704,
       "y": 584,
       "width": 88,
-      "height": 24
+      "height": 16,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "6d2caa7df8",
@@ -359,7 +391,7 @@
       "x": 120,
       "y": 392,
       "width": 152,
-      "height": 224,
+      "height": 208,
       "layer": 1
     },
     {
@@ -369,7 +401,7 @@
       "x": 304,
       "y": 448,
       "width": 160,
-      "height": 176,
+      "height": 152,
       "layer": 1
     },
     {
