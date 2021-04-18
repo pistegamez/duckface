@@ -4,6 +4,7 @@
 /build/*.png
 /build/*.jpg
 /build/*.md
+/build/*.txt
 /build/*.css
 /build/*.json
 /build/js/*.js
