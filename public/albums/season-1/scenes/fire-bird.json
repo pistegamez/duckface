@@ -1,8 +1,8 @@
 {
   "id": "fire-bird",
-  "version": "2.0",
+  "version": "3.0",
   "created": "2021-03-29T17:25:40.015Z",
-  "lastEdit": "2021-04-09T16:41:52.662Z",
+  "lastEdit": "2021-04-18T13:28:36.748Z",
   "title": "Fire Bird",
   "author": "Janne Kivilahti",
   "bgColor": "#446874",
@@ -74,7 +74,7 @@
     {
       "id": "d572aa1ea7",
       "typeId": "1-eyed-zombie",
-      "direction": 4,
+      "direction": 2,
       "x": 328,
       "y": 720,
       "width": 56,
@@ -173,6 +173,14 @@
       "x": 680,
       "y": 1064,
       "width": 64,
+      "height": 32
+    },
+    {
+      "id": "facc525868",
+      "typeId": "chili",
+      "x": 664,
+      "y": 648,
+      "width": 16,
       "height": 32
     }
   ],

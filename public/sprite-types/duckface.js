@@ -19,7 +19,7 @@ spriteTypes.duckface = new SpriteType({
         },
         "warmup": {
             behaviours: ["unfails", "idles", "jumps", "moves", "grows", "dies", "collects"],
-            rounds: 150,
+            rounds: 100,
             next: "warmer",
             spriteProps: {
                 color: "#ff8080",
@@ -27,7 +27,7 @@ spriteTypes.duckface = new SpriteType({
         },
         "warmer": {
             behaviours: ["unfails", "idles", "jumps", "moves", "grows", "dies", "sweats", "collects"],
-            rounds: 150,
+            rounds: 100,
             next: "fire",
             spriteProps: {
                 color: "#ff0000",
