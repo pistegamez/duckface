@@ -1,17 +1,20 @@
 'use strict';
 
-// Refactoring
-// - add method to editor
-// - refactor callers
-// - add property to editor
-// - updateUI
-// - update draw tool
-// - update select tiles / sprites
-
 const RESIZE_HANDLE_WIDTH = 8;
 const RESIZE_HANDLE_HEIGHT = 8;
 
+const TOOLS = {
+    DRAW_TILE: 1,
+    DRAW_SPRITE: 2,
+    SELECT_TILES: 3,
+    SELECT_SPRITES: 4
+}
+
 const editor = {
+    tool: TOOLS.DRAW_TILE,
+    tileShape: SHAPES.BOX,
+    spriteTypeId: undefined,
+
     dragMode: undefined,
     dragHandle: undefined,
     grid: {
@@ -40,7 +43,29 @@ const editor = {
     isPlayer: false,
     spriteDirection: DIRECTION.RIGHT,
 
-    startResize({ dragMode, resizeDirection, lockWidth = false, lockHeight = false }) {
+    setTool({ tool, tileShape, spriteTypeId, id }) {
+        console.log(`Set tool: ${tool} ${tileShape || spriteTypeId} ${id}`)
+        this.tool = tool;
+        this.tileShape = tileShape;
+        this.spriteTypeId = spriteTypeId;
+        const buttons = document.getElementsByClassName("tool-button");
+        Array.prototype.forEach.call(buttons, button => {
+            if (button.id === id) {
+                button.className = "tool-button selected";
+            }
+            else {
+                button.className = "tool-button";
+            }
+        });
+
+        document.getElementById("fieldset-tile").style.display = tileShape ? null : "none";
+        document.getElementById("fieldset-tile-layer").style.display = tileShape ? null : "none";
+        document.getElementById("fieldset-tile-borders").style.display = tileShape ? null : "none";
+        document.getElementById("fieldset-tile-colors").style.display = tileShape ? null : "none";
+        document.getElementById("fieldset-scene-palette").style.display = tileShape ? null : "none";
+    },
+
+    startResize({ resizeDirections, lockWidth = false, lockHeight = false }) {
         if (!this.dragHandle) {
             this.dragHandle = {
                 startX: Math.round(controls.mouseX / this.grid.width) * this.grid.width,
@@ -49,7 +74,7 @@ const editor = {
                 lockHeight
             };
             this.dragMode = "RESIZE";
-            this.resizeDirection = resizeDirection;
+            this.resizeDirections = [...resizeDirections];
         }
     },
 
@@ -60,25 +85,25 @@ const editor = {
             this.idsOfSelectedTiles
                 .map(id => scene.tiles.find(tile => tile.id === id))
                 .forEach(tile => {
-                    if (this.resizeDirection === DIRECTION.LEFT) {
+                    if (this.resizeDirections.includes(DIRECTION.LEFT)) {
                         const left = Math.min(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
                         const right = Math.max(tile.x + controls.endMouseX - controls.startMouseX, tile.x + tile.width);
                         tile.width = right - left;
                         tile.x = left;
                     }
-                    if (this.resizeDirection === DIRECTION.RIGHT) {
+                    if (this.resizeDirections.includes(DIRECTION.RIGHT)) {
                         const left = Math.min(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
                         const right = Math.max(tile.x + tile.width + controls.endMouseX - controls.startMouseX, tile.x);
                         tile.width = right - left;
                         tile.x = left;
                     }
-                    if (this.resizeDirection === DIRECTION.TOP) {
+                    if (this.resizeDirections.includes(DIRECTION.TOP)) {
                         const top = Math.min(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
                         const bottom = Math.max(tile.y + controls.endMouseY - controls.startMouseY, tile.y + tile.height);
                         tile.height = bottom - top;
                         tile.y = top;
                     }
-                    if (this.resizeDirection === DIRECTION.BOTTOM) {
+                    if (this.resizeDirections.includes(DIRECTION.BOTTOM)) {
                         const top = Math.min(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
                         const bottom = Math.max(tile.y + tile.height + controls.endMouseY - controls.startMouseY, tile.y);
                         tile.height = bottom - top;
@@ -100,25 +125,25 @@ const editor = {
                 .map(id => scene.sprites.find(sprite => sprite.id === id))
                 .filter(sprite => spriteTypes[sprite.typeId].resizable)
                 .forEach(sprite => {
-                    if (this.resizeDirection === DIRECTION.LEFT) {
+                    if (this.resizeDirections.includes(DIRECTION.LEFT)) {
                         const left = Math.min(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
                         const right = Math.max(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
                         sprite.width = right - left;
                         sprite.x = left;
                     }
-                    if (this.resizeDirection === DIRECTION.RIGHT) {
+                    if (this.resizeDirections.includes(DIRECTION.RIGHT)) {
                         const left = Math.min(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
                         const right = Math.max(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
                         sprite.width = right - left;
                         sprite.x = left;
                     }
-                    if (this.resizeDirection === DIRECTION.TOP) {
+                    if (this.resizeDirections.includes(DIRECTION.TOP)) {
                         const top = Math.min(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
                         const bottom = Math.max(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
                         sprite.height = bottom - top;
                         sprite.y = top;
                     }
-                    if (this.resizeDirection === DIRECTION.BOTTOM) {
+                    if (this.resizeDirections.includes(DIRECTION.BOTTOM)) {
                         const top = Math.min(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
                         const bottom = Math.max(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
                         sprite.height = bottom - top;
@@ -133,11 +158,11 @@ const editor = {
                     let gameSprite = sprites.find(sprite => sprite.id === id);
                     // shouldn't really modify the sprites-array here : /
 
-                    if (this.resizeDirection === DIRECTION.LEFT) {
+                    if (this.resizeDirections.includes(DIRECTION.LEFT)) {
                         gameSprite.x += gameSprite.width - sceneSprite.width;
                     }
 
-                    if (this.resizeDirection === DIRECTION.UP) {
+                    if (this.resizeDirections.includes(DIRECTION.UP)) {
                         gameSprite.y += gameSprite.height - sceneSprite.height;
                     }
                     gameSprite.width = sceneSprite.width;
@@ -461,8 +486,8 @@ const editor = {
             spriteIds: [...this.idsOfSelectedSprites]
         });
 
-        this.idsOfSelectedTiles.forEach(tile => {
-            removeTileCanvasById(tile.id);
+        this.idsOfSelectedTiles.forEach(tileId => {
+            removeTileCanvasById(tileId);
         });
 
         this.idsOfSelectedTiles = [];
@@ -918,59 +943,6 @@ const onMouseDownListener = event => {
     if (clickedTiles.length === 0 && clickedSprites.length === 0) {
         editor.dragMode = "DRAW";
     }
-    else if (clickedTiles.length > 0) {
-        /*
-        clickedTiles.forEach(tile => {
-            if (controls.mouseX < tile.x + Math.max(tile.width / 4, RESIZE_HANDLE_WIDTH)) {
-                editor.resizeDirection = DIRECTION.LEFT;
-                editor.dragMode = "RESIZE_TILES";
-            }
-            else if (controls.mouseX > tile.x + tile.width - Math.max(tile.width / 4, RESIZE_HANDLE_WIDTH)) {
-                editor.resizeDirection = DIRECTION.RIGHT;
-                editor.dragMode = "RESIZE_TILES";
-            }
-            else if (controls.mouseY < tile.y + Math.max(tile.height / 4, RESIZE_HANDLE_HEIGHT)) {
-                editor.resizeDirection = DIRECTION.TOP;
-                editor.dragMode = "RESIZE_TILES";
-            }
-            else if (controls.mouseY > tile.y + tile.height - Math.max(tile.height / 4, RESIZE_HANDLE_HEIGHT)) {
-                editor.resizeDirection = DIRECTION.BOTTOM;
-                editor.dragMode = "RESIZE_TILES";
-            }
-            else {
-                editor.dragMode = "MOVE_TILES";
-            }
-        });
-        */
-    }
-    else if (clickedSprites.length > 0) {
-        /*
-        clickedSprites.forEach(sprite => {
-            if (spriteTypes[sprite.typeId].resizable) {
-                if (controls.mouseX < sprite.x + Math.max(sprite.width / 4, RESIZE_HANDLE_WIDTH)) {
-                    editor.resizeDirection = DIRECTION.LEFT;
-                    editor.dragMode = "RESIZE_SPRITES";
-                }
-                else if (controls.mouseX > sprite.x + sprite.width - Math.max(sprite.width / 4, RESIZE_HANDLE_WIDTH)) {
-                    editor.resizeDirection = DIRECTION.RIGHT;
-                    editor.dragMode = "RESIZE_SPRITES";
-                }
-                else if (controls.mouseY < sprite.y + Math.max(sprite.height / 4, RESIZE_HANDLE_HEIGHT)) {
-                    editor.resizeDirection = DIRECTION.TOP;
-                    editor.dragMode = "RESIZE_SPRITES";
-                }
-                else if (controls.mouseY > sprite.y + sprite.height - Math.max(sprite.height / 4, RESIZE_HANDLE_HEIGHT)) {
-                    editor.resizeDirection = DIRECTION.BOTTOM;
-                    editor.dragMode = "RESIZE_SPRITES";
-                }
-                else {
-                    editor.dragMode = "MOVE_SPRITES";
-                }
-            } else {
-                editor.dragMode = "MOVE_SPRITES";
-            }
-        });*/
-    }
 
     event.preventDefault();
     event.stopPropagation();
@@ -1015,8 +987,6 @@ const onMouseUpListener = event => {
         height: Math.max(controls.startMouseY, controls.endMouseY) - Math.min(controls.startMouseY, controls.endMouseY)
     };
 
-    const tool = document.querySelector('input[name="tool"]:checked').value;
-
     let message = null;
 
     if (editor.dragMode === "RESIZE") {
@@ -1025,79 +995,6 @@ const onMouseUpListener = event => {
     else if (editor.dragMode === "MOVE") {
         editor.endMove();
     }
-    /*
-    else if (editor.dragMode === "RESIZE_SPRITES") {
-        editor.idsOfSelectedSprites
-            .map(id => scene.sprites.find(sprite => sprite.id === id))
-            .filter(sprite => spriteTypes[sprite.typeId].resizable)
-            .forEach(sprite => {
-                if (editor.resizeDirection === DIRECTION.LEFT) {
-                    const left = Math.min(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
-                    const right = Math.max(sprite.x + controls.endMouseX - controls.startMouseX, sprite.x + sprite.width);
-                    sprite.width = right - left;
-                    sprite.x = left;
-                }
-                if (editor.resizeDirection === DIRECTION.RIGHT) {
-                    const left = Math.min(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
-                    const right = Math.max(sprite.x + sprite.width + controls.endMouseX - controls.startMouseX, sprite.x);
-                    sprite.width = right - left;
-                    sprite.x = left;
-                }
-                if (editor.resizeDirection === DIRECTION.TOP) {
-                    const top = Math.min(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
-                    const bottom = Math.max(sprite.y + controls.endMouseY - controls.startMouseY, sprite.y + sprite.height);
-                    sprite.height = bottom - top;
-                    sprite.y = top;
-                }
-                if (editor.resizeDirection === DIRECTION.BOTTOM) {
-                    const top = Math.min(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
-                    const bottom = Math.max(sprite.y + sprite.height + controls.endMouseY - controls.startMouseY, sprite.y);
-                    sprite.height = bottom - top;
-                    sprite.y = top;
-                }
-            });
-
-        worker.postMessage({
-            action: "UPDATE",
-            sprites: editor.idsOfSelectedSprites.map(id => {
-                let sceneSprite = scene.sprites.find(sprite => sprite.id === id);
-                let gameSprite = sprites.find(sprite => sprite.id === id);
-                // shouldn't really modify the sprites-array : /
-
-                if (editor.resizeDirection === DIRECTION.LEFT) {
-                    gameSprite.x += gameSprite.width - sceneSprite.width;
-                }
-
-                if (editor.resizeDirection === DIRECTION.UP) {
-                    gameSprite.y += gameSprite.height - sceneSprite.height;
-                }
-                gameSprite.width = sceneSprite.width;
-                gameSprite.height = sceneSprite.height;
-                return gameSprite;
-            })
-        });
-    }
-    else if (editor.dragMode === "MOVE_SPRITES") {
-        editor.idsOfSelectedSprites
-            .map(id => scene.sprites.find(sprite => sprite.id === id))
-            .forEach(sprite => {
-                let gameSprite = sprites.find(s => s.id === sprite.id);
-                if (gameSprite) {
-                    if (gameSprite.x === sprite.x && gameSprite.y === sprite.y) {
-                        gameSprite.x += controls.endMouseX - controls.startMouseX;
-                        gameSprite.y += controls.endMouseY - controls.startMouseY;
-                    }
-                    sprite.x += controls.endMouseX - controls.startMouseX;
-                    sprite.y += controls.endMouseY - controls.startMouseY;
-                }
-            });
-
-        worker.postMessage({
-            action: "UPDATE",
-            sprites: editor.idsOfSelectedSprites.map(id => sprites.find(sprite => sprite.id === id))
-        });
-    }
-    */
     else if (editor.dragMode === "DRAW" && controls.mouseLeft) {
 
         if (!event.shiftKey) {
@@ -1106,302 +1003,50 @@ const onMouseUpListener = event => {
         }
 
         if (area.width >= editor.grid.width && area.height >= editor.grid.height) {
-            if (tool === "draw-tile-box") {
+
+            if (editor.tool === TOOLS.DRAW_TILE) {
                 editor.addTile({
                     id: generateId(),
-                    shape: SHAPES.BOX,
+                    shape: editor.tileShape,
                     color: editor.fillColor,
                     stroke: editor.strokeColor,
                     opacity: editor.opacity,
                     transparent: editor.transparent,
-                    layer: editor.tileLayer,
+                    layer: editor.tileShape === SHAPES.TOP_DOWN ? LAYERS.BACKGROUND : editor.tileLayer,
                     blocks: editor.tileLayer === LAYERS.BACKGROUND ? false : editor.blocks,
                     materialId: editor.tileMaterialId,
                     borders: editor.borders,
                     ...area
                 });
             }
-            else if (tool === "draw-tile-slope-left") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.SLOPE_LEFT,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: editor.tileLayer,
-                    blocks: editor.tileLayer === LAYERS.BACKGROUND ? false : editor.blocks,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-tile-slope-right") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.SLOPE_RIGHT,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: editor.tileLayer,
-                    blocks: editor.tileLayer === LAYERS.BACKGROUND ? false : editor.blocks,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-tile-sloping-ceiling-left") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.SLOPING_CEILING_LEFT,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: editor.tileLayer,
-                    blocks: editor.tileLayer === LAYERS.BACKGROUND ? false : editor.blocks,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-tile-sloping-ceiling-right") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.SLOPING_CEILING_RIGHT,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: editor.tileLayer,
-                    blocks: editor.tileLayer === LAYERS.BACKGROUND ? false : editor.blocks,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-tile-top-down") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.TOP_DOWN,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: LAYERS.BACKGROUND,
-                    blocks: editor.blocks,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-tile-shading") {
-                editor.addTile({
-                    id: generateId(),
-                    shape: SHAPES.SHADING,
-                    color: editor.fillColor,
-                    stroke: editor.strokeColor,
-                    opacity: editor.opacity,
-                    transparent: editor.transparent,
-                    layer: editor.tileLayer,
-                    blocks: false,
-                    materialId: editor.tileMaterialId,
-                    borders: editor.borders,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-duckface") {
-                editor.addSprite({
-                    typeId: "duckface",
-                    isPlayer: editor.isPlayer,
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-egg") {
-                editor.addSprite({
-                    typeId: "egg",
-                    isPlayer: editor.isPlayer,
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-pighead") {
-                editor.addSprite({
-                    typeId: "pighead",
-                    isPlayer: editor.isPlayer,
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-box") {
-                editor.addSprite({
-                    typeId: "box",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-living-stone") {
-                editor.addSprite({
-                    typeId: "living-stone",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-cheeks") {
-                editor.addSprite({
-                    typeId: "cheeks",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-rabbit") {
-                editor.addSprite({
-                    typeId: "rabbit",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-torso") {
-                editor.addSprite({
-                    typeId: "torso",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-ghost") {
-                editor.addSprite({
-                    typeId: "ghost",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-platform-horizontal") {
-                editor.addSprite({
-                    typeId: "platform-horizontal",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-platform-vertical") {
-                editor.addSprite({
-                    typeId: "platform-vertical",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-zombie") {
-                editor.addSprite({
-                    typeId: "zombie",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-1-eyed-zombie") {
-                editor.addSprite({
-                    typeId: "1-eyed-zombie",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-spikes-up") {
-                editor.addSprite({
-                    typeId: "spikes-up",
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-chill-n-fire") {
-                editor.addSprite({
-                    typeId: "chill-n-fire",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-pill-mega-placebo") {
-                editor.addSprite({
-                    typeId: "pill-mega-placebo",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-burger") {
-                editor.addSprite({
-                    typeId: "burger",
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-carrot") {
-                editor.addSprite({
-                    typeId: "carrot",
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-key") {
-                editor.addSprite({
-                    typeId: "key",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-eye") {
-                editor.addSprite({
-                    typeId: "eye",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-lock") {
-                editor.addSprite({
-                    typeId: "lock",
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-heart") {
-                editor.addSprite({
-                    typeId: "heart",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-flying-heart") {
-                editor.addSprite({
-                    typeId: "flying-heart",
-                    direction: editor.spriteDirection,
-                    ...area
-                });
-            }
-            else if (tool === "draw-sprite-exit-door") {
-                editor.addSprite({
-                    typeId: "exit-door",
-                    ...area
-                });
-            }
-            else if (tool.startsWith("draw-sprite")) {
-                const typeId = tool.split("draw-sprite-")[1];
-                const type = spriteTypes[typeId];
+            else if (editor.tool === TOOLS.DRAW_SPRITE) {
+                const type = spriteTypes[editor.spriteTypeId];
                 if (type.resizable) {
                     editor.addSprite({
-                        typeId,
+                        typeId: editor.spriteTypeId,
+                        isPlayer: editor.isPlayer,
                         direction: editor.spriteDirection,
                         ...area
                     });
                 }
                 else {
                     editor.addSprite({
-                        typeId,
-                        direction: editor.spriteDirection
+                        typeId: editor.spriteTypeId,
+                        x: area.x,
+                        y: area.y,
+                        width: type.spriteProps.width || 16,
+                        height: type.spriteProps.height || 16
                     });
                 }
             }
-            else if (tool === "select-tiles") {
+            else if (editor.tool === TOOLS.SELECT_TILES) {
                 editor.selectTiles(scene.tiles.filter(tile =>
                     tile.layer === editor.tileLayer &&
                     tile.x >= area.x && tile.x + tile.width <= area.x + area.width &&
                     tile.y >= area.y && tile.y + tile.height <= area.y + area.height
                 ));
             }
-            else if (tool === "select-sprites") {
+            else if (editor.tool === TOOLS.SELECT_SPRITES) {
                 editor.selectSprites(sprites.filter(sprite =>
                     sprite.x >= area.x && sprite.x + sprite.width <= area.x + area.width &&
                     sprite.y >= area.y && sprite.y + sprite.height <= area.y + area.height
@@ -1430,6 +1075,19 @@ const onMouseUpListener = event => {
                     selectedTiles[selectedTiles.length - 1]
                 ]);
             }
+            else if (editor.tool === TOOLS.DRAW_SPRITE) {
+                const type = spriteTypes[editor.spriteTypeId];
+                if (!type.resizable) {
+                    editor.addSprite({
+                        typeId: editor.spriteTypeId,
+                        x: area.x - Math.floor(type.spriteProps.width / 2),
+                        y: area.y - Math.floor(type.spriteProps.height / 2),
+                        width: type.spriteProps.width || 16,
+                        height: type.spriteProps.height || 16
+                    });
+                }
+            }
+            /*
             else if (tool === "draw-sprite-pill-plus") {
                 editor.addSprite({
                     typeId: "pill-plus",
@@ -1474,7 +1132,7 @@ const onMouseUpListener = event => {
                     width: 16,
                     height: 16
                 });
-            }
+            }*/
         }
     }
 
@@ -1485,7 +1143,7 @@ const onMouseUpListener = event => {
     controls.mouseLeft = false;
     controls.mouseRight = false;
     editor.dragMode = undefined;
-    editor.resizeDirection = undefined;
+    editor.resizeDirections = undefined;
 
     //document.getElementById("source").value = JSON.stringify(scene, null, ' ');
 };
