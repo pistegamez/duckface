@@ -62,7 +62,7 @@ And open your browser from http://localhost:8080
 
 ### Game features
 - drag 'n drop file load
-- recording performance for replay
+- saving recordings
 - water
 - credits screen
 - version of Cheeks that blows upward
@@ -74,11 +74,10 @@ And open your browser from http://localhost:8080
 - different death animations for different damage types
 
 ### Known Bugs
-- it seems that pressing reset at a precise moment after winning sets speed record to 0
-- skipping title with touch does not work
+- ...
 
 ### Editor features / bugs
-- deleting a tile with a sprite collision crashes the editor
+- ...
 
 ### Season 1
 - Make easier
