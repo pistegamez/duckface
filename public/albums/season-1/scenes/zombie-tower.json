@@ -1,8 +1,8 @@
 {
   "id": "zombie-tower",
-  "version": "2.0",
+  "version": "3.0",
   "created": "2021-03-29T17:18:33.497Z",
-  "lastEdit": "2021-04-09T16:07:52.646Z",
+  "lastEdit": "2021-04-11T16:00:53.481Z",
   "title": "Zombie Tower",
   "author": "Janne Kivilahti",
   "bgColor": "#a4a4bc",
@@ -260,9 +260,9 @@
     {
       "id": "00314044e3",
       "color": "#b08080",
-      "x": 438,
+      "x": 436,
       "y": 680,
-      "width": 42,
+      "width": 44,
       "height": 40
     },
     {
@@ -1004,9 +1004,9 @@
       "id": "34b7866d4a",
       "color": "#262121",
       "opacity": 0.2,
-      "x": 440,
+      "x": 438,
       "y": 720,
-      "width": 40,
+      "width": 44,
       "height": 32,
       "layer": 1,
       "blocks": false,
