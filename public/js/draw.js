@@ -1728,7 +1728,8 @@ function drawEditorStuff() {
                     y: scene.top,
                     width: scene.right - scene.left,
                     height: scene.bottom - scene.top
-                }
+                },
+                movable: false
             });
         }
         else if (editor.dragMode === "RESIZE") {
@@ -1826,12 +1827,12 @@ function drawResizePreview({ context, rect }) {
     context.strokeRect(dragArea.x, dragArea.y, dragArea.width, dragArea.height);
 }
 
-function drawResizeHandles({ context, rect, resizable = true }) {
+function drawResizeHandles({ context, rect, resizable = true, movable = true }) {
     context.fillStyle = "#ffffff";
     context.strokeStyle = "#000000";
     context.globalCompositeOperation = "source-over";
 
-    if (controls.mousePixelX >= rect.x && controls.mousePixelX <= rect.x + rect.width
+    if (movable && controls.mousePixelX >= rect.x && controls.mousePixelX <= rect.x + rect.width
         && controls.mousePixelY >= rect.y && controls.mousePixelY <= rect.y + rect.height) {
         canvas.style.cursor = "grab";
     }
@@ -1852,7 +1853,7 @@ function drawResizeHandles({ context, rect, resizable = true }) {
         drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.RIGHT] });
     }
 
-    if (!editor.dragHandle && controls.mouseLeft &&
+    if (movable && !editor.dragHandle && controls.mouseLeft &&
         controls.mousePixelX >= rect.x && controls.mousePixelX <= rect.x + rect.width
         && controls.mousePixelY >= rect.y && controls.mousePixelY <= rect.y + rect.height) {
         editor.startMove();
