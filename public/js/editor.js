@@ -172,6 +172,25 @@ const editor = {
             });
         }
 
+        if (editor.idsOfSelectedTiles.length === 0 && editor.idsOfSelectedSprites.length === 0) {
+            if (this.resizeDirections.includes(DIRECTION.LEFT)) {
+                scene.left = Math.min(scene.left + controls.endMouseX - controls.startMouseX, scene.right);
+                scene.right = Math.max(scene.left + controls.endMouseX - controls.startMouseX, scene.right);
+            }
+            if (this.resizeDirections.includes(DIRECTION.RIGHT)) {
+                scene.left = Math.min(scene.right + controls.endMouseX - controls.startMouseX, scene.left);
+                scene.right = Math.max(scene.right + controls.endMouseX - controls.startMouseX, scene.left);
+            }
+            if (this.resizeDirections.includes(DIRECTION.TOP)) {
+                scene.top = Math.min(scene.top + controls.endMouseY - controls.startMouseY, scene.bottom);
+                scene.bottom = Math.max(scene.top + controls.endMouseY - controls.startMouseY, scene.bottom);
+            }
+            if (this.resizeDirections.includes(DIRECTION.BOTTOM)) {
+                scene.top = Math.min(scene.bottom + controls.endMouseY - controls.startMouseY, scene.top);
+                scene.bottom = Math.max(scene.bottom + controls.endMouseY - controls.startMouseY, scene.top);
+            }            
+        }
+
         this.dragHandle = undefined;
         this.updateUI();
     },

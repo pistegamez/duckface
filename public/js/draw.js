@@ -1601,6 +1601,8 @@ function drawEditorStuff() {
         }
     });
 
+    // tiles
+
     scene.tiles
         .filter(tile => editor.idsOfSelectedTiles.includes(tile.id))
         .forEach(tile => {
@@ -1629,6 +1631,8 @@ function drawEditorStuff() {
                 drawResizePreview({ context, rect: tile });
             }
         });
+
+    // sprites
 
     editor.idsOfSelectedSprites.forEach(id => {
         let sprite = sprites.find(sprite => sprite.id === id);
@@ -1669,10 +1673,8 @@ function drawEditorStuff() {
                 canvas.style.cursor = "grabbing";
             }
             else if (editor.dragMode !== "RESIZE") {
-                if (type.resizable) {
-                    drawResizeHandles({ context, rect: spriteOrigin });
-                    drawResizeHandles({ context, rect: sprite });
-                }
+                drawResizeHandles({ context, rect: spriteOrigin, resizable: type.resizable });
+                drawResizeHandles({ context, rect: sprite, resizable: type.resizable });
             }
             else if (editor.dragMode === "RESIZE") {
                 drawResizePreview({ context, rect: sprite });
@@ -1686,6 +1688,8 @@ function drawEditorStuff() {
         context.setLineDash([6, 3]);
         context.lineWidth = 1.5;
         context.strokeStyle = "#ffffff";
+        context.globalCompositeOperation = "difference";
+
         context.strokeRect(
             Math.min(controls.startMouseX, controls.endMouseX),// + 1.5,
             Math.min(controls.startMouseY, controls.endMouseY),// + 1.5,
@@ -1713,6 +1717,32 @@ function drawEditorStuff() {
     context.globalCompositeOperation = "difference";
     context.setLineDash([editor.grid.width, editor.grid.width]);
     context.strokeRect(scene.left, scene.top, scene.width, scene.height);
+
+    context.setLineDash([]);
+    if (editor.idsOfSelectedTiles.length === 0 && editor.idsOfSelectedSprites.length === 0) {
+        if (editor.dragMode !== "RESIZE") {
+            drawResizeHandles({
+                context,
+                rect: {
+                    x: scene.left,
+                    y: scene.top,
+                    width: scene.right - scene.left,
+                    height: scene.bottom - scene.top
+                }
+            });
+        }
+        else if (editor.dragMode === "RESIZE") {
+            drawResizePreview({
+                context,
+                rect: {
+                    x: scene.left,
+                    y: scene.top,
+                    width: scene.right - scene.left,
+                    height: scene.bottom - scene.top
+                }
+            });
+        }
+    }
 
     context.restore();
 
@@ -1796,7 +1826,7 @@ function drawResizePreview({ context, rect }) {
     context.strokeRect(dragArea.x, dragArea.y, dragArea.width, dragArea.height);
 }
 
-function drawResizeHandles({ context, rect }) {
+function drawResizeHandles({ context, rect, resizable = true }) {
     context.fillStyle = "#ffffff";
     context.strokeStyle = "#000000";
     context.globalCompositeOperation = "source-over";
@@ -1807,18 +1837,20 @@ function drawResizeHandles({ context, rect }) {
     }
 
     //const radius = rect.width <= 16 || rect.height <= 16 ? 4 : 14;
-    const radius = Math.max(4, Math.min(14, Math.min(rect.width,rect.height) / 3));
+    const radius = Math.max(4, Math.min(14, Math.min(rect.width, rect.height) / 3));
 
-    drawResizeHandle({ context, x: rect.x, y: rect.y, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.TOP, DIRECTION.LEFT] });
-    drawResizeHandle({ context, x: rect.x + rect.width / 2, y: rect.y, radius, cursor: "row-resize", resizeDirections: [DIRECTION.TOP] });
-    drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y, radius, cursor: "nesw-resize", resizeDirections: [DIRECTION.TOP, DIRECTION.RIGHT] });
+    if (resizable) {
+        drawResizeHandle({ context, x: rect.x, y: rect.y, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.TOP, DIRECTION.LEFT] });
+        drawResizeHandle({ context, x: rect.x + rect.width / 2, y: rect.y, radius, cursor: "row-resize", resizeDirections: [DIRECTION.TOP] });
+        drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y, radius, cursor: "nesw-resize", resizeDirections: [DIRECTION.TOP, DIRECTION.RIGHT] });
 
-    drawResizeHandle({ context, x: rect.x, y: rect.y + rect.height / 2, radius, cursor: "col-resize", resizeDirections: [DIRECTION.LEFT] });
-    drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height / 2, radius, cursor: "col-resize", resizeDirections: [DIRECTION.RIGHT] });
+        drawResizeHandle({ context, x: rect.x, y: rect.y + rect.height / 2, radius, cursor: "col-resize", resizeDirections: [DIRECTION.LEFT] });
+        drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height / 2, radius, cursor: "col-resize", resizeDirections: [DIRECTION.RIGHT] });
 
-    drawResizeHandle({ context, x: rect.x, y: rect.y + rect.height, radius, cursor: "nesw-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.LEFT] });
-    drawResizeHandle({ context, x: rect.x + rect.width / 2, y: rect.y + rect.height, radius, cursor: "row-resize", resizeDirections: [DIRECTION.BOTTOM] });
-    drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.RIGHT] });
+        drawResizeHandle({ context, x: rect.x, y: rect.y + rect.height, radius, cursor: "nesw-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.LEFT] });
+        drawResizeHandle({ context, x: rect.x + rect.width / 2, y: rect.y + rect.height, radius, cursor: "row-resize", resizeDirections: [DIRECTION.BOTTOM] });
+        drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.RIGHT] });
+    }
 
     if (!editor.dragHandle && controls.mouseLeft &&
         controls.mousePixelX >= rect.x && controls.mousePixelX <= rect.x + rect.width
