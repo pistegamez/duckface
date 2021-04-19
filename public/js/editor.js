@@ -57,12 +57,7 @@ const editor = {
                 button.className = "tool-button";
             }
         });
-
-        document.getElementById("fieldset-tile").style.display = tileShape ? null : "none";
-        document.getElementById("fieldset-tile-layer").style.display = tileShape ? null : "none";
-        document.getElementById("fieldset-tile-borders").style.display = tileShape ? null : "none";
-        document.getElementById("fieldset-tile-colors").style.display = tileShape ? null : "none";
-        document.getElementById("fieldset-scene-palette").style.display = tileShape ? null : "none";
+        this.updateUI();
     },
 
     startResize({ resizeDirections, lockWidth = false, lockHeight = false }) {
@@ -188,7 +183,7 @@ const editor = {
             if (this.resizeDirections.includes(DIRECTION.BOTTOM)) {
                 scene.top = Math.min(scene.bottom + controls.endMouseY - controls.startMouseY, scene.top);
                 scene.bottom = Math.max(scene.bottom + controls.endMouseY - controls.startMouseY, scene.top);
-            }            
+            }
         }
 
         this.dragHandle = undefined;
@@ -535,6 +530,11 @@ const editor = {
         if (sprites.length === 1) {
             this.isPlayer = sprites[0].isPlayer;
             this.spriteDirection = sprites[0].direction;
+            document.getElementById("width").value = sprites[0].width;
+            document.getElementById("height").value = sprites[0].height;
+            document.getElementById("x").value = sprites[0].x;
+            document.getElementById("y").value = sprites[0].y;
+            document.getElementById("z").value = 0;
         }
 
         this.updateUI();
@@ -609,8 +609,21 @@ const editor = {
                 action: "UPDATE",
                 tiles: scene.tiles
             });
+            tileLayers.update = true;
         }
-        tileLayers.update = true;
+
+        if (editor.idsOfSelectedSprites.length > 0) {
+            editor.idsOfSelectedSprites.forEach(id => {
+                const sprite = scene.sprites.find(sprite => sprite.id === id);
+                if (x !== undefined) sprite.x = parseInt(x);
+                if (y !== undefined) sprite.y = parseInt(y);
+            });
+            worker.postMessage({
+                action: "UPDATE",
+                sprites: scene.sprites
+            });
+        }
+
         this.updateUI();
     },
 
@@ -832,10 +845,22 @@ const editor = {
                 action: "UPDATE",
                 tiles: scene.tiles
             });
+            tileLayers.update = true;
+        }
+
+        if (this.idsOfSelectedSprites.length > 0) {
+            this.idsOfSelectedSprites.forEach(id => {
+                const sprite = scene.sprites.find(sprite => sprite.id === id);
+                sprite.width = value;
+            });
+            worker.postMessage({
+                action: "UPDATE",
+                sprites: scene.sprites
+            });
         }
 
         document.getElementById("width").value = value;
-        tileLayers.update = true;
+
         this.updateUI();
     },
 
@@ -852,14 +877,36 @@ const editor = {
                 action: "UPDATE",
                 tiles: scene.tiles
             });
+            tileLayers.update = true;
+        }
+
+        if (this.idsOfSelectedSprites.length > 0) {
+            this.idsOfSelectedSprites.forEach(id => {
+                const sprite = scene.sprites.find(sprite => sprite.id === id);
+                sprite.height = value;
+            });
+            worker.postMessage({
+                action: "UPDATE",
+                sprites: scene.sprites
+            });
         }
 
         document.getElementById("height").value = value;
-        tileLayers.update = true;
+
         this.updateUI();
     },
 
     updateUI() {
+
+        const showTileProperties = this.tool === TOOLS.DRAW_TILE || this.idsOfSelectedTiles.length > 0;
+        const showSpriteProperties = this.tool === TOOLS.DRAW_SPRITE || this.idsOfSelectedSprites.length > 0;
+        document.getElementById("fieldset-tile").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-tile-layer").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-tile-borders").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-tile-colors").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-scene-palette").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-sprite").style.display = showSpriteProperties ? null : "none";
+
 
         document.getElementById("source").value = JSON.stringify(scene, null, this.prettyPrintSource ? ' ' : undefined);
         document.getElementById("pretty-print-source").checked = this.prettyPrintSource;
@@ -960,13 +1007,11 @@ const onMouseDownListener = event => {
             sprite.y <= controls.mouseY && sprite.y + sprite.height >= controls.mouseY);
 
     if (clickedTiles.length === 0 && clickedSprites.length === 0) {
-        editor.dragMode = "DRAW";
+        editor.dragMode = "DRAW_START";
     }
 
     event.preventDefault();
     event.stopPropagation();
-
-    //console.log(event);
 };
 
 const onMouseMoveListener = event => {
@@ -984,6 +1029,12 @@ const onMouseMoveListener = event => {
     if (controls.mouseLeft || controls.mouseRight) {
         controls.endMouseX = controls.mouseX;
         controls.endMouseY = controls.mouseY;
+    }
+
+    if (editor.dragMode === "DRAW_START" &&
+        Math.round(controls.mouseX / editor.grid.width) * editor.grid.width !== controls.startMouseX &&
+        Math.round(controls.mouseY / editor.grid.height) * editor.grid.height !== controls.startMouseY) {
+        editor.dragMode = "DRAW";
     }
 };
 
@@ -1014,7 +1065,7 @@ const onMouseUpListener = event => {
     else if (editor.dragMode === "MOVE") {
         editor.endMove();
     }
-    else if (editor.dragMode === "DRAW" && controls.mouseLeft) {
+    else if (controls.mouseLeft) {
 
         if (!event.shiftKey) {
             editor.idsOfSelectedSprites = [];
@@ -1106,52 +1157,6 @@ const onMouseUpListener = event => {
                     });
                 }
             }
-            /*
-            else if (tool === "draw-sprite-pill-plus") {
-                editor.addSprite({
-                    typeId: "pill-plus",
-                    x: area.x,
-                    y: area.y,
-                    width: 16,
-                    height: 16
-                });
-            }
-            else if (tool === "draw-sprite-pill-minus") {
-                editor.addSprite({
-                    typeId: "pill-minus",
-                    x: area.x,
-                    y: area.y,
-                    width: 16,
-                    height: 16
-                });
-            }
-            else if (tool === "draw-sprite-pill-placebo") {
-                editor.addSprite({
-                    typeId: "pill-placebo",
-                    x: area.x,
-                    y: area.y,
-                    width: 16,
-                    height: 16
-                });
-            }
-            else if (tool === "draw-sprite-pill-speed") {
-                editor.addSprite({
-                    typeId: "pill-speed",
-                    x: area.x,
-                    y: area.y,
-                    width: 16,
-                    height: 16
-                });
-            }
-            else if (tool === "draw-sprite-chili") {
-                editor.addSprite({
-                    typeId: "chili",
-                    x: area.x,
-                    y: area.y,
-                    width: 16,
-                    height: 16
-                });
-            }*/
         }
     }
 
@@ -1163,31 +1168,7 @@ const onMouseUpListener = event => {
     controls.mouseRight = false;
     editor.dragMode = undefined;
     editor.resizeDirections = undefined;
-
-    //document.getElementById("source").value = JSON.stringify(scene, null, ' ');
 };
-
-/*
-function selectTiles(tiles = []) {
-    editor.idsOfSelectedTiles = tiles.map(tile => tile.id);
-    if (tiles.length === 1) {
-        document.getElementById("tile-borders-top").checked = tiles[0].borders.t;
-        document.getElementById("tile-borders-right").checked = tiles[0].borders.r;
-        document.getElementById("tile-borders-bottom").checked = tiles[0].borders.b;
-        document.getElementById("tile-borders-left").checked = tiles[0].borders.l;
-        document.getElementById("color").value = tiles[0].color;
-        document.getElementById("width").value = tiles[0].width;
-        document.getElementById("height").value = tiles[0].height;
-        document.getElementById("x").value = tiles[0].x;
-        document.getElementById("y").value = tiles[0].y;
-    }
-};
-*/
-/*
-function selectSprites(sprites = []) {
-    editor.idsOfSelectedSprites = sprites.map(sprite => sprite.id);
-};
-*/
 
 const onEditorKeydownListener = event => {
 
@@ -1220,7 +1201,6 @@ const onEditorKeydownListener = event => {
     if (event.code === 'KeyR') {
         if (editor.idsOfSelectedSprites.length === 0) {
             resetScene();
-            //editor.resetCamera();
         }
         else {
             worker.postMessage({
@@ -1275,44 +1255,8 @@ const onEditorKeyupListener = event => {
     tileLayers.update = true;
 };
 
-function onEditorTouchStart(event) {
-    /*
-    evt.preventDefault();
-    evt.changedTouches.forEach(touch => {
-        controls.touches.push({...touch});
-    });*/
-    console.log(event);
-}
-
-function onEditorTouchMove(event) {
-    /*
-    evt.preventDefault();
-    evt.changedTouches.forEach(touch => {
-        controls.touches.push({...touch});
-    });*/
-    console.log(event);
-}
-
-function onEditorTouchCancel(event) {
-    /*
-    evt.preventDefault();
-    evt.changedTouches.forEach(touch => {
-        controls.touches.push({...touch});
-    });*/
-    console.log(event);
-}
-
-function onEditorTouchEnd(event) {
-    /*
-    evt.preventDefault();
-    evt.changedTouches.forEach(touch => {
-        controls.touches.push({...touch});
-    });*/
-    console.log(event);
-}
-
 const initEditor = async ({ sceneId, albumId, url }) => {
-    init({ width: window.innerWidth - 8, height: window.innerHeight - 4 });
+    init({ width: window.innerWidth - 420, height: window.innerHeight });
 
     jitters = false;
     audio.musicEnabled = false;
@@ -1323,14 +1267,6 @@ const initEditor = async ({ sceneId, albumId, url }) => {
 
     document.addEventListener("keydown", onEditorKeydownListener, false);
     document.addEventListener("keyup", onEditorKeyupListener, false);
-
-    //jitters = false;
-    /*
-    canvas.addEventListener("touchstart", onEditorTouchStart, false);
-    canvas.addEventListener("touchend", onEditorTouchEnd, false);
-    canvas.addEventListener("touchcancel", onEditorTouchCancel, false);
-    canvas.addEventListener("touchmove", onEditorTouchMove, false);
-    */
 
     canvas.oncontextmenu = function (e) {
         e.preventDefault();
@@ -1353,16 +1289,10 @@ const initEditor = async ({ sceneId, albumId, url }) => {
         });
     }
 
-    /*
-    if (document.getElementById("scene-json")) {
-        document.getElementById("scene-json").value = JSON.stringify(scene, null, ' ');
-    }
-    if (document.getElementById("bg-color")) {
-        document.getElementById("bg-color").value = scene.bgColor;
-    }
-    */
     window.onresize = () => {
-        init({ width: window.innerWidth, height: window.innerHeight });
+        canvas.width = window.innerWidth - 420;
+        canvas.height = window.innerHeight;
+        tileLayers.update = true;
     };
 
     camera.enabled = false;
@@ -1372,8 +1302,6 @@ const initEditor = async ({ sceneId, albumId, url }) => {
     requestAnimationFrame(mainloop);
 
     editor.updateUI();
-
-    //editor.updateUI();
 }
 
 async function saveScene({ albumId }) {

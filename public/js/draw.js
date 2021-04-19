@@ -1720,7 +1720,7 @@ function drawEditorStuff() {
 
     context.setLineDash([]);
     if (editor.idsOfSelectedTiles.length === 0 && editor.idsOfSelectedSprites.length === 0) {
-        if (editor.dragMode !== "RESIZE") {
+        if (editor.dragMode !== "RESIZE" && editor.dragMode !== "DRAW") {
             drawResizeHandles({
                 context,
                 rect: {

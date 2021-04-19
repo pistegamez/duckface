@@ -43,9 +43,7 @@
 
         #scene {
             box-sizing: border-box;
-            position: fixed;
-            right: 0px;
-            background-color: rgba(225, 225, 225, 0.92);
+            background-color: rgb(225, 225, 225);
             width: 200px;
             height: 100vh;
             overflow: auto;
@@ -55,9 +53,7 @@
 
         #tools {
             box-sizing: border-box;
-            position: fixed;
-            left: 0px;
-            background-color: rgba(225, 225, 225, 0.92);
+            background-color: rgb(225, 225, 225);
             width: 220px;
             height: 100vh;
             overflow: auto;
@@ -427,128 +423,6 @@
 
 <body onload="onLoad()">
     <main>
-        <div>
-            <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
-        </div>
-        <form id="scene">
-            <fieldset>
-                <legend>Actions</legend>
-                <div>
-                    <button type="button" onclick="clearScene()">New Scene</button>
-                </div>
-                <div>
-                    <button type="button" onclick="resetScene()">Reset game (R)</button>
-                </div>
-                <div>
-                    <a id="test-link" class="button" onclick="editor.stashScene()"
-                        href="../game.html?scene=from-editor">Test Scene</a>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Scene properties</legend>
-                <div class="form-row">
-                    <label>Title </label>
-                    <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Author(s) </label>
-                    <input id="scene.author" type="text" value=""
-                        onchange="editor.setSceneAuthor(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>ID</label>
-                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Version</label>
-                    <input id="scene.version" type="text" value=""
-                        onchange="editor.setSceneVersion(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Soundtrack</label>
-                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
-                        style="width:100%">
-                    </select>
-                </div>
-                <div class="form-row">
-                    <label>Background <input id="scene.bgColor" type="color"
-                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
-                    </label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Scene borders</legend>
-                <div class="form-row">
-                    <label>Top:
-                        <input id="scene.top" type="number" value="0"
-                            onchange="editor.setSceneSize({top:event.target.value})" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Right:
-                        <input id="scene.right" type="number" value="800"
-                            onchange="editor.setSceneSize({right:event.target.value})" /></label>
-                </div>
-                <div class="form-row">
-                    <label>Bottom:
-                        <input id="scene.bottom" type="number" value="600"
-                            onchange="editor.setSceneSize({bottom:event.target.value})" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Left:
-                        <input id="scene.left" type="number" value="0"
-                            onchange="editor.setSceneSize({left:event.target.value})" />
-                    </label>
-                </div>
-                <div>
-                    <label><input id="scene.horizontalLoop" type="checkbox"
-                            onchange="editor.setSceneHorizontalLooping(event.target.checked)" /> Loop
-                        horizontally</label>
-                </div>
-                <div>
-                    <label><input id="scene.verticalLoop" type="checkbox"
-                            onchange="editor.setSceneVerticalLooping(event.target.checked)" /> Loop vertically</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Scene source</legend>
-                <div>
-                    <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
-                </div>
-                <div>
-                    <label><input id="pretty-print-source" type="checkbox"
-                            onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Camera</legend>
-                <div>
-                    <label><input id="use-game-camera" type="checkbox"
-                            onchange="editor.onUseGameCameraChange(event.target.checked)" /> Game Camera</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Server</legend>
-                <div class="form-row">
-                    <label>Author Key</label>
-                    <input id="author-key" type="text" value="" onchange="editor.setAuthorKey(event.target.value)" />
-                </div>
-                <div>
-                    <button type="button" onclick="editor.saveSceneToServer()">Save Scene</button>
-                </div>
-                <div>
-                    <button type="button" onclick="editor.deleteSceneFromServer()">Delete Scene</button>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Local Server</legend>
-                <div>
-                    <button type="button" onclick="saveScene({albumId})">Save Scene</button>
-                </div>
-            </fieldset>
-        </form>
 
         <form id="tools">
             <fieldset>
@@ -701,6 +575,133 @@
                 </div>
             </fieldset>
         </form>
+
+
+        <div>
+            <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
+        </div>
+
+
+        <form id="scene">
+            <fieldset>
+                <legend>Actions</legend>
+                <div>
+                    <button type="button" onclick="clearScene()">New Scene</button>
+                </div>
+                <div>
+                    <button type="button" onclick="resetScene()">Reset game (R)</button>
+                </div>
+                <div>
+                    <a id="test-link" class="button" onclick="editor.stashScene()"
+                        href="../game.html?scene=from-editor">Test Scene</a>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Scene properties</legend>
+                <div class="form-row">
+                    <label>Title </label>
+                    <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Author(s) </label>
+                    <input id="scene.author" type="text" value=""
+                        onchange="editor.setSceneAuthor(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>ID</label>
+                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Version</label>
+                    <input id="scene.version" type="text" value=""
+                        onchange="editor.setSceneVersion(event.target.value)" />
+                </div>
+                <div class="form-row">
+                    <label>Soundtrack</label>
+                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
+                        style="width:100%">
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Background <input id="scene.bgColor" type="color"
+                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Scene borders</legend>
+                <div class="form-row">
+                    <label>Top:
+                        <input id="scene.top" type="number" value="0"
+                            onchange="editor.setSceneSize({top:event.target.value})" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Right:
+                        <input id="scene.right" type="number" value="800"
+                            onchange="editor.setSceneSize({right:event.target.value})" /></label>
+                </div>
+                <div class="form-row">
+                    <label>Bottom:
+                        <input id="scene.bottom" type="number" value="600"
+                            onchange="editor.setSceneSize({bottom:event.target.value})" />
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Left:
+                        <input id="scene.left" type="number" value="0"
+                            onchange="editor.setSceneSize({left:event.target.value})" />
+                    </label>
+                </div>
+                <div>
+                    <label><input id="scene.horizontalLoop" type="checkbox"
+                            onchange="editor.setSceneHorizontalLooping(event.target.checked)" /> Loop
+                        horizontally</label>
+                </div>
+                <div>
+                    <label><input id="scene.verticalLoop" type="checkbox"
+                            onchange="editor.setSceneVerticalLooping(event.target.checked)" /> Loop vertically</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Scene source</legend>
+                <div>
+                    <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
+                </div>
+                <div>
+                    <label><input id="pretty-print-source" type="checkbox"
+                            onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Camera</legend>
+                <div>
+                    <label><input id="use-game-camera" type="checkbox"
+                            onchange="editor.onUseGameCameraChange(event.target.checked)" /> Game Camera</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Server</legend>
+                <div class="form-row">
+                    <label>Author Key</label>
+                    <input id="author-key" type="text" value="" onchange="editor.setAuthorKey(event.target.value)" />
+                </div>
+                <div>
+                    <button type="button" onclick="editor.saveSceneToServer()">Save Scene</button>
+                </div>
+                <div>
+                    <button type="button" onclick="editor.deleteSceneFromServer()">Delete Scene</button>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Local Server</legend>
+                <div>
+                    <button type="button" onclick="saveScene({albumId})">Save Scene</button>
+                </div>
+            </fieldset>
+        </form>
+
     </main>
     <div id="source-dialog" class="dialog" style="display:none">
         <textarea id="source" onchange="editor.setSceneFromJSON(event.target.value)"></textarea>
