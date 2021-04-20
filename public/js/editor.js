@@ -1256,7 +1256,7 @@ const onEditorKeyupListener = event => {
 };
 
 const initEditor = async ({ sceneId, albumId, url }) => {
-    init({ width: window.innerWidth - 420, height: window.innerHeight });
+    init({ width: window.innerWidth - 440, height: window.innerHeight - 4 });
 
     jitters = false;
     audio.musicEnabled = false;
@@ -1290,8 +1290,8 @@ const initEditor = async ({ sceneId, albumId, url }) => {
     }
 
     window.onresize = () => {
-        canvas.width = window.innerWidth - 420;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth - 440;
+        canvas.height = window.innerHeight - 4;
         tileLayers.update = true;
     };
 
