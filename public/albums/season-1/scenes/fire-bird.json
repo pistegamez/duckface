@@ -1,8 +1,8 @@
 {
   "id": "fire-bird",
-  "version": "3.0",
+  "version": "4.0",
   "created": "2021-03-29T17:25:40.015Z",
-  "lastEdit": "2021-04-18T13:28:36.748Z",
+  "lastEdit": "2021-04-22T17:06:55.407Z",
   "title": "Fire Bird",
   "author": "Janne Kivilahti",
   "bgColor": "#446874",
@@ -220,9 +220,9 @@
     {
       "id": "f4c412ee14",
       "color": "#7c9198",
-      "x": 344,
+      "x": 360,
       "y": 984,
-      "width": 176,
+      "width": 160,
       "height": 40
     },
     {
