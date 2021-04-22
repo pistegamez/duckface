@@ -294,6 +294,7 @@ class Sprite {
         }
 
         this.resetCollisionData();
+        this.resetCollisionBoxes();
     }
 
     changeAnimation({ animation, randomFrame = false, forceChange = false }) {
@@ -352,15 +353,7 @@ class Sprite {
             right: false,
             bottom: false,
             top: false,
-            boxes: type.collisionBoxes.map(box => {
-                return {
-                    shape: box.shape || type.shape || SHAPES.BOX,
-                    t: this.y + Math.floor(this.height * box.t),
-                    r: this.x + this.width * box.r,
-                    b: this.y + Math.floor(this.height * box.b),
-                    l: this.x + this.width * box.l
-                }
-            }),
+            boxes: [],
             x: this.x,
             y: this.y,
             width: this.width,
@@ -371,6 +364,67 @@ class Sprite {
             tileIds: new Set(),
             velocity: { ...this.velocity }
         };
+    }
+
+    resetCollisionBoxes(scene) {
+
+        const type = spriteTypes[this.typeId];
+
+        this.collisionData.boxes = type.collisionBoxes.map(box => {
+            return {
+                shape: box.shape || type.shape || SHAPES.BOX,
+                t: this.y + Math.floor(this.height * box.t),
+                r: this.x + this.width * box.r,
+                b: this.y + Math.floor(this.height * box.b),
+                l: this.x + this.width * box.l
+            };
+        });
+
+        if (scene) {
+            this.collisionData.boxes.forEach(box => {
+
+                if (scene.horizontalLoop) {
+                    if (box.r >= scene.right) {
+                        this.collisionData.boxes.push({
+                            shape: box.shape,
+                            t: box.t,
+                            r: box.r - scene.width,
+                            b: box.b,
+                            l: box.l - scene.width
+                        });
+                    }
+                    else if (box.l <= scene.left) {
+                        this.collisionData.boxes.push({
+                            shape: box.shape,
+                            t: box.t,
+                            r: box.r + scene.width,
+                            b: box.b,
+                            l: box.l + scene.width
+                        });
+                    }
+                }
+                if (scene.verticalLoop) {
+                    if (box.b >= scene.bottom) {
+                        this.collisionData.boxes.push({
+                            shape: box.shape,
+                            t: box.t - scene.height,
+                            r: box.r,
+                            b: box.b - scene.height,
+                            l: box.l
+                        });
+                    }
+                    else if (box.t <= scene.top) {
+                        this.collisionData.boxes.push({
+                            shape: box.shape,
+                            t: box.t + scene.height,
+                            r: box.r,
+                            b: box.b + scene.height,
+                            l: box.l
+                        });
+                    }
+                }
+            });
+        }
     }
 
     animate(rps = 90) {

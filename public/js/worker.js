@@ -225,6 +225,7 @@ function mainloop() {
             forceFail: false
         };
 
+
         move();
         collide();
         animate();
@@ -403,105 +404,37 @@ function collide() {
 
     sprites.forEach(sprite => {
         sprite.resetCollisionData();
-
-        /*
-        if (scene.verticalLoop) {
-            if (sprite.y + sprite.height >= scene.bottom) {
-                sprite.y -= scene.height;
-            }
-            else if (sprite.y <= scene.top) {
-                sprite.y += scene.height;
-            }
-        }
-
-        if (scene.horizontalLoop) {
-            if (sprite.x + sprite.width >= scene.right) {
-                sprite.x -= scene.width;
-            }
-            else if (sprite.x <= scene.left) {
-                sprite.x += scene.width;
-            }
-        }*/
-
-        sprite.collisionData.boxes.forEach(box => {
-            // TODO: vertical!!!!!!!!!!
-            // also move boxes after sprite collisions?
-            if (scene.horizontalLoop) {
-                if (box.r >= scene.right) {
-                    sprite.collisionData.boxes.push({
-                        shape: box.shape,
-                        t: box.t,
-                        r: box.r - scene.width,
-                        b: box.b,
-                        l: box.l - scene.width
-                    });
-                }
-                else if (box.l <= scene.left) {
-                    sprite.collisionData.boxes.push({
-                        shape: box.shape,
-                        t: box.t,
-                        r: box.r + scene.width,
-                        b: box.b,
-                        l: box.l + scene.width
-                    });
-                }
-            }
-            if (scene.verticalLoop) {
-                if (box.b >= scene.bottom) {
-                    sprite.collisionData.boxes.push({
-                        shape: box.shape,
-                        t: box.t - scene.height,
-                        r: box.r,
-                        b: box.b - scene.height,
-                        l: box.l
-                    });
-                }
-                else if (box.t <= scene.top) {
-                    sprite.collisionData.boxes.push({
-                        shape: box.shape,
-                        t: box.t + scene.height,
-                        r: box.r,
-                        b: box.b + scene.height,
-                        l: box.l
-                    });
-                }
-            }
-        });
-
+        sprite.resetCollisionBoxes(scene);
     });
 
     sprites.forEach(sprite => {
         if (!sprite.hidden) {
-            testCollisions(sprite, sprites.filter(sprite => !sprite.hidden));
+            sprite.collision = false;
+            testCollisions(sprite, [...sprites.filter(sprite => !sprite.hidden), ...tiles]);               
         }
     });
-
-    sprites.forEach(sprite => {
-        /*
-        sprite.collisionData.boxes.forEach(box => {
-            box.l += sprite.collisionData.x - sprite.x;
-            box.r += sprite.collisionData.x - sprite.x;
-            box.t += sprite.collisionData.y - sprite.y;
-            box.b += sprite.collisionData.y - sprite.y;
-        });*/
+    
+    sprites.filter(sprite => sprite.collisionData.spriteIds.size > 0).forEach(sprite => {
         sprite.x = sprite.collisionData.x;
-        //sprite.y = Math.floor(sprite.collisionData.y);
-        sprite.y = sprite.collisionData.y;
-    });
-
-    sprites.forEach(sprite => {
-        if (spriteTypes[sprite.typeId].collidesWithObstacles) {
-            testCollisions(sprite, tiles);
-        }
-    });
-
-    sprites.forEach(sprite => {
-        sprite.x = sprite.collisionData.x;
-        //sprite.collisionData.y = Math.ceil(sprite.collisionData.y);
-        //sprite.y = Math.round(sprite.collisionData.y);
-
         sprite.y = Math.floor(sprite.collisionData.y);
-        //sprite.y = Math.round(sprite.collisionData.y);
+        sprite.resetCollisionBoxes(scene);
+        sprite.collisionData.x = sprite.x;
+        sprite.collisionData.y = sprite.y;
+        sprite.collisionData.tileIds.clear();
+        testCollisions(sprite, tiles);
+    });
+    
+    /*
+    sprites.filter(sprite => sprite.collision).forEach(sprite => {
+        if (!sprite.hidden) {
+            sprite.collision = false;
+            testCollisions(sprite, [...sprites.filter(sprite => !sprite.hidden), ...tiles]);               
+        }
+    });*/
+
+    sprites.forEach(sprite => {
+        sprite.x = sprite.collisionData.x;
+        sprite.y = Math.floor(sprite.collisionData.y);
         sprite.velocity.x = sprite.collisionData.velocity.x;
         sprite.velocity.y = sprite.collisionData.velocity.y;
     });
@@ -517,106 +450,121 @@ function testCollisions(sprite, targets) {
 
         for (let i = 0; i < targets.length && !slopeCollision; i++) {
 
-            let target = targets[i];
+            const target = targets[i];
 
-            if (sprite !== target
-                && !sprite.collisionData.spriteIds.has(target.id)
-                && !sprite.collisionData.tileIds.has(target.id)) {
-
-                //let targetShape = target.isSprite ? spriteTypes[target.typeId].shape : target.shape;
-                //let spriteShape = spriteTypes[sprite.typeId].shape;
-
-                sprite.collisionData.boxes.forEach(collisionBox => {
-
-                    if (target.isSprite) {
-
-                        target.collisionData.boxes.forEach(targetCollisionBox => {
-
-                            if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.BOX) {
-                                if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
-
-                                    // TODO: just use one? collidesWithObstacles || movedByOtherSprites
-                                    if (target.isObstacle
-                                        && spriteTypes[sprite.typeId].collidesWithObstacles
-                                        && spriteTypes[sprite.typeId].movedByOtherSprites) {
-
-                                        let area = calculatePenetrationArea(collisionBox, targetCollisionBox);
-
-                                        if (collision === null || collision.area.size < area.size) {
-                                            collision = { target, area, targetShape: targetCollisionBox.shape };
-                                        }
-                                    }
-                                    else {
-
-                                        sprite.collisionData.spriteIds.add(target.id);
-
-                                        if (target.isPlayer) {
-                                            sprite.collisionData.playerHits++;
-                                        }
-
-                                        if (target.isEnemy) {
-                                            sprite.collisionData.enemyHits++;
-                                        }
-                                    }
-                                }
-                            }
-                            else if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.CIRCLE) {
-                                if (checkBoxToCircleCollision(collisionBox, targetCollisionBox)) {
-
-                                    sprite.collisionData.spriteIds.add(target.id);
-
-                                    if (target.isPlayer) {
-                                        sprite.collisionData.playerHits++;
-                                    }
-
-                                    if (target.isEnemy) {
-                                        sprite.collisionData.enemyHits++;
-                                    }
-                                }
-                            }
-                            else if (collisionBox.shape === SHAPES.CIRCLE && targetCollisionBox.shape === SHAPES.BOX) {
-                                if (checkBoxToCircleCollision(targetCollisionBox, collisionBox)) {
-
-                                    sprite.collisionData.spriteIds.add(target.id);
-
-                                    if (target.isPlayer) {
-                                        sprite.collisionData.playerHits++;
-                                    }
-                                    if (target.isEnemy) {
-                                        sprite.collisionData.enemyHits++;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    // TODO: circle shaped sprite vs tile
-                    else if (spriteTypes[sprite.typeId].collidesWithObstacles && collisionBox.shape === SHAPES.BOX) {
-                        if ((target.shape === SHAPES.BOX || target.shape === SHAPES.TOP_DOWN)
-                            && checkBoxToBoxCollision(collisionBox, target)) {
-
-                            let area = calculatePenetrationArea(collisionBox, target);
-                            if (collision === null || collision.area.size < area.size) {
-                                collision = { target, area, targetShape: target.shape };
-                            }
-
-                            //sprite.collisionData.tileIds.add(target.id);
-                        }
-                        else if (target.shape === SHAPES.SLOPE_LEFT || target.shape === SHAPES.SLOPE_RIGHT) {
-                            if (checkBoxMiddleToBoxCollision(collisionBox, target)) {
-                                if (checkBoxToSlopeCollision(collisionBox, target)) {
-
-                                    let area = calculateSlopePenetrationArea(collisionBox, target);
-                                    //if (collision === null || collision.area.size < area.size) {
-                                    collision = { target, area, targetShape: target.shape };
-                                    //}
-                                }
-                                rounds = 0;
-                                slopeCollision = true;
-                            }
-                        }
-                    }
-                });
+            if (sprite === target) {
+                continue;
             }
+
+            if (target.isSprite && sprite.collisionData.spriteIds.has(target.id)) {
+                continue;
+            }
+
+            if (target.isTile && sprite.collisionData.tileIds.has(target.id)) {
+                continue;
+            }
+
+            sprite.collisionData.boxes.forEach(collisionBox => {
+
+                if (target.isSprite) {
+
+                    target.collisionData.boxes.forEach(targetCollisionBox => {
+
+                        if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.BOX) {
+
+                            if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
+
+                                if (target.isObstacle
+                                    && spriteTypes[sprite.typeId].collidesWithObstacles
+                                    && spriteTypes[sprite.typeId].movedByOtherSprites) {
+
+                                    let area = calculatePenetrationArea(collisionBox, targetCollisionBox);
+
+                                    if (collision === null || collision.area.size < area.size) {
+                                        collision = {
+                                            target,
+                                            area,
+                                            collisionBox,
+                                            targetShape: targetCollisionBox.shape
+                                        };
+                                    }
+                                }
+                                else {
+
+                                    sprite.collisionData.spriteIds.add(target.id);
+
+                                    if (target.isPlayer) {
+                                        sprite.collisionData.playerHits++;
+                                    }
+
+                                    if (target.isEnemy) {
+                                        sprite.collisionData.enemyHits++;
+                                    }
+                                }
+                            }
+                        }
+                        else if (collisionBox.shape === SHAPES.BOX && targetCollisionBox.shape === SHAPES.CIRCLE) {
+                            if (checkBoxToCircleCollision(collisionBox, targetCollisionBox)) {
+
+                                sprite.collisionData.spriteIds.add(target.id);
+
+                                if (target.isPlayer) {
+                                    sprite.collisionData.playerHits++;
+                                }
+
+                                if (target.isEnemy) {
+                                    sprite.collisionData.enemyHits++;
+                                }
+                            }
+                        }
+                        else if (collisionBox.shape === SHAPES.CIRCLE && targetCollisionBox.shape === SHAPES.BOX) {
+                            if (checkBoxToCircleCollision(targetCollisionBox, collisionBox)) {
+
+                                sprite.collisionData.spriteIds.add(target.id);
+
+                                if (target.isPlayer) {
+                                    sprite.collisionData.playerHits++;
+                                }
+                                if (target.isEnemy) {
+                                    sprite.collisionData.enemyHits++;
+                                }
+                            }
+                        }
+                    });
+                }
+                // TODO: circle shaped sprite vs tile
+                else if (spriteTypes[sprite.typeId].collidesWithObstacles && collisionBox.shape === SHAPES.BOX) {
+
+                    if ((target.shape === SHAPES.BOX || target.shape === SHAPES.TOP_DOWN)
+                        && checkBoxToBoxCollision(collisionBox, target)) {
+
+                        let area = calculatePenetrationArea(collisionBox, target);
+                        if (collision === null || collision.area.size < area.size) {
+                            collision = {
+                                target,
+                                area,
+                                collisionBox,
+                                targetShape: target.shape
+                            };
+                        }
+                    }
+                    else if (target.shape === SHAPES.SLOPE_LEFT || target.shape === SHAPES.SLOPE_RIGHT) {
+                        if (checkBoxMiddleToBoxCollision(collisionBox, target)) {
+                            if (checkBoxToSlopeCollision(collisionBox, target)) {
+                                let area = calculateSlopePenetrationArea(collisionBox, target);
+                                collision = {
+                                    target,
+                                    area,
+                                    collisionBox,
+                                    targetShape: target.shape
+                                };
+                            }
+                            rounds = 0;
+                            slopeCollision = true;
+                        }
+                    }
+                }
+            });
         };
 
         if (collision !== null) {
@@ -637,16 +585,21 @@ function testCollisions(sprite, targets) {
                 sprite.collisionData.tileIds.add(collision.target.id);
             }
 
-
             if (sprite.isStatic) {
             }
             else if (collision.targetShape === SHAPES.TOP_DOWN) {
+
                 if (sprite.velocity.y >= 0
-                    && sprite.y + sprite.height - 6.5 <= collision.target.y) {
+                    && collision.collisionBox.b - 6.5 <= collision.target.y) {
+
                     sprite.collisionData.bottom = true;
                     sprite.collisionData.y -= Math.round(collision.area.height);
-                    sprite.collisionData.t -= collision.area.height;
-                    sprite.collisionData.b -= collision.area.height;
+                    /*
+                    sprite.collisionData.boxes.forEach(box => {
+                        box.t -= collision.area.height;
+                        box.b -= collision.area.height;
+                    });
+                    */
                     if (sprite.velocity.y >= 3) {
                         sprite.collisionData.velocity.y = Math.min(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
@@ -673,7 +626,7 @@ function testCollisions(sprite, targets) {
             }
             else if (collision.area.width > collision.area.height) {
 
-                if (sprite.y < collision.target.y
+                if (collision.collisionBox.t < collision.area.top
                     || collision.targetShape === SHAPES.SLOPE_LEFT
                     || collision.targetShape === SHAPES.SLOPE_RIGHT) {
 
@@ -681,12 +634,9 @@ function testCollisions(sprite, targets) {
 
                     if (collision.target.isSprite) {
 
-                        //sprite.collisionData.velocity.y += Math.min(-30, collision.target.velocity.y * 2);
-                        //sprite.collisionData.velocity.y = -30;//Math.min(-30, collision.target.velocity.y * 2);
                         sprite.collisionData.velocity.y = Math.min(sprite.collisionData.velocity.y, collision.target.velocity.y);
 
                         if (collision.target.velocity.x !== 0) {
-                            //let colPercentage = collision.area.width / sprite.width;
 
                             if (collision.target.velocity.x > 0 && sprite.collisionData.velocity.x < collision.target.velocity.x) {
                                 sprite.collisionData.velocity.x += 0.1;
@@ -694,19 +644,19 @@ function testCollisions(sprite, targets) {
                             else if (collision.target.velocity.x < 0 && sprite.collisionData.velocity.x > collision.target.velocity.x) {
                                 sprite.collisionData.velocity.x -= 0.1;
                             }
-                            //sprite.collisionData.velocity.x += collision.target.velocity.x * 0.2;
                         }
                     }
 
                     sprite.collisionData.y -= Math.round(collision.area.height);
-                    sprite.collisionData.t -= Math.round(collision.area.height);
-                    sprite.collisionData.b -= Math.round(collision.area.height);
-
-                    //if (sprite.velocity.y > 0) {
+                    /*
+                    sprite.collisionData.boxes.forEach(box => {
+                        box.t -= collision.area.height;
+                        box.b -= collision.area.height;
+                    });
+                    */
 
                     if (sprite.velocity.y >= 4) {
                         sprite.collisionData.velocity.y = Math.min(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
-                        //postMessage({ type: "PLAY_SOUND", sound: "pt" });
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -726,7 +676,6 @@ function testCollisions(sprite, targets) {
                     else if (sprite.velocity.y > 0) {
                         sprite.collisionData.velocity.y = Math.min(0, sprite.collisionData.velocity.y);
                     }
-                    //}
 
                     if (collision.targetShape === SHAPES.SLOPE_LEFT) {
                         sprite.collisionData.velocity.x -= 0.25 / (collision.target.width / collision.target.height);
@@ -757,27 +706,38 @@ function testCollisions(sprite, targets) {
                     }
 
                     sprite.collisionData.y += Math.round(collision.area.height);
-                    sprite.collisionData.t += collision.area.height;
-                    sprite.collisionData.b += collision.area.height;
 
+                    /*
+                    sprite.collisionData.boxes.forEach(box => {
+                        box.t += Math.round(collision.area.height);
+                        box.b += Math.round(collision.area.height);
+                    });
+                    */
                 }
             }
             else {
 
-                if (sprite.x < collision.target.x) {
+                if (collision.collisionBox.l < collision.area.left) {
                     sprite.collisionData.right = true;
 
                     if (collision.target.isTile) {
                         sprite.collisionData.x -= collision.area.width;
-                        sprite.collisionData.l -= collision.area.width;
-                        sprite.collisionData.r -= collision.area.width;
+                        /*
+                        sprite.collisionData.boxes.forEach(box => {
+                            box.l -= collision.area.width;
+                            box.r -= collision.area.width;
+                        });
+                        */
 
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
                         sprite.collisionData.x -= collision.area.width;
-                        sprite.collisionData.l -= collision.area.width;
-                        sprite.collisionData.r -= collision.area.width;
-
+                        /*
+                        sprite.collisionData.boxes.forEach(box => {
+                            box.l -= collision.area.width;
+                            box.r -= collision.area.width;
+                        });
+                        */
                     }
 
                     if (sprite.velocity.x >= 1) {
@@ -793,14 +753,21 @@ function testCollisions(sprite, targets) {
 
                     if (collision.target.isTile) {
                         sprite.collisionData.x += collision.area.width;
-                        sprite.collisionData.l += collision.area.width;
-                        sprite.collisionData.r += collision.area.width;
+                        /*
+                        sprite.collisionData.boxes.forEach(box => {
+                            box.l += collision.area.width;
+                            box.r += collision.area.width;
+                        });
+                        */
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
                         sprite.collisionData.x += collision.area.width;
-                        sprite.collisionData.l += collision.area.width;
-                        sprite.collisionData.r += collision.area.width;
-
+                        /*
+                        sprite.collisionData.boxes.forEach(box => {
+                            box.l += collision.area.width;
+                            box.r += collision.area.width;
+                        });
+                        */
                     }
 
                     if (sprite.velocity.x <= -1) {
@@ -808,10 +775,9 @@ function testCollisions(sprite, targets) {
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                     }
                     else if (sprite.velocity.x < 0) {
-                        sprite.collisionData.velocity.x = 0;//Math.max(0, sprite.collisionData.velocity.x);
+                        sprite.collisionData.velocity.x = 0;
                     }
                 }
-
 
                 if (collision.target.isSprite) {
                     let colPercentage = Math.min(1, collision.target.height / sprite.height);
@@ -826,7 +792,7 @@ function testCollisions(sprite, targets) {
 
     // if (rounds === 0) {
     //    console.log('xxx')
-    //}
+    // }
 }
 
 function checkBoxToBoxCollision(box1, box2) {
