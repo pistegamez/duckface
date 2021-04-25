@@ -5,6 +5,7 @@ spriteTypes.cheeks = new SpriteType({
     collidesWithObstacles: true,
     resizable: true,
     spriteProps: {
+        isEnemy: true,
         isObstacle: true,
         weight: 0.2,
         maxVelocity: { x: 2, y: 6 },
