@@ -21,22 +21,23 @@ spriteTypes["elevator-vertical"] = new SpriteType({
     collidesWithObstacles: true,
     spriteProps: {
         isObstacle: true,
+        isElevator: true,
         weight: 0,
         maxVelocity: { x: 0, y: 1 },
     },
-    behaviours: ["changes-vertical-direction-on-collision", "moves-upward", "is-x-locked"],
+    behaviours: ["changes-vertical-direction-on-tile-collision", "moves-upward", "is-x-locked"],
     paths: {
         "left-bar": {
             fill: "#b0b0b0",
             stroke: "#707070",
             commands: [{ c: "rc", l: 0.1, t: 0.2, r: 0.2, b: 0.8 }]
         },
-        "right-bar": {
+        "bottom-bar": {
             fill: "#b0b0b0",
             stroke: "#707070",
-            commands: [{ c: "rc", l: 0.2, t: 0.7, r: 0.8, b: 0.8 }]
+            commands: [{ c: "rc", l: 0.2, t: 0.6, r: 0.8, b: 0.8 }]
         },
-        "bottom-bar": {
+        "right-bar": {
             fill: "#b0b0b0",
             stroke: "#707070",
             commands: [{ c: "rc", l: 0.8, t: 0.2, r: 0.9, b: 0.8 }]
@@ -46,18 +47,17 @@ spriteTypes["elevator-vertical"] = new SpriteType({
             stroke: "#707070",
             commands: [{ c: "rc", l: 0.2, t: 0.2, r: 0.8, b: 0.3 }]
         },
-        "grid-v-middle": {
+        "grid": {
             stroke: "#707070",
             commands: [
-                { c: "mt", x: 0.5, y: 0.3 },
-                { c: "lt", x: 0.5, y: 0.7 }
-            ]
-        },
-        "grid-h-middle": {
-            stroke: "#707070",
-            commands: [
+                { c: "mt", x: 0.4, y: 0.3 },
+                { c: "lt", x: 0.4, y: 0.6 },
+                { c: "mt", x: 0.6, y: 0.3 },
+                { c: "lt", x: 0.6, y: 0.6 },
+                { c: "mt", x: 0.2, y: 0.4 },
+                { c: "lt", x: 0.8, y: 0.4 },
                 { c: "mt", x: 0.2, y: 0.5 },
-                { c: "lt", x: 0.8, y: 0.5 }
+                { c: "lt", x: 0.8, y: 0.5 },
             ]
         },
         top: {
