@@ -5,7 +5,7 @@ spriteTypes.duckface = new SpriteType({
     colors: ["#ffffff"],
     resizable: true,
     spriteProps: {
-        maxJump: 25,
+        maxJump: 14,
         weight: 0.25,
         isObstacle: true,
         maxVelocity: { x: 2.2, y: 6 }
