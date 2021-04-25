@@ -425,18 +425,18 @@
     <main>
 
         <form id="tools">
-            <fieldset>
+            <fieldset id="fieldset-tiles">
                 <legend>Tiles</legend>
                 <div id="tile-type-buttons" class="tool-buttons"></div>
             </fieldset>
             <fieldset id="fieldset-tile-layer">
                 <legend>Tile Layer</legend>
                 <div>
-                    <label><input name="tile-layer" type="radio" value="1"
+                    <label><input id="tile-layer-bg-radio" name="tile-layer" type="radio" value="1"
                             onclick="editor.setTileLayer(event.target.value)" />Background</label>
                 </div>
                 <div>
-                    <label><input name="tile-layer" type="radio" value="2"
+                    <label><input id="tile-layer-middle-radio" name="tile-layer" type="radio" value="2"
                             onclick="editor.setTileLayer(event.target.value)" checked />Middle</label>
                 </div>
                 <!--
@@ -493,7 +493,7 @@
                 <legend>Scene Palette</legend>
                 <div id="fill-color-palette" class="color-palette"></div>
             </fieldset>
-            <fieldset>
+            <fieldset id="fieldset-size">
                 <legend>Size</legend>
                 <div class="form-row">
                     <label>Width: <input id="width" type="number" value="0" min="0" step="1"
@@ -519,7 +519,7 @@
                             onchange="editor.setTileBlocks(event.target.checked)" />Blocks</label>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset id="fieldset-position">
                 <legend>Position</legend>
                 <div class="form-row">
                     <label>X: <input id="x" type="number" value="0"
@@ -534,14 +534,14 @@
                             onchange="editor.setPosition({z:event.target.value})" /></label>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset id="fieldset-order">
                 <legend>Order</legend>
                 <div>
                     <button type="button" onclick="editor.moveToBack()">Send to Back</button>
                     <button type="button" onclick="editor.moveToFront()">Send to Front</button>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset id="fieldset-sprites">
                 <legend>Sprites</legend>
                 <div id="sprite-type-buttons" class="tool-buttons">
                 </div>
