@@ -1828,6 +1828,7 @@ function drawResizePreview({ context, rect }) {
 }
 
 function drawResizeHandles({ context, rect, resizable = true, movable = true }) {
+
     context.fillStyle = "#ffffff";
     context.strokeStyle = "#000000";
     context.globalCompositeOperation = "source-over";
@@ -1853,7 +1854,7 @@ function drawResizeHandles({ context, rect, resizable = true, movable = true }) 
         drawResizeHandle({ context, x: rect.x + rect.width, y: rect.y + rect.height, radius, cursor: "nwse-resize", resizeDirections: [DIRECTION.BOTTOM, DIRECTION.RIGHT] });
     }
 
-    if (movable && !editor.dragHandle && controls.mouseLeft &&
+    if (movable && !editor.dragHandle && !controls.shiftDown && controls.mouseLeft &&
         controls.mousePixelX >= rect.x && controls.mousePixelX <= rect.x + rect.width
         && controls.mousePixelY >= rect.y && controls.mousePixelY <= rect.y + rect.height) {
         editor.startMove();
@@ -1904,7 +1905,7 @@ function drawSpriteInfo(context) {
             );
         });
 
-        if (sprite.collisionArea) {
+        if (sprite.collision && sprite.collisionArea) {
             context.strokeStyle = "#ff0000";
             context.lineWidth = 4;
 
