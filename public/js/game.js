@@ -128,7 +128,8 @@ const controls = {
     rightTouch: false,
     leftTouch: false,
     doubleTouch: true,
-    touchStartTime: -1
+    touchStartTime: -1,
+    shiftDown: false
 }
 
 const onGameKeydownListener = event => {
