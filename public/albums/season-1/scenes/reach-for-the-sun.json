@@ -1,8 +1,8 @@
 {
   "id": "reach-for-the-sun",
-  "version": "3.0",
+  "version": "4.0",
   "created": "2021-03-25T20:06:08.541Z",
-  "lastEdit": "2021-04-11T11:54:12.859Z",
+  "lastEdit": "2021-04-25T10:55:18.216Z",
   "title": "Reach for the Sun",
   "author": "Janne Kivilahti",
   "bgColor": "#ffdda3",
@@ -37,29 +37,11 @@
   "puzzleDifficulty": 0.5,
   "sprites": [
     {
-      "id": "b343ad9497",
-      "typeId": "box",
-      "direction": 2,
-      "x": 472,
-      "y": 480,
-      "width": 8,
-      "height": 16
-    },
-    {
-      "id": "30f18da0ac",
-      "typeId": "box",
-      "direction": 2,
-      "x": 488,
-      "y": 480,
-      "width": 16,
-      "height": 16
-    },
-    {
       "id": "b8f4a32add",
       "typeId": "pill-placebo",
       "weight": 0,
-      "x": 944,
-      "y": 368,
+      "x": 912,
+      "y": 432,
       "width": 16,
       "height": 16
     },
@@ -140,66 +122,67 @@
       "height": 32
     },
     {
-      "id": "9e1f73e18d",
-      "typeId": "cheeks",
+      "id": "b2244a2652",
+      "typeId": "spikes-up",
+      "isPlayer": false,
+      "direction": 2,
+      "x": 840,
+      "y": 480,
+      "width": 48,
+      "height": 16
+    },
+    {
+      "id": "bb5bb466de",
+      "typeId": "living-stone",
+      "isPlayer": false,
+      "direction": 2,
+      "x": 40,
+      "y": 296,
+      "width": 48,
+      "height": 32
+    },
+    {
+      "id": "d4358c59c1",
+      "typeId": "living-stone",
+      "isPlayer": false,
       "direction": 4,
-      "x": 856,
-      "y": 432,
-      "width": 64,
-      "height": 56
+      "x": 352,
+      "y": 296,
+      "width": 48,
+      "height": 32
     },
     {
-      "id": "212aae7960",
-      "typeId": "cheeks",
+      "id": "9440e03699",
+      "typeId": "spikes-up",
+      "isPlayer": false,
       "direction": 2,
-      "x": 32,
-      "y": 288,
+      "x": 792,
+      "y": 480,
+      "width": 48,
+      "height": 16
+    },
+    {
+      "id": "46d9edd0fd",
+      "typeId": "spikes-up",
+      "isPlayer": false,
+      "direction": 2,
+      "x": 888,
+      "y": 480,
+      "width": 48,
+      "height": 16
+    },
+    {
+      "id": "9e7a91a693",
+      "typeId": "spikes-up",
+      "isPlayer": false,
+      "direction": 2,
+      "x": 936,
+      "y": 480,
       "width": 40,
-      "height": 40
-    },
-    {
-      "id": "00687f60d3",
-      "typeId": "box",
-      "direction": 2,
-      "x": 208,
-      "y": 528,
-      "width": 8,
-      "height": 8
+      "height": 16
     }
   ],
   "tiles": [
-    {
-      "id": "daca7e9bad",
-      "shape": 5,
-      "color": "#bd8f8f",
-      "x": 840,
-      "y": 408,
-      "width": 160,
-      "height": 192,
-      "layer": 1,
-      "borders": {
-        "t": true,
-        "r": false,
-        "b": false,
-        "l": true
-      }
-    },
-    {
-      "id": "400f3f8a96",
-      "shape": 5,
-      "color": "#bd8f8f",
-      "x": 808,
-      "y": 448,
-      "width": 128,
-      "height": 152,
-      "layer": 1,
-      "borders": {
-        "t": true,
-        "r": true,
-        "b": false,
-        "l": true
-      }
-    },
     {
       "id": "18875eddbd",
       "shape": 5,
@@ -312,7 +295,7 @@
       "x": 976,
       "y": 240,
       "width": 24,
-      "height": 168,
+      "height": 256,
       "borders": {
         "t": true,
         "r": false,
@@ -338,9 +321,9 @@
       "id": "66cb7662af",
       "color": "#b08080",
       "x": 792,
-      "y": 488,
-      "width": 168,
-      "height": 112,
+      "y": 496,
+      "width": 208,
+      "height": 104,
       "borders": {
         "t": true,
         "r": true,
@@ -715,7 +698,7 @@
     },
     {
       "id": "26247637cf",
-      "color": "#3e394e",
+      "color": "#464158",
       "stroke": "#a26767",
       "x": 32,
       "y": 456,
@@ -739,42 +722,6 @@
       "y": 392,
       "width": 96,
       "height": 104,
-      "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
-    },
-    {
-      "id": "2d7e108045",
-      "shape": 3,
-      "color": "#4e4532",
-      "opacity": 0.2,
-      "x": 960,
-      "y": 496,
-      "width": 56,
-      "height": 104,
-      "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
-    },
-    {
-      "id": "20a2768e0c",
-      "shape": 3,
-      "color": "#4e4532",
-      "opacity": 0.2,
-      "x": 936,
-      "y": 448,
-      "width": 24,
-      "height": 48,
       "layer": 1,
       "blocks": false,
       "borders": {

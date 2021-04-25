@@ -1,8 +1,8 @@
 {
   "id": "slips-n-slides",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-30T14:29:32.868Z",
-  "lastEdit": "2021-03-31T11:14:26.821Z",
+  "lastEdit": "2021-04-24T17:32:17.324Z",
   "title": "Slips 'n Slides",
   "author": "Janne Kivilahti",
   "bgColor": "#60afc3",
@@ -36,13 +36,15 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "4494238255",
       "typeId": "ring",
       "direction": 2,
       "x": 592,
-      "y": 168,
+      "y": 184,
       "width": 16,
       "height": 16
     },
@@ -345,7 +347,7 @@
       "opacity": 0.7,
       "x": 280,
       "y": 296,
-      "width": 124,
+      "width": 132,
       "height": 304,
       "layer": 1,
       "materialId": "ice"

@@ -2,7 +2,7 @@
   "id": "wine-tasting",
   "version": "1.1",
   "created": "2021-03-23T15:40:15.400Z",
-  "lastEdit": "2021-03-25T20:28:11.707Z",
+  "lastEdit": "2021-04-24T16:59:22.515Z",
   "title": "The Wine Tasting",
   "author": "Janne Kivilahti",
   "bgColor": "#ee81b8",
@@ -22,6 +22,8 @@
   "horizontalLoop": false,
   "verticalLoop": false,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "916df9425d",
@@ -200,10 +202,16 @@
     {
       "id": "d9ba2bb5cf",
       "color": "#b08080",
-      "x": -8,
+      "x": 0,
       "y": 480,
-      "width": 816,
-      "height": 120
+      "width": 800,
+      "height": 120,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "a7cd9e75d0",
@@ -387,7 +395,8 @@
       "x": 520,
       "y": 32,
       "width": 56,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "913b18cf33",
@@ -396,7 +405,8 @@
       "x": 440,
       "y": 32,
       "width": 56,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "dda5687947",
@@ -405,6 +415,7 @@
       "y": 32,
       "width": 24,
       "height": 32,
+      "blocks": false,
       "borders": {
         "t": true,
         "r": false,
@@ -419,6 +430,7 @@
       "y": 0,
       "width": 8,
       "height": 32,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": true,
@@ -432,7 +444,8 @@
       "x": 440,
       "y": 64,
       "width": 136,
-      "height": 8
+      "height": 8,
+      "blocks": false
     },
     {
       "id": "91ae53029a",

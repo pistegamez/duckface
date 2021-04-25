@@ -1,10 +1,10 @@
 {
   "id": "need-for-speed",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-27T18:32:05.599Z",
-  "lastEdit": "2021-04-09T16:20:32.936Z",
+  "lastEdit": "2021-04-24T17:16:13.137Z",
   "title": "Need for Speed",
-  "author": "",
+  "author": "Janne Kivilahti",
   "bgColor": "#f0f0ff",
   "themeSong": "theme-punk-2",
   "captions": [
@@ -188,15 +188,7 @@
       "typeId": "spikes-up",
       "x": 1152,
       "y": 544,
-      "width": 48,
-      "height": 24
-    },
-    {
-      "id": "b9d5fdfdfb",
-      "typeId": "spikes-up",
-      "x": 1200,
-      "y": 544,
-      "width": 40,
+      "width": 56,
       "height": 24
     },
     {
@@ -252,15 +244,7 @@
       "typeId": "spikes-up",
       "x": 1728,
       "y": 544,
-      "width": 40,
-      "height": 24
-    },
-    {
-      "id": "f3e1e8a075",
-      "typeId": "spikes-up",
-      "x": 1768,
-      "y": 544,
-      "width": 48,
+      "width": 56,
       "height": 24
     },
     {
@@ -496,9 +480,9 @@
     {
       "id": "9509f04c96",
       "color": "#e2c96f",
-      "x": 1240,
+      "x": 1224,
       "y": 496,
-      "width": 104,
+      "width": 120,
       "height": 72
     },
     {
@@ -512,9 +496,9 @@
     {
       "id": "0b32c9bdf7",
       "color": "#e2c96f",
-      "x": 1816,
+      "x": 1784,
       "y": 496,
-      "width": 240,
+      "width": 272,
       "height": 104
     },
     {
@@ -530,7 +514,7 @@
       "color": "#e2c96f",
       "x": 1616,
       "y": 568,
-      "width": 200,
+      "width": 168,
       "height": 32
     },
     {

@@ -1,8 +1,8 @@
 {
   "id": "castle-of-keys",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-04-01T09:46:12.185Z",
-  "lastEdit": "2021-04-02T11:48:52.822Z",
+  "lastEdit": "2021-04-24T17:20:54.526Z",
   "title": "Castle of keys",
   "author": "Felix44 & Janne",
   "bgColor": "#6b4db3",
@@ -22,6 +22,8 @@
   "horizontalLoop": false,
   "verticalLoop": false,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "4ad9d8591d",
@@ -333,7 +335,7 @@
       "x": 1424,
       "y": 104,
       "width": 80,
-      "height": 136,
+      "height": 144,
       "borders": {
         "t": false,
         "r": false,
@@ -387,9 +389,9 @@
       "id": "ef2d114620",
       "color": "#8777da",
       "x": 1248,
-      "y": 352,
+      "y": 360,
       "width": 176,
-      "height": 40,
+      "height": 32,
       "borders": {
         "t": false,
         "r": false,
@@ -424,7 +426,7 @@
       "shape": 2,
       "color": "#8777da",
       "x": 1248,
-      "y": 240,
+      "y": 248,
       "width": 128,
       "height": 112,
       "borders": {
@@ -508,20 +510,6 @@
         "r": false,
         "b": false,
         "l": true
-      }
-    },
-    {
-      "id": "c5efc507d1",
-      "color": "#8777da",
-      "x": 1424,
-      "y": 240,
-      "width": 80,
-      "height": 152,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
       }
     },
     {
@@ -856,11 +844,25 @@
       "id": "1a45d9a026",
       "color": "#8777da",
       "x": 1376,
-      "y": 240,
+      "y": 248,
       "width": 48,
       "height": 112,
       "borders": {
         "t": true,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "04102f38aa",
+      "color": "#8777da",
+      "x": 1424,
+      "y": 248,
+      "width": 80,
+      "height": 144,
+      "borders": {
+        "t": false,
         "r": false,
         "b": false,
         "l": false

@@ -1,8 +1,8 @@
 {
   "id": "fire-bird",
-  "version": "4.0",
+  "version": "5.0",
   "created": "2021-03-29T17:25:40.015Z",
-  "lastEdit": "2021-04-22T17:06:55.407Z",
+  "lastEdit": "2021-04-25T11:22:06.953Z",
   "title": "Fire Bird",
   "author": "Janne Kivilahti",
   "bgColor": "#446874",
@@ -25,6 +25,23 @@
   "actionDifficulty": 0.5,
   "puzzleDifficulty": 0.5,
   "sprites": [
+    {
+      "id": "3b07390f80",
+      "typeId": "1-eyed-zombie",
+      "direction": 2,
+      "x": 192,
+      "y": 1032,
+      "width": 72,
+      "height": 64
+    },
+    {
+      "id": "e9591a25d8",
+      "typeId": "chili",
+      "x": 600,
+      "y": 1040,
+      "width": 16,
+      "height": 32
+    },
     {
       "id": "b95360a2bb",
       "typeId": "exit-door",
@@ -54,15 +71,6 @@
       "height": 16
     },
     {
-      "id": "3b07390f80",
-      "typeId": "1-eyed-zombie",
-      "direction": 2,
-      "x": 192,
-      "y": 1032,
-      "width": 72,
-      "height": 64
-    },
-    {
       "id": "c2463733a5",
       "typeId": "chili",
       "weight": 0,
@@ -75,7 +83,7 @@
       "id": "d572aa1ea7",
       "typeId": "1-eyed-zombie",
       "direction": 2,
-      "x": 328,
+      "x": 440,
       "y": 720,
       "width": 56,
       "height": 64
@@ -108,15 +116,6 @@
       "height": 56
     },
     {
-      "id": "46a9dee294",
-      "typeId": "1-eyed-zombie",
-      "direction": 2,
-      "x": 512,
-      "y": 736,
-      "width": 48,
-      "height": 48
-    },
-    {
       "id": "d94accc161",
       "typeId": "1-eyed-zombie",
       "direction": 4,
@@ -142,6 +141,14 @@
       "y": 112,
       "width": 56,
       "height": 48
+    },
+    {
+      "id": "facc525868",
+      "typeId": "chili",
+      "x": 664,
+      "y": 648,
+      "width": 16,
+      "height": 32
     },
     {
       "id": "a2cd6b43f9",
@@ -173,14 +180,6 @@
       "x": 680,
       "y": 1064,
       "width": 64,
-      "height": 32
-    },
-    {
-      "id": "facc525868",
-      "typeId": "chili",
-      "x": 664,
-      "y": 648,
-      "width": 16,
       "height": 32
     }
   ],
@@ -224,14 +223,6 @@
       "y": 984,
       "width": 160,
       "height": 40
-    },
-    {
-      "id": "a9a8f2938f",
-      "color": "#6d8288",
-      "x": 456,
-      "y": 1024,
-      "width": 32,
-      "height": 72
     },
     {
       "id": "fb0e491d62",
@@ -388,17 +379,17 @@
     {
       "id": "791d15e411",
       "color": "#7c9198",
-      "x": 728,
+      "x": 720,
       "y": 456,
-      "width": 72,
+      "width": 80,
       "height": 128
     },
     {
       "id": "f0f218c40a",
       "color": "#7c9198",
       "x": 304,
-      "y": 592,
-      "width": 40,
+      "y": 624,
+      "width": 24,
       "height": 16
     },
     {
@@ -430,7 +421,7 @@
       "color": "#6d8288",
       "x": 696,
       "y": 520,
-      "width": 32,
+      "width": 24,
       "height": 16
     },
     {
@@ -484,9 +475,9 @@
     {
       "id": "539f021447",
       "color": "#7c9198",
-      "x": 512,
+      "x": 496,
       "y": 376,
-      "width": 24,
+      "width": 40,
       "height": 16
     },
     {
