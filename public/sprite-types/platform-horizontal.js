@@ -6,6 +6,7 @@ spriteTypes["platform-horizontal"] = new SpriteType({
     resizable: true,
     spriteProps: {
         isObstacle: true,
+        isElevator: true,
         weight: 0,
         maxVelocity: { x: 1, y: 0 },
     },

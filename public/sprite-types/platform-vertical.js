@@ -6,10 +6,11 @@ spriteTypes["platform-vertical"] = new SpriteType({
     collidesWithObstacles: true,
     spriteProps: {
         isObstacle: true,
+        isElevator: true,
         weight: 0,
         maxVelocity: { x: 0, y: 1 },
     },
-    behaviours: ["changes-vertical-direction-on-collision", "moves-upward", "is-x-locked"],
+    behaviours: ["changes-vertical-direction-on-tile-collision", "moves-upward", "is-x-locked"],
     paths: {
         body: {
             fill: "#d0d0d0",
