@@ -386,7 +386,9 @@ const editor = {
             scene = previous;
             this.idsOfSelectedTiles = [];
             this.idsOfSelectedSprites = [];
+            //resetScene();
             this.updateUI();
+            updateTileCanvases(true);
             tileLayers.update = true;
         }
     },
@@ -525,7 +527,17 @@ const editor = {
     },
 
     selectSprites(sprites = []) {
-        this.idsOfSelectedSprites = sprites.map(sprite => sprite.id);
+        //this.idsOfSelectedSprites = sprites.map(sprite => sprite.id);
+
+        sprites.forEach(sprite => {
+            const index = this.idsOfSelectedSprites.findIndex(id => id === sprite.id);
+            if (index !== -1) {
+                this.idsOfSelectedSprites.splice(index, 1);
+            }
+            else {
+                this.idsOfSelectedSprites.push(sprite.id);
+            }
+        });
 
         if (sprites.length === 1) {
             this.isPlayer = sprites[0].isPlayer;
@@ -544,24 +556,35 @@ const editor = {
         this.selectTiles(scene.tiles.filter(tile => tile.layer === editor.tileLayer));
     },
 
-    selectTiles(tiles = [], reset = true) {
+    selectTiles(tiles = []) {
 
-        this.idsOfSelectedTiles = this.idsOfSelectedTiles.filter(id => !tiles.includes(tile => tile.id === id));
-        this.idsOfSelectedTiles.push(...tiles.map(tile => tile.id));
+        //this.idsOfSelectedTiles = this.idsOfSelectedTiles.filter(id => !tiles.includes(tile => tile.id === id));
+        //this.idsOfSelectedTiles.push(...tiles.map(tile => tile.id));
+        tiles.forEach(tile => {
+            const index = this.idsOfSelectedTiles.findIndex(id => id === tile.id);
+            if (index !== -1) {
+                this.idsOfSelectedTiles.splice(index, 1);
+            }
+            else {
+                this.idsOfSelectedTiles.push(tile.id);
+            }
+        });
 
-        if (tiles.length === 1) {
-            document.getElementById("width").value = tiles[0].width;
-            document.getElementById("height").value = tiles[0].height;
-            document.getElementById("x").value = tiles[0].x;
-            document.getElementById("y").value = tiles[0].y;
-            document.getElementById("z").value = tiles[0].z;
-            this.borders = { ...tiles[0].borders };
-            this.fillColor = tiles[0].color;
-            this.transparent = tiles[0].transparent;
-            this.blocks = tiles[0].blocks;
-            this.tileMaterialId = tiles[0].materialId;
-            this.strokeColor = tiles[0].stroke;
-            this.opacity = tiles[0].opacity;
+        if (this.idsOfSelectedTiles.length === 1) {
+            const tile = scene.tiles.find(t => t.id === this.idsOfSelectedTiles[0]);
+            document.getElementById("width").value = tile.width;
+            document.getElementById("height").value = tile.height;
+            document.getElementById("x").value = tile.x;
+            document.getElementById("y").value = tile.y;
+            document.getElementById("z").value = tile.z;
+            this.borders = { ...tile.borders };
+            this.fillColor = tile.color;
+            this.transparent = tile.transparent;
+            this.blocks = tile.blocks;
+            this.tileMaterialId = tile.materialId;
+            this.strokeColor = tile.stroke;
+            this.opacity = tile.opacity;
+            this.tileLayer = tile.layer;
         }
         else {
             if (new Set(tiles.map(tile => tile.color)).size === 1) {
@@ -901,11 +924,15 @@ const editor = {
         const showTileProperties = this.tool === TOOLS.DRAW_TILE || this.idsOfSelectedTiles.length > 0;
         const showSpriteProperties = this.tool === TOOLS.DRAW_SPRITE || this.idsOfSelectedSprites.length > 0;
         document.getElementById("fieldset-tile").style.display = showTileProperties ? null : "none";
-        document.getElementById("fieldset-tile-layer").style.display = showTileProperties ? null : "none";
+        document.getElementById("fieldset-tile-layer").style.display = showTileProperties || this.tool === TOOLS.SELECT_TILES ? null : "none";
         document.getElementById("fieldset-tile-borders").style.display = showTileProperties ? null : "none";
         document.getElementById("fieldset-tile-colors").style.display = showTileProperties ? null : "none";
         document.getElementById("fieldset-scene-palette").style.display = showTileProperties ? null : "none";
         document.getElementById("fieldset-sprite").style.display = showSpriteProperties ? null : "none";
+
+        document.getElementById("fieldset-position").style.display = showTileProperties || showSpriteProperties ? null : "none";
+        document.getElementById("fieldset-order").style.display = showTileProperties || showSpriteProperties ? null : "none";
+        document.getElementById("fieldset-size").style.display = showTileProperties || showSpriteProperties ? null : "none";
 
 
         document.getElementById("source").value = JSON.stringify(scene, null, this.prettyPrintSource ? ' ' : undefined);
@@ -938,6 +965,8 @@ const editor = {
         document.getElementById('tile-borders-right').checked = this.borders.r;
         document.getElementById('tile-borders-bottom').checked = this.borders.b;
         document.getElementById('tile-borders-left').checked = this.borders.l;
+        document.getElementById('tile-layer-bg-radio').checked = this.tileLayer === LAYERS.BACKGROUND;
+        document.getElementById('tile-layer-middle-radio').checked = this.tileLayer === LAYERS.MIDDLE;
 
         document.getElementById('sprite-is-player').checked = this.isPlayer;
         document.getElementById('sprite-direction-left').checked = this.spriteDirection === DIRECTION.LEFT;
@@ -1057,8 +1086,6 @@ const onMouseUpListener = event => {
         height: Math.max(controls.startMouseY, controls.endMouseY) - Math.min(controls.startMouseY, controls.endMouseY)
     };
 
-    let message = null;
-
     if (editor.dragMode === "RESIZE") {
         editor.endResize();
     }
@@ -1130,38 +1157,40 @@ const onMouseUpListener = event => {
                 sprite.y + sprite.height >= area.y && sprite.y <= area.y + area.height
             );
 
-            let selectedTiles = scene.tiles.filter(tile =>
-                tile.x <= area.x && tile.x + tile.width >= area.x + area.width &&
-                tile.y <= area.y && tile.y + tile.height >= area.y + area.height
-            );
-
-            selectedTiles = selectedTiles.sort((t1, t2) => t1.layer - t2.layer);
-
-            if (selectedSprites.length > 0) {
-                editor.selectSprites([selectedSprites[selectedSprites.length - 1]]);
-            }
-            else if (selectedTiles.length > 0) {
-                editor.selectTiles([
-                    selectedTiles[selectedTiles.length - 1]
-                ]);
-            }
-            else if (editor.tool === TOOLS.DRAW_SPRITE) {
+            if (editor.tool === TOOLS.DRAW_SPRITE && 
+                !spriteTypes[editor.spriteTypeId].resizable &&
+                selectedSprites.length === 0) {
                 const type = spriteTypes[editor.spriteTypeId];
-                if (!type.resizable) {
-                    editor.addSprite({
-                        typeId: editor.spriteTypeId,
-                        x: area.x - Math.floor(type.spriteProps.width / 2),
-                        y: area.y - Math.floor(type.spriteProps.height / 2),
-                        width: type.spriteProps.width || 16,
-                        height: type.spriteProps.height || 16
-                    });
+                editor.addSprite({
+                    typeId: editor.spriteTypeId,
+                    x: area.x - Math.floor(type.spriteProps.width / 2),
+                    y: area.y - Math.floor(type.spriteProps.height / 2),
+                    width: type.spriteProps.width || 16,
+                    height: type.spriteProps.height || 16
+                });
+            }
+            else {
+
+                let selectedTiles = scene.tiles.filter(tile =>
+                    tile.x <= area.x && tile.x + tile.width >= area.x + area.width &&
+                    tile.y <= area.y && tile.y + tile.height >= area.y + area.height
+                );
+
+                selectedTiles = selectedTiles.sort((t1, t2) => t1.layer - t2.layer);
+
+                if (selectedSprites.length > 0 && editor.idsOfSelectedTiles.length === 0) {
+                    editor.selectSprites([selectedSprites[selectedSprites.length - 1]]);
+                }
+                else if (selectedTiles.length > 0 && editor.idsOfSelectedSprites.length === 0) {
+                    editor.selectTiles([
+                        selectedTiles[selectedTiles.length - 1]
+                    ]);
+                }
+                else {
+                    editor.updateUI();
                 }
             }
         }
-    }
-
-    if (message !== null) {
-        worker.postMessage(message);
     }
 
     controls.mouseLeft = false;
@@ -1174,6 +1203,13 @@ const onEditorKeydownListener = event => {
 
     if (hasInputFocus()) {
         return;
+    }
+
+    if (event.shiftKey) {
+        controls.shiftDown = true;
+    }
+    else {
+        controls.shiftDown = false;
     }
 
     if (!mode.pause) {
@@ -1248,6 +1284,10 @@ const onEditorKeyupListener = event => {
     }
     else if (event.code === 'KeyJ') {
         editor.toggleSource();
+    }
+
+    if (!event.shiftKey) {
+        controls.shiftDown = false;
     }
 
     event.preventDefault();
