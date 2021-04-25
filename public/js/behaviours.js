@@ -62,15 +62,12 @@ const behaviours = {
                 sprite.jumpAgain = true;
             }
 
-            if (sprite.collisionData.bottom) {
-                //if (!controls.up) {
-                //if (jumpAgain) {
+            if (sprite.collisionData.bottom && (sprite.velocity.y >= 0 || sprite.collisionData.bounce)) {
                 if (sprite.jumpCounter > 0) {
                     sprite.jumpPauseCounter = sprite.jumpPause;
                 }
 
                 sprite.jumpCounter = 0;
-                //}
                 sprite.groundContactCounter = 5;
 
             }
@@ -91,7 +88,6 @@ const behaviours = {
                 if (jump && sprite.jumpCounter <= sprite.maxJump) {
 
                     if (sprite.jumpCounter === 0) {
-                        //postMessage({ type: "PLAY_SOUND", sound: "tst" });
                         postMessage({ type: "PLAY_SOUND", sound: "jump", x: sprite.x, y: sprite.y });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -126,21 +122,19 @@ const behaviours = {
                         });
                     }
 
-                    //sprite.velocity.y = -3 / (1 + sprite.jumpCounter / 20);//sprite.velocity.y - 1;//Math.max(-sprite.maxVelocity.y, sprite.velocity.y - 1);
-                    //const easing = easeOutExpo(Math.min(sprite.jumpCounter / sprite.maxJump, 1.0))/1.5;
-                    //const easing = easeOutQuint(Math.min(sprite.jumpCounter / sprite.maxJump, 1.0));
                     const easing = easeJump(Math.min(sprite.jumpCounter / sprite.maxJump, 1.0));
 
-                    sprite.velocity.y = -Math.max(sprite.weight, easing * 4);//4
-                    //console.log(sprite.velocity.y);
+                    sprite.velocity.y = Math.min(sprite.velocity.y, -Math.max(sprite.weight, easing * 4));//4
                     sprite.jumpCounter++;
-                    //sprite.groundContactCounter = 0;
                     sprite.jumpAgain = false;
                 }
             }
             if (!jump && sprite.jumpCounter > 0 && sprite.jumpCounter < sprite.maxJump) {
                 sprite.jumpCounter = sprite.maxJump + 1;
-                sprite.velocity.y /= 2;
+
+                if (sprite.velocity.y < -1) {
+                    sprite.velocity.y /= 2;
+                }
             }
 
             if (sprite.groundContactCounter > 0) {
@@ -244,63 +238,21 @@ const behaviours = {
             sprite.transform.height = sprite.height;
         },
         do({ sprite }) {
-            /*
-            if (sprite.width < sprite.transform.width) {
-                //sprite.width++;
-                sprite.transform.velocity.x = Math.min(sprite.transform.velocity.x + 0.1, 1);
-            }
-            if (sprite.width > sprite.transform.width) {
-                //sprite.width--;
-                sprite.transform.velocity.x = Math.max(sprite.transform.velocity.x - 0.1, -1);
-            }
-            if (sprite.height < sprite.transform.height) {
-                //sprite.height++;
-                sprite.transform.velocity.y = Math.min(sprite.transform.velocity.y + 0.1, 1);
-            }
-            if (sprite.height > sprite.transform.height) {
-                sprite.transform.velocity.y = Math.max(sprite.transform.velocity.y - 0.1, -1);
-                //sprite.height--;
-            }
-            sprite.width += sprite.transform.velocity.x;
-            sprite.height += sprite.transform.velocity.y;
-            */
-            /*
-             if (sprite.width !== sprite.transform.width) {
-                 sprite.width = (sprite.width * 9 + sprite.transform.width) / 10;
-             }
-             if (sprite.height !== sprite.transform.height) {
-                 sprite.height = (sprite.height * 9 + sprite.transform.height) / 10;
-             }*/
 
-            /*
-           if ((sprite.collisionData.top && sprite.collisionData.bottom)
-               || (sprite.collisionData.left && sprite.collisionData.right)) {
-               sprite.transform.counter = 0;
-           }*/
 
             if (sprite.transform
                 && sprite.transform.counter > 0) {
-                //sprite.width = sprite.transform.width * (1 - Math.cos(((1.0 - sprite.freezeCounter/60) * Math.PI) / 2));
-                //debugger;
                 sprite.transform.counter -= 0.05;
-                //const easing = easeInOutBack(1.0 - sprite.transform.counter);
                 const easing = easeTransform(1.0 - sprite.transform.counter);//easeOutElastic(1.0 - sprite.transform.counter);
-                //const easing = jump(1.0 - sprite.transform.counter);
-                //console.log(easing);
 
                 // TODO grow sideways if squeezed
 
-                //if (!(sprite.collisionData.left && sprite.collisionData.right)) {
                 sprite.width = Math.floor(sprite.transform.originalWidth + (sprite.transform.width - sprite.transform.originalWidth) * easing);
                 sprite.x = Math.floor(sprite.transform.originalX - (sprite.transform.width - sprite.transform.originalWidth) * easing / 2);
-                //}
 
 
-                //if (!(sprite.collisionData.top && sprite.collisionData.bottom)) {
                 sprite.height = Math.floor(sprite.transform.originalHeight + (sprite.transform.height - sprite.transform.originalHeight) * easing);
                 sprite.y = Math.floor(sprite.transform.originalY - (sprite.transform.height - sprite.transform.originalHeight) * easing / 2);
-                //}
-                //sprite.freezeCounter = 30;
             }
         }
     },
@@ -353,7 +305,7 @@ const behaviours = {
     "throttle-players-max-jump": {
         init(sprite) {
             sprite.transform = sprite.transform || {};
-            sprite.transform.maxJump = sprite.transform.maxJump || 2; 
+            sprite.transform.maxJump = sprite.transform.maxJump || 2;
         },
         do({ sprite, sprites }) {
             sprite.collisionData.spriteIds.forEach(id => {
@@ -371,7 +323,7 @@ const behaviours = {
     "changes-collectors-weight": {
         init(sprite) {
             sprite.transform = sprite.transform || {};
-            sprite.transform.weight = sprite.transform.weight || 0.5; 
+            sprite.transform.weight = sprite.transform.weight || 0.5;
         },
         do({ sprite, sprites }) {
             sprite.collisionData.spriteIds.forEach(id => {
@@ -559,9 +511,18 @@ const behaviours = {
             sprite.direction = DIRECTION.UP;
             sprite.acceleration = sprite.acceleration || 0.2;
         },
-        do({ sprite, state }) {
+        do({ sprite, state, sprites }) {
 
             if (state.completed) {
+                return;
+            }
+
+            const jammedSprites = Array.from(sprite.collisionData.spriteIds)
+            .map(id => sprites.find(s => s.id === id))
+            .filter(sprite => sprite.collisionData.bottom && sprite.collisionData.top);
+
+            if (jammedSprites.length > 0) {
+                sprite.velocity.y = 0;
                 return;
             }
 
@@ -787,7 +748,7 @@ const behaviours = {
         }
     },
 
-    "changes-vertical-direction-on-collision": {
+    "changes-vertical-direction-on-tile-collision": {
         do({ sprite }) {
             if (sprite.collisionData.spriteIds.size > 0 && sprite.collisionData.tileIds.size === 0) {
                 return;
@@ -1075,10 +1036,12 @@ const behaviours = {
             sprite.blowCounter = sprite.x % 200;
             sprite.blowTop = sprite.blowTop || 0;
             sprite.blowBottom = sprite.blowBottom || 1;
+            sprite.blowLeft = sprite.blowLeft || 0;
+            sprite.blowRight = sprite.blowRight || 1;
             sprite.blowStart = sprite.blowStart || 100;
             sprite.blowEnd = sprite.blowEnd || 200;
         },
-        do({ sprite, sprites, type }) {
+        do({ sprite, sprites }) {
 
             if (sprite.energy <= 0) {
                 return;
@@ -1095,14 +1058,42 @@ const behaviours = {
                 const players = sprites.filter(sprite => !sprite.isEnemy && spriteTypes[sprite.typeId].movedByOtherSprites);
 
                 players.forEach(player => {
-                    if (Math.abs(player.x + player.width / 2 - sprite.x + sprite.width / 2) <= 700
-                        && player.y + player.height > sprite.y + sprite.height * sprite.blowTop
-                        && player.y < sprite.y + sprite.height * sprite.blowBottom) {
-                        if (player.x < sprite.x && sprite.direction === DIRECTION.LEFT) {
-                            player.velocity.x -= 0.1;
+                    if (sprite.blowDirection && sprite.blowDirection === DIRECTION.UP) {
+                        const distance = Math.abs(player.y + player.height / 2 - sprite.y + sprite.height / 2);
+                        if (distance <= Math.min(500, (sprite.blowCounter - sprite.blowStart) * 5)) {
+                            const power = 50 * (1 - (sprite.blowCounter - sprite.blowStart) / (sprite.blowEnd - sprite.blowStart));
+                            if (sprite.direction === DIRECTION.RIGHT
+                                && player.x + player.width > sprite.x + sprite.width * sprite.blowLeft
+                                && player.x < sprite.x + sprite.width * sprite.blowRight) {
+                                player.velocity.y -= Math.max(0.1, Math.min(5, power / distance));
+                                //player.velocity.y -= Math.max(0.2, 1 / Math.min(50,distance));
+                                if (player.maxJump) {
+                                    player.jumpCounter = player.maxJump - 1;
+                                    //player.jumpAgain = true;
+                                }
+                            }
+                            else if (sprite.direction === DIRECTION.LEFT
+                                && player.x + player.width > sprite.x
+                                && player.x < sprite.x + sprite.width * sprite.blowLeft) {
+                                player.velocity.y -= 0.2;
+                                //player.velocity.y -= Math.max(0.1, Math.min(6, power / distance));
+                                if (player.maxJump) {
+                                    //player.jumpCounter = player.maxJump-1;
+                                    //player.jumpAgain = true;
+                                }
+                            }
                         }
-                        else if (player.x > sprite.x && sprite.direction === DIRECTION.RIGHT) {
-                            player.velocity.x += 0.1;
+                    }
+                    else {
+                        if (Math.abs(player.x + player.width / 2 - sprite.x + sprite.width / 2) <= 700
+                            && player.y + player.height > sprite.y + sprite.height * sprite.blowTop
+                            && player.y < sprite.y + sprite.height * sprite.blowBottom) {
+                            if (player.x < sprite.x && sprite.direction === DIRECTION.LEFT) {
+                                player.velocity.x -= 0.1;
+                            }
+                            else if (player.x > sprite.x && sprite.direction === DIRECTION.RIGHT) {
+                                player.velocity.x += 0.1;
+                            }
                         }
                     }
                 });
@@ -1130,7 +1121,7 @@ const behaviours = {
         },
         do({ sprite }) {
             if (sprite.energy < 1) {
-                sprite.changeAnimation({ animation: "dead" }); 
+                sprite.changeAnimation({ animation: "dead" });
                 if (sprite.isPlayer && !sprite.isDead) {
                     postMessage({ type: "PLAY_SOUND", sound: "fail" });
                     //sprite.isDead = true;
