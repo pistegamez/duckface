@@ -1,10 +1,10 @@
 {
   "id": "house-of-burgers",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-27T12:48:19.644Z",
-  "lastEdit": "2021-03-29T10:04:44.137Z",
+  "lastEdit": "2021-04-25T12:26:13.435Z",
   "title": "House of Burgers",
-  "author": "",
+  "author": "Janne Kivilahti",
   "bgColor": "#fafbe4",
   "themeSong": "theme-country",
   "captions": [
@@ -33,6 +33,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "96ee644c87",
@@ -453,9 +455,9 @@
     {
       "id": "21d97f8587",
       "color": "#B08080",
-      "x": 424,
+      "x": 536,
       "y": 360,
-      "width": 776,
+      "width": 664,
       "height": 40,
       "borders": {
         "t": true,
@@ -1276,9 +1278,51 @@
     {
       "id": "5991902356",
       "color": "#B08080",
+      "x": 536,
+      "y": 400,
+      "width": 664,
+      "height": 200,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "7af660dcd8",
+      "color": "#B08080",
+      "x": 424,
+      "y": 360,
+      "width": 48,
+      "height": 40,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
+    },
+    {
+      "id": "eb30578dfc",
+      "color": "#B08080",
+      "x": 472,
+      "y": 400,
+      "width": 64,
+      "height": 200,
+      "borders": {
+        "t": true,
+        "r": false,
+        "b": false,
+        "l": false
+      }
+    },
+    {
+      "id": "9844039512",
+      "color": "#B08080",
       "x": 424,
       "y": 400,
-      "width": 776,
+      "width": 48,
       "height": 200,
       "borders": {
         "t": false,

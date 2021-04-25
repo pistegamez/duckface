@@ -6,7 +6,7 @@ spriteTypes.pighead = new SpriteType({
     resizable: true,
     //collisionBox: { t: 0.1, r: 0.9, b: 0.9, l: 0.1, },
     spriteProps: {
-        maxJump: 20,
+        maxJump: 12,
         isObstacle: true,
         weight: 0.25,
         maxVelocity: { x: 2, y: 6 },

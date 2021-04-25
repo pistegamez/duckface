@@ -10,10 +10,10 @@ spriteTypes.burger = new SpriteType({
         transform: {
             width: 6,
             height: 6,
-            weight: 0.05,
+            weight: 0.03,
             maxVelocityX: -0.1
         },
-        weight: 0.5,
+        weight: 0.2,
         isObstacle: true
     },
     behaviours: ["changes-collectors-size", "changes-collectors-weight", "throttle-players-max-speed", "removed-if-energy-0", "blocks-completion"],
