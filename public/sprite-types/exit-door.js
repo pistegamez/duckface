@@ -3,6 +3,7 @@ spriteTypes["exit-door"] = new SpriteType({
     name: "Exit Door",
     shape: SHAPES.BOX,
     resizable: true,
+    shaded: false,
     collidesWithObstacles: false,
     spriteProps: {
         isObstacle: false,
@@ -11,7 +12,7 @@ spriteTypes["exit-door"] = new SpriteType({
     behaviours: ["exit"],
     paths: {
         body: {
-            fill: "#404040",
+            fill: "#303030",
             stroke: "#303030",
             commands: [
                 { c: "rc", l: 0.1, t: 0.1, r: 0.9, b: 1.0 },
