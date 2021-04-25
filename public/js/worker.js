@@ -410,33 +410,26 @@ function collide() {
     sprites.forEach(sprite => {
         if (!sprite.hidden) {
             sprite.collision = false;
-            testCollisions(sprite, [...sprites.filter(sprite => !sprite.hidden), ...tiles]);               
+            testCollisions(sprite, sprites.filter(sprite => !sprite.hidden));
         }
     });
-    
-    sprites.filter(sprite => sprite.collisionData.spriteIds.size > 0).forEach(sprite => {
-        sprite.x = sprite.collisionData.x;
-        sprite.y = Math.floor(sprite.collisionData.y);
-        sprite.resetCollisionBoxes(scene);
-        sprite.collisionData.x = sprite.x;
-        sprite.collisionData.y = sprite.y;
-        sprite.collisionData.tileIds.clear();
-        testCollisions(sprite, tiles);
-    });
-    
-    /*
-    sprites.filter(sprite => sprite.collision).forEach(sprite => {
-        if (!sprite.hidden) {
-            sprite.collision = false;
-            testCollisions(sprite, [...sprites.filter(sprite => !sprite.hidden), ...tiles]);               
-        }
-    });*/
 
     sprites.forEach(sprite => {
-        sprite.x = sprite.collisionData.x;
-        sprite.y = Math.floor(sprite.collisionData.y);
-        sprite.velocity.x = sprite.collisionData.velocity.x;
-        sprite.velocity.y = sprite.collisionData.velocity.y;
+        if (!sprite.hidden) {
+            sprite.x = sprite.x + sprite.collisionData.xChange;
+            sprite.y = sprite.y + sprite.collisionData.yChange;
+            sprite.resetCollisionBoxes(scene);
+            sprite.collisionData.yChange = 0;
+            sprite.collisionData.tileIds.clear();
+
+            testCollisions(sprite, tiles);
+
+            sprite.x += sprite.collisionData.xChange;
+            sprite.y = Math.floor(sprite.y + sprite.collisionData.yChange);
+            sprite.velocity.x = sprite.collisionData.velocity.x;
+            sprite.velocity.y = sprite.collisionData.velocity.y;
+
+        }
     });
 }
 
@@ -589,19 +582,15 @@ function testCollisions(sprite, targets) {
             }
             else if (collision.targetShape === SHAPES.TOP_DOWN) {
 
-                if (sprite.velocity.y >= 0
+                if (sprite.velocity.y >= -0.5
                     && collision.collisionBox.b - 6.5 <= collision.target.y) {
 
                     sprite.collisionData.bottom = true;
-                    sprite.collisionData.y -= Math.round(collision.area.height);
-                    /*
-                    sprite.collisionData.boxes.forEach(box => {
-                        box.t -= collision.area.height;
-                        box.b -= collision.area.height;
-                    });
-                    */
+                    sprite.collisionData.yChange = Math.min(sprite.collisionData.yChange, -Math.round(collision.area.height));
+
                     if (sprite.velocity.y >= 3) {
                         sprite.collisionData.velocity.y = Math.min(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
+                        sprite.collisionData.bounce = true;
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -621,6 +610,7 @@ function testCollisions(sprite, targets) {
                     }
                     else if (sprite.velocity.y > 0) {
                         sprite.collisionData.velocity.y = Math.min(0, sprite.collisionData.velocity.y);
+                        sprite.collisionData.bounce = true;
                     }
                 }
             }
@@ -635,6 +625,7 @@ function testCollisions(sprite, targets) {
                     if (collision.target.isSprite) {
 
                         sprite.collisionData.velocity.y = Math.min(sprite.collisionData.velocity.y, collision.target.velocity.y);
+                        sprite.collisionData.bounce = true;
 
                         if (collision.target.velocity.x !== 0) {
 
@@ -647,16 +638,11 @@ function testCollisions(sprite, targets) {
                         }
                     }
 
-                    sprite.collisionData.y -= Math.round(collision.area.height);
-                    /*
-                    sprite.collisionData.boxes.forEach(box => {
-                        box.t -= collision.area.height;
-                        box.b -= collision.area.height;
-                    });
-                    */
+                    sprite.collisionData.yChange = Math.min(sprite.collisionData.yChange, -Math.round(collision.area.height));
 
                     if (sprite.velocity.y >= 4) {
                         sprite.collisionData.velocity.y = Math.min(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
+                        sprite.collisionData.bounce = true;
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -689,6 +675,7 @@ function testCollisions(sprite, targets) {
 
                     if (sprite.velocity.y <= -3) {
                         sprite.collisionData.velocity.y = Math.max(-sprite.velocity.y / 4, sprite.collisionData.velocity.y);
+                        sprite.collisionData.bounce = true;
                         postMessage({ type: "PLAY_SOUND", sound: "bump", x: sprite.x + sprite.width / 2, y: sprite.y + sprite.height / 2 });
                         postMessage({
                             type: "EMIT_PARTICLES",
@@ -701,18 +688,11 @@ function testCollisions(sprite, targets) {
                             }
                         });
                     }
-                    else if (sprite.velocity.y < 0) {
+                    else if (sprite.velocity.y < 0 && !sprite.isElevator) {
                         sprite.collisionData.velocity.y = Math.max(0, sprite.collisionData.velocity.y);
                     }
 
-                    sprite.collisionData.y += Math.round(collision.area.height);
-
-                    /*
-                    sprite.collisionData.boxes.forEach(box => {
-                        box.t += Math.round(collision.area.height);
-                        box.b += Math.round(collision.area.height);
-                    });
-                    */
+                    sprite.collisionData.yChange = Math.max(sprite.collisionData.yChange, Math.round(collision.area.height));
                 }
             }
             else {
@@ -721,23 +701,10 @@ function testCollisions(sprite, targets) {
                     sprite.collisionData.right = true;
 
                     if (collision.target.isTile) {
-                        sprite.collisionData.x -= collision.area.width;
-                        /*
-                        sprite.collisionData.boxes.forEach(box => {
-                            box.l -= collision.area.width;
-                            box.r -= collision.area.width;
-                        });
-                        */
-
+                        sprite.collisionData.xChange = Math.min(sprite.collisionData.xChange, -collision.area.width);
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
-                        sprite.collisionData.x -= collision.area.width;
-                        /*
-                        sprite.collisionData.boxes.forEach(box => {
-                            box.l -= collision.area.width;
-                            box.r -= collision.area.width;
-                        });
-                        */
+                        sprite.collisionData.xChange = Math.min(sprite.collisionData.xChange, -collision.area.width);
                     }
 
                     if (sprite.velocity.x >= 1) {
@@ -752,22 +719,10 @@ function testCollisions(sprite, targets) {
                     sprite.collisionData.left = true;
 
                     if (collision.target.isTile) {
-                        sprite.collisionData.x += collision.area.width;
-                        /*
-                        sprite.collisionData.boxes.forEach(box => {
-                            box.l += collision.area.width;
-                            box.r += collision.area.width;
-                        });
-                        */
+                        sprite.collisionData.xChange = Math.max(sprite.collisionData.xChange, collision.area.width);
                     }
                     else if (Math.abs(sprite.velocity.x) >= Math.abs(collision.target.velocity.x)) {
-                        sprite.collisionData.x += collision.area.width;
-                        /*
-                        sprite.collisionData.boxes.forEach(box => {
-                            box.l += collision.area.width;
-                            box.r += collision.area.width;
-                        });
-                        */
+                        sprite.collisionData.xChange = Math.max(sprite.collisionData.xChange, collision.area.width);
                     }
 
                     if (sprite.velocity.x <= -1) {
