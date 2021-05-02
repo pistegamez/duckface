@@ -97,6 +97,16 @@
 
         function updateSpriteType() {
             eval(document.getElementById("json").value);
+            const spriteType = spriteTypes[type];
+            if (spriteType.animations.idle) {
+                animation = idle;
+            }
+            else {
+                for (const a in spriteType.animations) {
+                    animation = a;
+                    break;
+                }
+            }
             //spriteTypes["sprite-editor"] = new SpriteType(JSON.parse(document.getElementById("json").value));
         }
 
