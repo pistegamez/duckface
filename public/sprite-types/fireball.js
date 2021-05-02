@@ -1,49 +1,40 @@
+/* eslint-disable no-undef */
 spriteTypes.fireball = new SpriteType({
-    id: "fireball",
-    name: "Fire Ball",
-    shape: SHAPES.BOX,
-    resizable: true,
-    shaded: false,
-    collidesWithObstacles: true,
-    movedByOtherSprites: false,
-    damageType: DAMAGE_TYPES.FIRE,
-    availableInEditor: false,
-    spriteProps: {
-        isObstacle: false,
+  id: "fireball",
+  name: "Fire Ball",
+  shape: SHAPES.BOX,
+  resizable: true,
+  shaded: false,
+  collidesWithObstacles: true,
+  movedByOtherSprites: false,
+  damageType: DAMAGE_TYPES.FIRE,
+  availableInEditor: false,
+  collisionBoxes: [
+    { t: 0.1, l: 0.1, r: 0.9, b: 0.9, testSprites: true, testTiles: false },
+    { t: 0.4, l: 0.2, r: 0.8, b: 0.6, testSprites: false, testTiles: true }
+  ],
+  spriteProps: {
+    isObstacle: false,
+  },
+  behaviours: ["fireball"],
+  animations: {
+    idle: [{ frame: "flame-1" }],
+  },
+  frames: {
+    "flame-1": [{ path: "flame" }],
+  },
+  paths: {
+    flame: {
+      lineWidth: 4,
+      fill: "#ffffff",
+      stroke: "#ffe000",
+      commands: [
+        { c: "mt", x: 0.5, y: 0.0 },
+        { c: "lt", x: 1.0, y: 0.5 },
+        { c: "lt", x: 0.5, y: 1.0 },
+        { c: "lt", x: 0.0, y: 0.5 },
+        { c: "cp" },
+      ],
     },
-    behaviours: ["fireball"],
-    animations: {
-        idle: [
-            { frame: "flame-1" },
-        ],
-    },
-    frames: {
-        "flame-1": [
-            { path: "flame" }
-        ],
-    },
-    paths: {
-        "flame": {
-            lineWidth: 4,
-            fill: "#ffffff",
-            stroke: "#ffe000",
-            /*
-            commands: [
-                { c: "mt", x: 1.0, y: 0.5 },
-                { c: "lt", x: 0.7, y: 1.0 },
-                { c: "lt", x: 0.2, y: 0.75 },
-                { c: "lt", x: 0.3, y: 0.7 },
-                { c: "lt", x: 0.0, y: 0.5 },
-                { c: "lt", x: 0.7, y: 0.0 },
-                { c: "cp" }
-            ]*/
-            commands: [
-                { c: "mt", x: 0.5, y: 0.0 },
-                { c: "lt", x: 1.0, y: 0.5 },
-                { c: "lt", x: 0.5, y: 1.0 },
-                { c: "lt", x: 0.0, y: 0.5 },
-                { c: "cp" }
-            ]
-        },
-    }
+  },
 });
