@@ -12,7 +12,8 @@ const tileLayers = { update: true };
 
 let buttons = {};
 
-const showSpriteInfo = false;
+// eslint-disable-next-line prefer-const
+let showSpriteInfo = false;
 
 // eslint-disable-next-line no-unused-vars
 function updateTileCanvases(drawAll = false) {
@@ -876,8 +877,16 @@ function drawSprite(sprite, context) {
     throw new Error(`Type ${sprite.typeId} not found`);
   }
 
-  const animationFrame =
-    type.animations[sprite.animation][sprite.frame] || type.animations.idle[0];
+  if (!sprite.animation) {
+    throw new Error(`Sprite ${sprite.typeId} animation is undefined`);
+  }
+
+  
+  let animationFrame = type.animations[sprite.animation] && type.animations[sprite.animation][sprite.frame];
+
+  if (animationFrame === undefined && type.animations.idle) {
+    animationFrame = type.animations.idle[0];
+  }
 
   if (!animationFrame) {
     throw new Error(
