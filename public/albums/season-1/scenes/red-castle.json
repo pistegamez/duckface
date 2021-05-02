@@ -1,8 +1,8 @@
 {
   "id": "red-castle",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2021-03-25T19:52:19.451Z",
-  "lastEdit": "2021-03-25T20:00:52.624Z",
+  "lastEdit": "2021-05-02T14:31:28.006Z",
   "title": "Your Pills Are In Another Castle",
   "author": "Janne Kivilahti",
   "bgColor": "#f0f0ff",
@@ -22,6 +22,8 @@
   "horizontalLoop": true,
   "verticalLoop": false,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "ac18859db6",
@@ -689,7 +691,7 @@
     {
       "id": "8e675986ed",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 456,
       "y": 40,
       "z": -0.2,
@@ -701,7 +703,7 @@
     {
       "id": "e28c46caa1",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 480,
       "y": 16,
       "z": -0.2,
@@ -719,7 +721,7 @@
     {
       "id": "2fe2b97b50",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 536,
       "y": 0,
       "z": -0.2,
@@ -737,7 +739,7 @@
     {
       "id": "faae4687cb",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 584,
       "y": 16,
       "z": -0.2,
@@ -755,7 +757,7 @@
     {
       "id": "64d53f7a48",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 472,
       "y": 48,
       "z": -0.2,
@@ -773,7 +775,7 @@
     {
       "id": "6ba6d0f414",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 576,
       "y": 56,
       "z": -0.2,
@@ -791,7 +793,7 @@
     {
       "id": "d8a1f0bb2f",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 632,
       "y": 56,
       "z": -0.2,
@@ -809,7 +811,7 @@
     {
       "id": "20d180ced3",
       "color": "#ffffff",
-      "stroke": "#bda8b6",
+      "stroke": "#dfc8d8",
       "x": 440,
       "y": 56,
       "z": -0.2,
