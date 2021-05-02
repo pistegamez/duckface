@@ -1,8 +1,8 @@
 {
   "id": "wine-tasting",
-  "version": "1.1",
+  "version": "2.1",
   "created": "2021-03-23T15:40:15.400Z",
-  "lastEdit": "2021-04-24T16:59:22.515Z",
+  "lastEdit": "2021-05-02T16:19:15.636Z",
   "title": "The Wine Tasting",
   "author": "Janne Kivilahti",
   "bgColor": "#ee81b8",
@@ -139,9 +139,9 @@
     {
       "id": "841c9d1b88",
       "typeId": "box",
-      "x": 736,
+      "x": 728,
       "y": 368,
-      "width": 32,
+      "width": 40,
       "height": 48
     },
     {
@@ -196,6 +196,26 @@
       "y": 320,
       "width": 64,
       "height": 64
+    },
+    {
+      "id": "6ef9d025e6",
+      "typeId": "duckface",
+      "isPlayer": true,
+      "direction": 2,
+      "x": 272,
+      "y": 440,
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "9c887fd0b2",
+      "typeId": "box",
+      "isPlayer": false,
+      "direction": 2,
+      "x": 560,
+      "y": 328,
+      "width": 16,
+      "height": 16
     }
   ],
   "tiles": [
