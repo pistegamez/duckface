@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Editor</title>
-    <meta name="description" content="Duckface level editor">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="description" content="Duckface level editor" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta http-equiv="Cache-Control" content="no-store" />
     <script>
-        const worker = new Worker('/js/worker.js');
+      const worker = new Worker("/js/worker.js");
     </script>
     <!-- scripts-start -->
     <script src="/js/common.js"></script>
@@ -19,694 +18,987 @@
     <script src="/js/draw.js"></script>
     <!-- scripts-end -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Gaegu&display=swap");
 
-        body {
-            box-sizing: border-box;
-            padding: 0px;
-            margin: 0px;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
+      body {
+        box-sizing: border-box;
+        padding: 0px;
+        margin: 0px;
+        font-family: sans-serif;
+        font-size: 0.9em;
+      }
 
-        main {
-            display: flex;
-            padding: 0px;
-            margin: 0px;
-        }
+      main {
+        display: flex;
+        padding: 0px;
+        margin: 0px;
+      }
 
-        #game-canvas {
-            border: 0px solid #333;
-            padding: 0px;
-            margin: 0px;
-        }
+      #game-canvas {
+        border: 0px solid #333;
+        padding: 0px;
+        margin: 0px;
+      }
 
-        #scene {
-            box-sizing: border-box;
-            background-color: rgb(225, 225, 225);
-            width: 220px;
-            height: 100vh;
-            overflow: auto;
-            padding: 4px;
-            border-left: 1px solid #000;
-        }
+      #scene {
+        box-sizing: border-box;
+        background-color: rgb(225, 225, 225);
+        width: 220px;
+        height: 100vh;
+        overflow: auto;
+        padding: 4px;
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 70%);
+        z-index: 1;
+        /*border-left: 1px solid #000;*/
+      }
 
-        #tools {
-            box-sizing: border-box;
-            background-color: rgb(225, 225, 225);
-            width: 220px;
-            height: 100vh;
-            overflow: auto;
-            padding: 4px;
-            border-right: 1px solid #000;
-        }
+      #tools {
+        box-sizing: border-box;
+        background-color: rgb(225, 225, 225);
+        width: 220px;
+        height: 100vh;
+        overflow: auto;
+        padding: 4px;
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 70%);
+        z-index: 1;
+        /*border-right: 1px solid #000;*/
+      }
 
-        #source {
+      #source {
+        /*
             width: 100%;
-            height: 100%;
-        }
+            height: 100%;*/
+        width: 70vw;
+        height: 80vh;
+        border: 0;
+      }
 
-        .tool-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+      .tool-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
 
-        .tool-button {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            margin: 1px;
-            border: 1px solid #9e9e9e;
-            border-radius: 1px;
-            background-color: #cfcfd0;
-            width: 30%;
-            flex-grow: 1;
-        }
+      .tool-button {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        margin: 1px;
+        border: 1px solid rgb(0 0 0 / 24%);
+        /* border-radius: 1px; */
+        background-color: #d6d6d6;
+        width: 30%;
+        flex-grow: 1;
+      }
 
-        .tool-button:hover {
-            border: 1px solid #777777;
-            background-color: #dde6f1;
-        }
+      .tool-button:hover {
+        border: 1px solid #777777;
+        background-color: #dde6f1;
+      }
 
-        .tool-button label {
-            display: flex;
-            align-items: center;
-            font-size: 0.8em;
-            color: #404040;
-            cursor: pointer;
-        }
+      .tool-button label {
+        display: flex;
+        align-items: center;
+        font-size: 0.8em;
+        color: #404040;
+        cursor: pointer;
+      }
 
-        .tool-button canvas {
-            width: 40px;
-            height: 40px;
-        }
+      .tool-button canvas {
+        width: 40px;
+        height: 40px;
+      }
 
-        .tool-button.selected {
-            border: 1px solid #303030;
-            background-color: #edf0f5;
-        }
+      .tool-button.selected {
+        border: 1px solid #303030;
+        background-color: #edf0f5;
+      }
 
-        legend {
-            font-size: 0.7em;
-        }
+      legend {
+        font-size: 0.8em;
+        color: #696969;
+        margin-bottom: 5px;
+      }
 
-        fieldset {
-            border-color: #bfbfbf;
-            border-style: solid;
-            border-width: 1px;
-            margin-top: 0.3em;
-        }
+      fieldset {
+        border-color: #bfbfbf;
+        border-style: solid;
+        border-width: 0px;
+        border-bottom-width: 1px;
+        margin-top: 0.3em;
+        padding: 2px;
+        padding-bottom: 8px;
+      }
 
-        div.form-row {
-            margin-bottom: 0.2em;
-        }
+      div.form-row {
+        margin-bottom: 0.2em;
+      }
 
-        div.form-row label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      div.form-row label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        input[type="number"] {
-            width: 8ch;
-            text-align: right;
-        }
+      input[type="number"] {
+        width: 8ch;
+        text-align: right;
+      }
 
-        input[type="text"] {
-            padding: 4px;
-            width: -webkit-fill-available;
-        }
+      input[type="text"] {
+        padding: 4px;
+        width: -webkit-fill-available;
+      }
 
-        input[type="range"] {
-            width: 100%;
-        }
+      input[type="range"] {
+        width: 100%;
+      }
 
-        select {
-            padding: 4px;
-        }
+      select {
+        padding: 4px;
+      }
 
-        button {
-            margin-top: 0.3em;
-            margin-bottom: 0.3em;
-            width: 100%;
-            padding: 0.3em;
-            border: 1px solid #888;
-            background-color: #f0f0f0;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+      button {
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        width: 100%;
+        padding: 0.3em;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0px 1px 1px rgb(0 0 0 / 20%),
+          inset 0px 1px 0px rgb(255 255 255 / 39%);
+      }
 
-        label {
-            font-size: 0.9em;
-        }
+      label {
+        font-size: 0.8em;
+        color: #444;
+      }
 
-        #border-variation-buttons {
-            border: 1px solid #ababab;
-            margin: 2px;
-            padding: 2px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            background-color: #c1c1c1;
-            border-radius: 4px;
-        }
+      #border-variation-buttons {
+        border: 1px solid #ababab;
+        margin: 2px;
+        padding: 2px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        background-color: #c1c1c1;
+        border-radius: 4px;
+      }
 
-        #border-variation-buttons button {
-            width: 30px;
-            height: 20px;
-            margin: 3px;
-            border-radius: 0;
-            background-color: #eee;
-        }
+      #border-variation-buttons button {
+        width: 30px;
+        height: 20px;
+        margin: 3px;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: #eee;
+      }
 
-        a.button {
-            border: 1px solid #808080;
-            background-color: #c8eaff;
-            border-radius: 0.2em;
-            margin-top: 0.3em;
-            display: block;
-            padding-top: 0.3em;
-            padding-bottom: 0.3em;
-            text-align: center;
-        }
+      a.button {
+        border: 1px solid #808080;
+        background-color: #c8eaff;
+        border-radius: 0.2em;
+        margin-top: 0.3em;
+        display: block;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+        text-align: center;
+      }
 
-        .color-palette {
-            display: flex;
-            flex-wrap: wrap;
-        }
+      .color-palette {
+        display: flex;
+        flex-wrap: wrap;
+      }
 
-        .color-palette .color {
-            width: 20px;
-            height: 20px;
-            border: 0;
-            margin: 1px;
-            cursor: pointer;
-        }
+      .color-palette .color {
+        width: 20px;
+        height: 20px;
+        margin: 1px;
+        cursor: pointer;
+      }
 
-        .dialog {
-            box-sizing: border-box;
-            position: fixed;
-            width: 70vw;
-            height: 80vh;
-            left: 15vw;
-            top: 10vh;
-            padding: 0px;
-        }
+      .dialog {
+        box-sizing: border-box;
+        position: fixed;
+        left: 15vw;
+        top: 10vh;
+        padding: 0px;
+        z-index: 2;
+        border: 1px solid rgb(0 0 0 / 50%);
+        box-shadow: 0px 1px 6px rgb(0 0 0 / 33%);
+        line-height: 0;
+      }
     </style>
     <script>
+      let albumId =
+        new URL(window.location.href).searchParams.get("album") || "season-1";
+      let sceneId = new URL(window.location.href).searchParams.get("scene");
+      let source = new URL(window.location.href).searchParams.get("source");
 
-        let albumId = new URL(window.location.href).searchParams.get("album") || "season-1";
-        let sceneId = new URL(window.location.href).searchParams.get("scene");
-        let source = new URL(window.location.href).searchParams.get("source");
+      async function onLoad() {
+        createThemeSongOptions();
+        if (source === "server") {
+          await initEditor({
+            sceneId,
+            url: `https://api.duckface.lol/v1/scenes/${sceneId}`,
+          });
+          document.getElementById("test-link").href =
+            "../game.html?scene=from-editor&source=server";
+        } else {
+          await initEditor({ sceneId, albumId });
+        }
+        renderSpriteTypeButtons();
+        renderTileTypeButtons();
+        createBorderVariationButtons();
+      }
 
-        async function onLoad() {
-            createThemeSongOptions();
-            if (source === "server") {
-                await initEditor({ sceneId, url: `https://api.duckface.lol/v1/scenes/${sceneId}` });
-                document.getElementById('test-link').href = "../game.html?scene=from-editor&source=server";
-            }
-            else {
-                await initEditor({ sceneId, albumId });
-            }
-            renderSpriteTypeButtons();
-            renderTileTypeButtons();
-            createBorderVariationButtons();
+      function clearScene() {
+        if (
+          confirm(
+            "Just making sure, that you really want to clear all tiles and sprites?"
+          )
+        ) {
+          editor.clearScene();
+        }
+      }
+
+      function renderTileTypeButtons() {
+        const buttons = document.getElementById("tile-type-buttons");
+        buttons.innerHTML = "";
+        buttons.appendChild(
+          createTileTypeButton(SHAPES.BOX, "draw-tile-box", "Square", true)
+        );
+        buttons.appendChild(
+          createTileTypeButton(
+            SHAPES.TOP_DOWN,
+            "draw-tile-top-down",
+            "Top Down"
+          )
+        );
+        buttons.appendChild(
+          createTileTypeButton(
+            SHAPES.SLOPE_LEFT,
+            "draw-tile-slope-left",
+            "Slope to Left"
+          )
+        );
+        buttons.appendChild(
+          createTileTypeButton(
+            SHAPES.SLOPE_RIGHT,
+            "draw-tile-slope-right",
+            "Slope to Right"
+          )
+        );
+        buttons.appendChild(
+          createTileTypeButton(
+            SHAPES.SLOPING_CEILING_LEFT,
+            "draw-tile-sloping-ceiling-left",
+            "Sloping Ceiling to Left"
+          )
+        );
+        buttons.appendChild(
+          createTileTypeButton(
+            SHAPES.SLOPING_CEILING_RIGHT,
+            "draw-tile-sloping-ceiling-right",
+            "Sloping Ceiling to Right"
+          )
+        );
+      }
+
+      function createTileTypeButton(shape, id, title, selected = false) {
+        const button = document.createElement("button");
+        button.className = selected ? "tool-button selected" : "tool-button";
+        button.id = id;
+        button.type = "button";
+        //const label = document.createElement('label');
+        //const input = document.createElement('input');
+        //input.type = "radio";
+        //input.name = "tool";
+        //input.checked = checked;
+        //input.value = value;
+        //label.appendChild(input);
+        button.appendChild(createTileTypePreviewCanvas(shape));
+        button.title = title;
+        //button.appendChild(label);
+        button.onclick = (event) => {
+          editor.setTool({ tool: TOOLS.DRAW_TILE, tileShape: shape, id });
+        };
+        return button;
+      }
+
+      function createTileTypePreviewCanvas(shape) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = 60;
+        canvas.height = 60;
+
+        const tile = new Tile({
+          shape,
+          color: editor.fillColor,
+          stroke: editor.strokeColor,
+          width: canvas.width - 4,
+          height: canvas.height - 4,
+        });
+
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        context.save();
+        context.translate(
+          canvas.width / 2 - tile.width / 2,
+          canvas.height / 2 - tile.height / 2
+        );
+
+        try {
+          drawTile(tile, context);
+        } catch (e) {
+          context.restore();
+          throw e;
         }
 
-        function clearScene() {
-            if (confirm("Just making sure, that you really want to clear all tiles and sprites?")) {
-                editor.clearScene();
-            }
-        }
+        context.restore();
 
-        function renderTileTypeButtons() {
-            const buttons = document.getElementById("tile-type-buttons");
-            buttons.innerHTML = "";
-            buttons.appendChild(createTileTypeButton(SHAPES.BOX, "draw-tile-box", "Square", true));
-            buttons.appendChild(createTileTypeButton(SHAPES.TOP_DOWN, "draw-tile-top-down", "Top Down"));
-            buttons.appendChild(createTileTypeButton(SHAPES.SLOPE_LEFT, "draw-tile-slope-left", "Slope to Left"));
-            buttons.appendChild(createTileTypeButton(SHAPES.SLOPE_RIGHT, "draw-tile-slope-right", "Slope to Right"));
-            buttons.appendChild(createTileTypeButton(SHAPES.SLOPING_CEILING_LEFT, "draw-tile-sloping-ceiling-left", "Sloping Ceiling to Left"));
-            buttons.appendChild(createTileTypeButton(SHAPES.SLOPING_CEILING_RIGHT, "draw-tile-sloping-ceiling-right", "Sloping Ceiling to Right"));
-        }
+        return canvas;
+      }
 
-        function createTileTypeButton(shape, id, title, selected = false) {
-            const button = document.createElement('button');
-            button.className = selected ? "tool-button selected" : "tool-button";
-            button.id = id;
+      function renderSpriteTypeButtons() {
+        const buttons = document.getElementById("sprite-type-buttons");
+        buttons.innerHTML = "";
+        Object.keys(spriteTypes)
+          .map((id) => spriteTypes[id])
+          .filter((type) => type.availableInEditor)
+          .sort((type1, type2) => {
+            //console.log(type1.name.toUpperCase() + " < " + type2.name.toUpperCase() + " = " + (type1.name.toUpperCase() < type2.name.toUpperCase()));
+            return type1.name.toUpperCase() < type2.name.toUpperCase()
+              ? -1
+              : type1.name.toUpperCase() > type2.name.toUpperCase()
+              ? 1
+              : 0;
+          })
+          .forEach((type) => {
+            const button = document.createElement("button");
+            const inputId = "tool-" + type.id;
+            button.className = "tool-button";
             button.type = "button";
-            //const label = document.createElement('label');
-            //const input = document.createElement('input');    
+            button.id = inputId;
+            const label = document.createElement("label");
+            label.textContent = type.name;
+            //const input = document.createElement('input');
             //input.type = "radio";
             //input.name = "tool";
-            //input.checked = checked;
-            //input.value = value;
             //label.appendChild(input);
-            button.appendChild(createTileTypePreviewCanvas(shape));
-            button.title = title;
-            //button.appendChild(label);
-            button.onclick = (event) => {
-                editor.setTool({ tool: TOOLS.DRAW_TILE, tileShape: shape, id });
-            };
-            return button;
-        }
-
-        function createTileTypePreviewCanvas(shape) {
-
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = 60;
-            canvas.height = 60;
-
-            const tile = new Tile({
-                shape,
-                color: editor.fillColor,
-                stroke: editor.strokeColor,
-                width: canvas.width - 4,
-                height: canvas.height - 4,
-            });
-
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-            context.save();
-            context.translate(
-                canvas.width / 2 - tile.width / 2,
-                canvas.height / 2 - tile.height / 2
-            );
-
-            try {
-                drawTile(tile, context);
-            }
-            catch (e) {
-                context.restore();
-                throw e;
-            }
-
-            context.restore();
-
-            return canvas;
-        }
-
-        function renderSpriteTypeButtons() {
-            const buttons = document.getElementById("sprite-type-buttons");
-            buttons.innerHTML = "";
-            Object.keys(spriteTypes)
-                .map(id => spriteTypes[id])
-                .filter(type => type.availableInEditor)
-                .sort((type1, type2) => {
-                    //console.log(type1.name.toUpperCase() + " < " + type2.name.toUpperCase() + " = " + (type1.name.toUpperCase() < type2.name.toUpperCase()));
-                    return type1.name.toUpperCase() < type2.name.toUpperCase() ? -1 : type1.name.toUpperCase() > type2.name.toUpperCase() ? 1 : 0;
-                })
-                .forEach(type => {
-                    const button = document.createElement('button');
-                    const inputId = "tool-" + type.id;
-                    button.className = "tool-button";
-                    button.type = "button";
-                    button.id = inputId;
-                    const label = document.createElement('label');
-                    label.textContent = type.name;
-                    //const input = document.createElement('input');
-                    //input.type = "radio";
-                    //input.name = "tool";
-                    //label.appendChild(input);
-                    button.appendChild(createSpriteTypePreviewCanvas(type.id));
-                    button.appendChild(label);
-                    button.title = type.name;
-                    button.onclick = function (id) {
-                        return (event) => {
-                            const typeId = type.id;
-                            editor.setTool({ tool: TOOLS.DRAW_SPRITE, spriteTypeId: typeId, id });
-                        }
-                    }(inputId);
-
-                    buttons.appendChild(button);
+            button.appendChild(createSpriteTypePreviewCanvas(type.id));
+            button.appendChild(label);
+            button.title = type.name;
+            button.onclick = (function (id) {
+              return (event) => {
+                const typeId = type.id;
+                editor.setTool({
+                  tool: TOOLS.DRAW_SPRITE,
+                  spriteTypeId: typeId,
+                  id,
                 });
+              };
+            })(inputId);
+
+            buttons.appendChild(button);
+          });
+      }
+
+      function createSpriteTypePreviewCanvas(typeId) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = 70;
+        canvas.height = 70;
+
+        const sprite = new Sprite({
+          typeId,
+          width: canvas.width - 20,
+          height: canvas.height - 20,
+        });
+        sprite.setAnimation("idle");
+        sprite.frame = 0;
+
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        context.save();
+        context.translate(
+          canvas.width / 2 - sprite.width / 2,
+          canvas.height / 2 - sprite.height / 2
+        );
+
+        try {
+          drawSprite(sprite, context);
+        } catch (e) {
+          context.restore();
+          throw e;
         }
 
-        function createSpriteTypePreviewCanvas(typeId) {
+        context.restore();
 
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = 70;
-            canvas.height = 70;
+        return canvas;
+      }
 
-            const sprite = new Sprite({
-                typeId,
-                width: canvas.width - 20,
-                height: canvas.height - 20,
-            });
-            sprite.setAnimation("idle");
-            sprite.frame = 0;
-
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-            context.save();
-            context.translate(
-                canvas.width / 2 - sprite.width / 2,
-                canvas.height / 2 - sprite.height / 2
-            );
-
-            try {
-                drawSprite(sprite, context);
-            }
-            catch (e) {
-                context.restore();
-                throw e;
-            }
-
-            context.restore();
-
-            return canvas;
+      function createThemeSongOptions() {
+        const select = document.getElementById("scene.themeSong");
+        for (let theme in themes) {
+          const option = document.createElement("option");
+          option.value = theme;
+          option.textContent = themes[theme].title;
+          select.appendChild(option);
         }
+      }
 
-        function createThemeSongOptions() {
-            const select = document.getElementById("scene.themeSong");
-            for (let theme in themes) {
-                const option = document.createElement("option");
-                option.value = theme;
-                option.textContent = themes[theme].title;
-                select.appendChild(option);
+      function createBorderVariationButtons() {
+        const borderButtons = document.getElementById(
+          "border-variation-buttons"
+        );
+        for (let t = 0; t < 2; t++) {
+          for (let r = 0; r < 2; r++) {
+            for (let b = 0; b < 2; b++) {
+              for (let l = 0; l < 2; l++) {
+                const button = document.createElement("button");
+                button.style.borderTop = t === 0 ? "2px solid #303030" : "0px";
+                button.style.borderRight =
+                  r === 0 ? "2px solid #303030" : "0px";
+                button.style.borderBottom =
+                  b === 0 ? "2px solid #303030" : "0px";
+                button.style.borderLeft = l === 0 ? "2px solid #303030" : "0px";
+                button.dataset.borders = JSON.stringify({
+                  t: t === 0,
+                  r: r === 0,
+                  b: b === 0,
+                  l: l === 0,
+                });
+                button.onclick = function () {
+                  editor.setTileBorders(JSON.parse(this.dataset.borders));
+                  event.preventDefault();
+                  event.stopPropagation();
+                }.bind(button);
+                borderButtons.appendChild(button);
+              }
             }
+          }
         }
-
-        function createBorderVariationButtons() {
-            const borderButtons = document.getElementById("border-variation-buttons");
-            for (let t = 0; t < 2; t++) {
-                for (let r = 0; r < 2; r++) {
-                    for (let b = 0; b < 2; b++) {
-                        for (let l = 0; l < 2; l++) {
-                            const button = document.createElement("button");
-                            button.style.borderTop = t === 0 ? "2px solid #303030" : "0px";
-                            button.style.borderRight = r === 0 ? "2px solid #303030" : "0px";
-                            button.style.borderBottom = b === 0 ? "2px solid #303030" : "0px";
-                            button.style.borderLeft = l === 0 ? "2px solid #303030" : "0px";
-                            button.dataset.borders = JSON.stringify({
-                                t: t === 0,
-                                r: r === 0,
-                                b: b === 0,
-                                l: l === 0
-                            });
-                            button.onclick = function () {
-                                editor.setTileBorders(JSON.parse(this.dataset.borders));
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }.bind(button);
-                            borderButtons.appendChild(button);
-                        }
-                    }
-                }
-            }
-        }
-
+      }
     </script>
-</head>
+  </head>
 
-<body onload="onLoad()">
+  <body onload="onLoad()">
     <main>
-
-        <form id="tools">
-            <fieldset id="fieldset-tiles">
-                <legend>Tiles</legend>
-                <div id="tile-type-buttons" class="tool-buttons"></div>
-            </fieldset>
-            <fieldset id="fieldset-tile-layer">
-                <legend>Tile Layer</legend>
-                <div>
-                    <label><input id="tile-layer-bg-radio" name="tile-layer" type="radio" value="1"
-                            onclick="editor.setTileLayer(event.target.value)" />Background</label>
-                </div>
-                <div>
-                    <label><input id="tile-layer-middle-radio" name="tile-layer" type="radio" value="2"
-                            onclick="editor.setTileLayer(event.target.value)" checked />Middle</label>
-                </div>
-                <!--
+      <form id="tools">
+        <fieldset id="fieldset-tiles">
+          <legend>Tiles</legend>
+          <div id="tile-type-buttons" class="tool-buttons"></div>
+        </fieldset>
+        <fieldset id="fieldset-tile-layer">
+          <legend>Tile Layer</legend>
+          <div>
+            <label
+              ><input
+                id="tile-layer-bg-radio"
+                name="tile-layer"
+                type="radio"
+                value="1"
+                onclick="editor.setTileLayer(event.target.value)"
+              />Background</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                id="tile-layer-middle-radio"
+                name="tile-layer"
+                type="radio"
+                value="2"
+                onclick="editor.setTileLayer(event.target.value)"
+                checked
+              />Middle</label
+            >
+          </div>
+          <!--
                 <div>
                     <label><input name="tile-layer" type="radio" value="3"
                             onclick="editor.setTileLayer(event.target.value)" />Foreground</label>
                 </div>
                 -->
-            </fieldset>
-            <fieldset id="fieldset-tile-borders">
-                <legend>Tile Borders</legend>
-                <div>
-                    <label><input id="tile-borders-top" type="checkbox" checked
-                            onchange="editor.setTileBorders()" />Top</label>
-                </div>
-                <div>
-                    <label><input id="tile-borders-right" type="checkbox" checked
-                            onchange="editor.setTileBorders()" />Right</label>
-                </div>
-                <div>
-                    <label><input id="tile-borders-bottom" type="checkbox" checked
-                            onchange="editor.setTileBorders()" />Bottom</label>
-                </div>
-                <div>
-                    <label><input id="tile-borders-left" type="checkbox" checked
-                            onchange="editor.setTileBorders()" />Left</label>
-                </div>
-                <div id="border-variation-buttons"></div>
-            </fieldset>
-            <fieldset id="fieldset-tile-colors">
-                <legend>Tile Colors</legend>
-                <div class="form-row">
-                    <label>Fill
-                        <input id="fill-color" type="color" value="#b08080"
-                            onchange="editor.setTileFillColor(event.target.value)" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Stroke <input id="stroke-color" type="color" value="#383838"
-                            onchange="editor.setTileStrokeColor(event.target.value)" /></label>
-                </div>
-                <div>
-                    <label for="opacity">Opacity</label>
-                    <input id="opacity" type="range" value="1.0" min="0.0" max="1.0" step="0.1"
-                        onchange="editor.setTileOpacity(parseFloat(event.target.value))" />
+        </fieldset>
+        <fieldset id="fieldset-tile-borders">
+          <legend>Tile Borders</legend>
+          <div>
+            <label
+              ><input
+                id="tile-borders-top"
+                type="checkbox"
+                checked
+                onchange="editor.setTileBorders()"
+              />Top</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                id="tile-borders-right"
+                type="checkbox"
+                checked
+                onchange="editor.setTileBorders()"
+              />Right</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                id="tile-borders-bottom"
+                type="checkbox"
+                checked
+                onchange="editor.setTileBorders()"
+              />Bottom</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                id="tile-borders-left"
+                type="checkbox"
+                checked
+                onchange="editor.setTileBorders()"
+              />Left</label
+            >
+          </div>
+          <div id="border-variation-buttons"></div>
+        </fieldset>
+        <fieldset id="fieldset-tile-colors">
+          <legend>Tile Colors</legend>
+          <div class="form-row">
+            <label
+              >Fill
+              <input
+                id="fill-color"
+                type="color"
+                value="#b08080"
+                onchange="editor.setTileFillColor(event.target.value)"
+              />
+            </label>
+          </div>
+          <div class="form-row">
+            <label
+              >Stroke
+              <input
+                id="stroke-color"
+                type="color"
+                value="#383838"
+                onchange="editor.setTileStrokeColor(event.target.value)"
+            /></label>
+          </div>
+          <div>
+            <label for="opacity">Opacity</label>
+            <input
+              id="opacity"
+              type="range"
+              value="1.0"
+              min="0.0"
+              max="1.0"
+              step="0.1"
+              onchange="editor.setTileOpacity(parseFloat(event.target.value))"
+            />
+          </div>
+          <div class="form-row">
+            <label
+              ><input
+                id="fill-transparent"
+                type="checkbox"
+                onchange="editor.setTileTransparency(event.target.checked)"
+              />No fill</label
+            >
+          </div>
+        </fieldset>
+        <fieldset id="fieldset-scene-palette">
+          <legend>Scene Palette</legend>
+          <div id="fill-color-palette" class="color-palette"></div>
+        </fieldset>
+        <fieldset id="fieldset-size">
+          <legend>Size</legend>
+          <div class="form-row">
+            <label
+              >Width:
+              <input
+                id="width"
+                type="number"
+                value="0"
+                min="0"
+                step="1"
+                onchange="editor.setWidth(parseInt(event.target.value))"
+            /></label>
+          </div>
+          <div class="form-row">
+            <label
+              >Height:
+              <input
+                id="height"
+                type="number"
+                value="0"
+                min="0"
+                step="1"
+                onchange="editor.setHeight(parseInt(event.target.value))"
+            /></label>
+          </div>
+        </fieldset>
+        <fieldset id="fieldset-tile">
+          <legend>Tile</legend>
+          <div class="form-row">
+            <label
+              >Material
+              <select
+                id="tile-material"
+                onchange="editor.setTileMaterial(event.target.value)"
+              >
+                <option value="default">Clay</option>
+                <option value="ice">Ice</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label
+              ><input
+                id="tile-blocks"
+                type="checkbox"
+                onchange="editor.setTileBlocks(event.target.checked)"
+              />Blocks</label
+            >
+          </div>
+        </fieldset>
+        <fieldset id="fieldset-position">
+          <legend>Position</legend>
+          <div class="form-row">
+            <label
+              >X:
+              <input
+                id="x"
+                type="number"
+                value="0"
+                onchange="editor.setPosition({x:event.target.value})"
+            /></label>
+          </div>
+          <div class="form-row">
+            <label
+              >Y:
+              <input
+                id="y"
+                type="number"
+                value="0"
+                onchange="editor.setPosition({y:event.target.value})"
+            /></label>
+          </div>
+          <div class="form-row">
+            <label
+              >Z:
+              <input
+                id="z"
+                type="number"
+                value="0"
+                onchange="editor.setPosition({z:event.target.value})"
+            /></label>
+          </div>
+        </fieldset>
+        <fieldset id="fieldset-order">
+          <legend>Order</legend>
+          <div>
+            <button type="button" onclick="editor.moveToBack()">
+              Send to Back
+            </button>
+            <button type="button" onclick="editor.moveToFront()">
+              Send to Front
+            </button>
+          </div>
+        </fieldset>
+        <fieldset id="fieldset-sprites">
+          <legend>Sprites</legend>
+          <div id="sprite-type-buttons" class="tool-buttons"></div>
+        </fieldset>
+        <fieldset id="fieldset-sprite">
+          <legend>Sprite</legend>
+          <div>
+            <label
+              ><input
+                id="sprite-is-player"
+                type="checkbox"
+                checked
+                onchange="editor.setSpriteIsPlayer(event.target.checked)"
+              />Player</label
+            >
+          </div>
+          <div>
+            <div>Direction</div>
+            <label
+              ><input
+                name="sprite-direction"
+                id="sprite-direction-left"
+                type="radio"
+                value="4"
+                onchange="editor.setSpriteDirection(DIRECTION.LEFT)"
+              />Left</label
+            >
+            <label
+              ><input
+                name="sprite-direction"
+                id="sprite-direction-right"
+                type="radio"
+                value="2"
+                onchange="editor.setSpriteDirection(DIRECTION.RIGHT)"
+              />Right</label
+            >
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Select</legend>
+          <div>
+            <label
+              ><input
+                name="tool"
+                type="radio"
+                value="select-tiles"
+                onclick="editor.setTool({tool: TOOLS.SELECT_TILES})"
+              />Tiles</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                name="tool"
+                type="radio"
+                value="select-sprites"
+                onclick="editor.setTool({tool: TOOLS.SELECT_SPRITES})"
+              />Sprites</label
+            >
+          </div>
+          <div>
+            <button
+              type="button"
+              onclick="editor.selectAllTilesInCurrentLayer()"
+            >
+              Current layer
+            </button>
+          </div>
+        </fieldset>
+      </form>
 
-                </div>
-                <div class="form-row">
-                    <label><input id="fill-transparent" type="checkbox"
-                            onchange="editor.setTileTransparency(event.target.checked)" />No fill</label>
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-scene-palette">
-                <legend>Scene Palette</legend>
-                <div id="fill-color-palette" class="color-palette"></div>
-            </fieldset>
-            <fieldset id="fieldset-size">
-                <legend>Size</legend>
-                <div class="form-row">
-                    <label>Width: <input id="width" type="number" value="0" min="0" step="1"
-                            onchange="editor.setWidth(parseInt(event.target.value))" /></label>
-                </div>
-                <div class="form-row">
-                    <label>Height: <input id="height" type="number" value="0" min="0" step="1"
-                            onchange="editor.setHeight(parseInt(event.target.value))" /></label>
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-tile">
-                <legend>Tile</legend>
-                <div class="form-row">
-                    <label>Material
-                        <select id="tile-material" onchange="editor.setTileMaterial(event.target.value)">
-                            <option value="default">Clay</option>
-                            <option value="ice">Ice</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label><input id="tile-blocks" type="checkbox"
-                            onchange="editor.setTileBlocks(event.target.checked)" />Blocks</label>
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-position">
-                <legend>Position</legend>
-                <div class="form-row">
-                    <label>X: <input id="x" type="number" value="0"
-                            onchange="editor.setPosition({x:event.target.value})" /></label>
-                </div>
-                <div class="form-row">
-                    <label>Y: <input id="y" type="number" value="0"
-                            onchange="editor.setPosition({y:event.target.value})" /></label>
-                </div>
-                <div class="form-row">
-                    <label>Z: <input id="z" type="number" value="0"
-                            onchange="editor.setPosition({z:event.target.value})" /></label>
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-order">
-                <legend>Order</legend>
-                <div>
-                    <button type="button" onclick="editor.moveToBack()">Send to Back</button>
-                    <button type="button" onclick="editor.moveToFront()">Send to Front</button>
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-sprites">
-                <legend>Sprites</legend>
-                <div id="sprite-type-buttons" class="tool-buttons">
-                </div>
-            </fieldset>
-            <fieldset id="fieldset-sprite">
-                <legend>Sprite</legend>
-                <div>
-                    <label><input id="sprite-is-player" type="checkbox" checked
-                            onchange="editor.setSpriteIsPlayer(event.target.checked)" />Player</label>
-                </div>
-                <div>
-                    <div>Direction</div>
-                    <label><input name="sprite-direction" id="sprite-direction-left" type="radio" value="4"
-                            onchange="editor.setSpriteDirection(DIRECTION.LEFT)" />Left</label>
-                    <label><input name="sprite-direction" id="sprite-direction-right" type="radio" value="2"
-                            onchange="editor.setSpriteDirection(DIRECTION.RIGHT)" />Right</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Select</legend>
-                <div>
-                    <label><input name="tool" type="radio" value="select-tiles"
-                            onclick="editor.setTool({tool: TOOLS.SELECT_TILES})" />Tiles</label>
-                </div>
-                <div>
-                    <label><input name="tool" type="radio" value="select-sprites"
-                            onclick="editor.setTool({tool: TOOLS.SELECT_SPRITES})" />Sprites</label>
-                </div>
-                <div>
-                    <button type="button" onclick="editor.selectAllTilesInCurrentLayer()">Current layer</button>
-                </div>
-            </fieldset>
-        </form>
+      <div>
+        <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
+      </div>
 
+      <form id="scene">
+        <fieldset>
+          <legend>Actions</legend>
+          <div>
+            <button type="button" onclick="clearScene()">New Scene</button>
+          </div>
+          <div>
+            <button type="button" onclick="resetScene()">Reset game (R)</button>
+          </div>
+          <div>
+            <a
+              id="test-link"
+              class="button"
+              onclick="editor.stashScene()"
+              href="../game.html?scene=from-editor"
+              >Test Scene</a
+            >
+          </div>
+        </fieldset>
 
-        <div>
-            <canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
-        </div>
-
-
-        <form id="scene">
-            <fieldset>
-                <legend>Actions</legend>
-                <div>
-                    <button type="button" onclick="clearScene()">New Scene</button>
-                </div>
-                <div>
-                    <button type="button" onclick="resetScene()">Reset game (R)</button>
-                </div>
-                <div>
-                    <a id="test-link" class="button" onclick="editor.stashScene()"
-                        href="../game.html?scene=from-editor">Test Scene</a>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Scene properties</legend>
-                <div class="form-row">
-                    <label>Title </label>
-                    <input id="scene.title" type="text" value="" onchange="editor.setSceneTitle(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Author(s) </label>
-                    <input id="scene.author" type="text" value=""
-                        onchange="editor.setSceneAuthor(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>ID</label>
-                    <input id="scene.id" type="text" value="" onchange="editor.setSceneId(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Version</label>
-                    <input id="scene.version" type="text" value=""
-                        onchange="editor.setSceneVersion(event.target.value)" />
-                </div>
-                <div class="form-row">
-                    <label>Soundtrack</label>
-                    <select id="scene.themeSong" value="" onchange="editor.setSceneThemeSong(event.target.value)"
-                        style="width:100%">
-                    </select>
-                </div>
-                <div class="form-row">
-                    <label>Background <input id="scene.bgColor" type="color"
-                            onchange="editor.setSceneBackgroundColor(event.target.value)" />
-                    </label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Scene borders</legend>
-                <div class="form-row">
-                    <label>Top:
-                        <input id="scene.top" type="number" value="0"
-                            onchange="editor.setSceneSize({top:event.target.value})" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Right:
-                        <input id="scene.right" type="number" value="800"
-                            onchange="editor.setSceneSize({right:event.target.value})" /></label>
-                </div>
-                <div class="form-row">
-                    <label>Bottom:
-                        <input id="scene.bottom" type="number" value="600"
-                            onchange="editor.setSceneSize({bottom:event.target.value})" />
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>Left:
-                        <input id="scene.left" type="number" value="0"
-                            onchange="editor.setSceneSize({left:event.target.value})" />
-                    </label>
-                </div>
-                <div>
-                    <label><input id="scene.horizontalLoop" type="checkbox"
-                            onchange="editor.setSceneHorizontalLooping(event.target.checked)" /> Loop
-                        horizontally</label>
-                </div>
-                <div>
-                    <label><input id="scene.verticalLoop" type="checkbox"
-                            onchange="editor.setSceneVerticalLooping(event.target.checked)" /> Loop vertically</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Scene source</legend>
-                <div>
-                    <button type="button" onclick="editor.toggleSource()">Show / Hide Source</button>
-                </div>
-                <div>
-                    <label><input id="pretty-print-source" type="checkbox"
-                            onchange="editor.setPrettyPrintSource(event.target.checked)" /> Pretty Print</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Camera</legend>
-                <div>
-                    <label><input id="use-game-camera" type="checkbox"
-                            onchange="editor.onUseGameCameraChange(event.target.checked)" /> Game Camera</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Server</legend>
-                <div class="form-row">
-                    <label>Author Key</label>
-                    <input id="author-key" type="text" value="" onchange="editor.setAuthorKey(event.target.value)" />
-                </div>
-                <div>
-                    <button type="button" onclick="editor.saveSceneToServer()">Save Scene</button>
-                </div>
-                <div>
-                    <button type="button" onclick="editor.deleteSceneFromServer()">Delete Scene</button>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Local Server</legend>
-                <div>
-                    <button type="button" onclick="saveScene({albumId})">Save Scene</button>
-                </div>
-            </fieldset>
-        </form>
-
+        <fieldset>
+          <legend>Scene properties</legend>
+          <div class="form-row">
+            <label>Title </label>
+            <input
+              id="scene.title"
+              type="text"
+              value=""
+              onchange="editor.setSceneTitle(event.target.value)"
+            />
+          </div>
+          <div class="form-row">
+            <label>Author(s) </label>
+            <input
+              id="scene.author"
+              type="text"
+              value=""
+              onchange="editor.setSceneAuthor(event.target.value)"
+            />
+          </div>
+          <div class="form-row">
+            <label>ID</label>
+            <input
+              id="scene.id"
+              type="text"
+              value=""
+              onchange="editor.setSceneId(event.target.value)"
+            />
+          </div>
+          <div class="form-row">
+            <label>Version</label>
+            <input
+              id="scene.version"
+              type="text"
+              value=""
+              onchange="editor.setSceneVersion(event.target.value)"
+            />
+          </div>
+          <div class="form-row">
+            <label>Soundtrack</label>
+            <select
+              id="scene.themeSong"
+              value=""
+              onchange="editor.setSceneThemeSong(event.target.value)"
+              style="width: 100%"
+            ></select>
+          </div>
+          <div class="form-row">
+            <label
+              >Background
+              <input
+                id="scene.bgColor"
+                type="color"
+                onchange="editor.setSceneBackgroundColor(event.target.value)"
+              />
+            </label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Scene borders</legend>
+          <div class="form-row">
+            <label
+              >Top:
+              <input
+                id="scene.top"
+                type="number"
+                value="0"
+                onchange="editor.setSceneSize({top:event.target.value})"
+              />
+            </label>
+          </div>
+          <div class="form-row">
+            <label
+              >Right:
+              <input
+                id="scene.right"
+                type="number"
+                value="800"
+                onchange="editor.setSceneSize({right:event.target.value})"
+            /></label>
+          </div>
+          <div class="form-row">
+            <label
+              >Bottom:
+              <input
+                id="scene.bottom"
+                type="number"
+                value="600"
+                onchange="editor.setSceneSize({bottom:event.target.value})"
+              />
+            </label>
+          </div>
+          <div class="form-row">
+            <label
+              >Left:
+              <input
+                id="scene.left"
+                type="number"
+                value="0"
+                onchange="editor.setSceneSize({left:event.target.value})"
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              ><input
+                id="scene.horizontalLoop"
+                type="checkbox"
+                onchange="editor.setSceneHorizontalLooping(event.target.checked)"
+              />
+              Loop horizontally</label
+            >
+          </div>
+          <div>
+            <label
+              ><input
+                id="scene.verticalLoop"
+                type="checkbox"
+                onchange="editor.setSceneVerticalLooping(event.target.checked)"
+              />
+              Loop vertically</label
+            >
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Scene source</legend>
+          <div>
+            <button type="button" onclick="editor.toggleSource()">
+              Show / Hide Source
+            </button>
+          </div>
+          <div>
+            <label
+              ><input
+                id="pretty-print-source"
+                type="checkbox"
+                onchange="editor.setPrettyPrintSource(event.target.checked)"
+              />
+              Pretty Print</label
+            >
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Camera</legend>
+          <div>
+            <label
+              ><input
+                id="use-game-camera"
+                type="checkbox"
+                onchange="editor.onUseGameCameraChange(event.target.checked)"
+              />
+              Game Camera</label
+            >
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Server</legend>
+          <div class="form-row">
+            <label>Author Key</label>
+            <input
+              id="author-key"
+              type="text"
+              value=""
+              onchange="editor.setAuthorKey(event.target.value)"
+            />
+          </div>
+          <div>
+            <button type="button" onclick="editor.saveSceneToServer()">
+              Save Scene
+            </button>
+          </div>
+          <div>
+            <button type="button" onclick="editor.deleteSceneFromServer()">
+              Delete Scene
+            </button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Local Server</legend>
+          <div>
+            <button type="button" onclick="saveScene({albumId})">
+              Save Scene
+            </button>
+          </div>
+        </fieldset>
+      </form>
     </main>
-    <div id="source-dialog" class="dialog" style="display:none">
-        <textarea id="source" onchange="editor.setSceneFromJSON(event.target.value)"></textarea>
+    <div id="source-dialog" class="dialog" style="display: none">
+      <textarea
+        id="source"
+        onchange="editor.setSceneFromJSON(event.target.value)"
+      ></textarea>
     </div>
     <audio id="game-audio" />
-</body>
-
+  </body>
 </html>
