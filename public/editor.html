@@ -88,8 +88,12 @@
         border: 1px solid rgb(0 0 0 / 24%);
         /* border-radius: 1px; */
         background-color: #d6d6d6;
-        width: 30%;
+        width: 20%;
         flex-grow: 1;
+      }
+
+      .tiles .tool-button {
+        width: 25%;
       }
 
       .tool-button:hover {
@@ -100,14 +104,14 @@
       .tool-button label {
         display: flex;
         align-items: center;
-        font-size: 0.8em;
+        font-size: 0.7em;
         color: #404040;
         cursor: pointer;
       }
 
       .tool-button canvas {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
       }
 
       .tool-button.selected {
@@ -189,8 +193,8 @@
       }
 
       #border-variation-buttons button {
-        width: 30px;
-        height: 20px;
+        width: 35px;
+        height: 24px;
         margin: 3px;
         border-radius: 0;
         box-shadow: none;
@@ -489,7 +493,7 @@
       <form id="tools">
         <fieldset id="fieldset-tiles">
           <legend>Tiles</legend>
-          <div id="tile-type-buttons" class="tool-buttons"></div>
+          <div id="tile-type-buttons" class="tool-buttons tiles"></div>
         </fieldset>
         <fieldset id="fieldset-tile-layer">
           <legend>Tile Layer</legend>
