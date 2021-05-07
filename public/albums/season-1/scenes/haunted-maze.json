@@ -1,8 +1,8 @@
 {
   "id": "haunted-maze",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2021-03-22T14:50:49.432Z",
-  "lastEdit": "2021-03-22T14:50:49.432Z",
+  "lastEdit": "2021-05-05T19:45:22.532Z",
   "title": "Haunted Maze",
   "author": "Janne Kivilahti",
   "bgColor": "#bab8b5",
@@ -22,7 +22,17 @@
   "horizontalLoop": false,
   "verticalLoop": false,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
+    {
+      "id": "6e2ee755f2",
+      "typeId": "platform-vertical",
+      "x": 312,
+      "y": 808,
+      "width": 48,
+      "height": 32
+    },
     {
       "id": "e0be7e9611",
       "typeId": "duckface",
@@ -180,14 +190,6 @@
       "y": 128,
       "width": 16,
       "height": 16
-    },
-    {
-      "id": "6e2ee755f2",
-      "typeId": "platform-vertical",
-      "x": 312,
-      "y": 808,
-      "width": 48,
-      "height": 32
     },
     {
       "id": "eb0a683c6f",
@@ -623,6 +625,7 @@
       "y": 0,
       "width": 296,
       "height": 344,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -637,6 +640,7 @@
       "y": 0,
       "width": 704,
       "height": 64,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -651,6 +655,7 @@
       "y": 200,
       "width": 160,
       "height": 144,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -665,6 +670,7 @@
       "y": 272,
       "width": 96,
       "height": 72,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -679,6 +685,7 @@
       "y": 344,
       "width": 88,
       "height": 64,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -693,6 +700,7 @@
       "y": 344,
       "width": 256,
       "height": 64,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -707,6 +715,7 @@
       "y": 408,
       "width": 128,
       "height": 112,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -721,6 +730,7 @@
       "y": 520,
       "width": 40,
       "height": 176,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -735,6 +745,7 @@
       "y": 696,
       "width": 160,
       "height": 304,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -749,6 +760,7 @@
       "y": 808,
       "width": 80,
       "height": 192,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -763,6 +775,7 @@
       "y": 880,
       "width": 168,
       "height": 120,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -777,6 +790,7 @@
       "y": 840,
       "width": 64,
       "height": 160,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -791,6 +805,7 @@
       "y": 952,
       "width": 528,
       "height": 48,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -805,6 +820,7 @@
       "y": 872,
       "width": 312,
       "height": 80,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -819,6 +835,7 @@
       "y": 808,
       "width": 264,
       "height": 64,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -833,6 +850,7 @@
       "y": 752,
       "width": 128,
       "height": 56,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -847,6 +865,7 @@
       "y": 544,
       "width": 56,
       "height": 208,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -861,6 +880,7 @@
       "y": 376,
       "width": 104,
       "height": 168,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -875,6 +895,7 @@
       "y": 472,
       "width": 136,
       "height": 72,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -889,6 +910,7 @@
       "y": 64,
       "width": 40,
       "height": 312,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,

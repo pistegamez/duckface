@@ -1,8 +1,8 @@
 {
   "id": "dungeon",
-  "version": "2.0",
+  "version": "2.1",
   "created": "2021-04-04T13:14:45.204Z",
-  "lastEdit": "2021-04-04T13:15:59.180Z",
+  "lastEdit": "2021-05-07T17:33:01.634Z",
   "title": "Danger Dungeon",
   "author": "Janne Kivilahti",
   "bgColor": "#507477",
@@ -22,6 +22,8 @@
   "horizontalLoop": false,
   "verticalLoop": true,
   "effects": [],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "f0df7ecc52",
@@ -91,15 +93,27 @@
       "x": 0,
       "y": 440,
       "width": 776,
-      "height": 168
+      "height": 160,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "7dbf66d367",
       "color": "#82a2b0",
-      "x": -32,
+      "x": -8,
       "y": 296,
-      "width": 288,
-      "height": 40
+      "width": 264,
+      "height": 40,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": true,
+        "l": false
+      }
     },
     {
       "id": "2b1dcc703e",
@@ -136,10 +150,16 @@
     {
       "id": "01b1149e79",
       "color": "#82a2b0",
-      "x": -32,
-      "y": -24,
-      "width": 832,
-      "height": 160
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 136,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": false
+      }
     },
     {
       "id": "0fa163d6d2",
@@ -171,7 +191,8 @@
       "x": 24,
       "y": 336,
       "width": 32,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "a4d6d998c9",
@@ -179,7 +200,8 @@
       "x": 504,
       "y": 136,
       "width": 48,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "4c1926dbd7",
@@ -195,7 +217,8 @@
       "x": 312,
       "y": 48,
       "width": 56,
-      "height": 40
+      "height": 40,
+      "blocks": false
     },
     {
       "id": "a58a240eb4",
@@ -203,7 +226,8 @@
       "x": 352,
       "y": 16,
       "width": 32,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "f79a26f625",
@@ -211,7 +235,8 @@
       "x": 368,
       "y": 48,
       "width": 48,
-      "height": 40
+      "height": 40,
+      "blocks": false
     },
     {
       "id": "b9e79516e9",
@@ -219,7 +244,8 @@
       "x": 600,
       "y": 32,
       "width": 48,
-      "height": 40
+      "height": 40,
+      "blocks": false
     },
     {
       "id": "d884c0e2a7",
@@ -227,7 +253,8 @@
       "x": 56,
       "y": 80,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "58419546a5",
@@ -235,7 +262,8 @@
       "x": 232,
       "y": 464,
       "width": 40,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "7a30100e86",
@@ -243,7 +271,13 @@
       "x": -32,
       "y": 136,
       "width": 24,
-      "height": 160
+      "height": 160,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
     },
     {
       "id": "b915730feb",
@@ -275,7 +309,13 @@
       "x": 776,
       "y": 520,
       "width": 176,
-      "height": 96
+      "height": 80,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     },
     {
       "id": "5c896a2c3e",
@@ -297,9 +337,15 @@
       "id": "29e90558fb",
       "color": "#82a2b0",
       "x": 1136,
-      "y": -40,
+      "y": 0,
       "width": 88,
-      "height": 176
+      "height": 136,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "ba2c5d5d3f",
@@ -363,7 +409,8 @@
       "x": 1240,
       "y": 312,
       "width": 16,
-      "height": 56
+      "height": 56,
+      "blocks": false
     },
     {
       "id": "502d35a867",
@@ -371,7 +418,8 @@
       "x": 1232,
       "y": 264,
       "width": 40,
-      "height": 48
+      "height": 48,
+      "blocks": false
     },
     {
       "id": "9020e3ac12",
@@ -379,15 +427,22 @@
       "x": 1296,
       "y": 264,
       "width": 56,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "33ad79a193",
       "color": "#82a2b0",
       "x": 1376,
-      "y": -24,
-      "width": 56,
-      "height": 304
+      "y": 0,
+      "width": 48,
+      "height": 280,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "1bacd847e2",
@@ -931,7 +986,13 @@
       "x": 1040,
       "y": 520,
       "width": 224,
-      "height": 96
+      "height": 80,
+      "borders": {
+        "t": true,
+        "r": true,
+        "b": false,
+        "l": true
+      }
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "zombie-tower",
-  "version": "3.0",
+  "version": "3.1",
   "created": "2021-03-29T17:18:33.497Z",
-  "lastEdit": "2021-04-11T16:00:53.481Z",
+  "lastEdit": "2021-05-07T17:41:41.289Z",
   "title": "Zombie Tower",
   "author": "Janne Kivilahti",
   "bgColor": "#a4a4bc",
@@ -92,6 +92,7 @@
       "y": 544,
       "width": 208,
       "height": 656,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -106,6 +107,7 @@
       "y": 544,
       "width": 208,
       "height": 656,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -304,6 +306,7 @@
       "y": 0,
       "width": 208,
       "height": 544,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -318,6 +321,7 @@
       "y": 0,
       "width": 208,
       "height": 544,
+      "blocks": false,
       "borders": {
         "t": false,
         "r": false,
@@ -406,70 +410,6 @@
       "height": 24
     },
     {
-      "id": "2d6d05bb78",
-      "color": "#9696a0",
-      "x": 600,
-      "y": 576,
-      "width": 32,
-      "height": 24
-    },
-    {
-      "id": "2442301264",
-      "color": "#9696a0",
-      "x": 80,
-      "y": 448,
-      "width": 32,
-      "height": 32
-    },
-    {
-      "id": "7d620514e1",
-      "color": "#9696a0",
-      "x": 120,
-      "y": 408,
-      "width": 24,
-      "height": 16
-    },
-    {
-      "id": "d8181e7d37",
-      "color": "#9696a0",
-      "x": 640,
-      "y": 368,
-      "width": 24,
-      "height": 24
-    },
-    {
-      "id": "c46e6cc3f2",
-      "color": "#9696a0",
-      "x": 656,
-      "y": 400,
-      "width": 24,
-      "height": 16
-    },
-    {
-      "id": "7a7581d40b",
-      "color": "#9696a0",
-      "x": 624,
-      "y": 400,
-      "width": 24,
-      "height": 24
-    },
-    {
-      "id": "f5613dee9c",
-      "color": "#9696a0",
-      "x": 688,
-      "y": 760,
-      "width": 24,
-      "height": 16
-    },
-    {
-      "id": "77f3bb8e8a",
-      "color": "#9696a0",
-      "x": 120,
-      "y": 880,
-      "width": 24,
-      "height": 16
-    },
-    {
       "id": "126b5ddcde",
       "color": "#9696a0",
       "x": 224,
@@ -532,22 +472,6 @@
       "y": 1176,
       "width": 16,
       "height": 16
-    },
-    {
-      "id": "1628b6a80a",
-      "color": "#9696a0",
-      "x": 624,
-      "y": 1008,
-      "width": 32,
-      "height": 24
-    },
-    {
-      "id": "c0daa2a0a5",
-      "color": "#9696a0",
-      "x": 672,
-      "y": 880,
-      "width": 8,
-      "height": 8
     },
     {
       "id": "f4863b26b7",
@@ -644,14 +568,6 @@
       "y": 152,
       "width": 16,
       "height": 16
-    },
-    {
-      "id": "2a228eef8b",
-      "color": "#9696a0",
-      "x": 120,
-      "y": 56,
-      "width": 32,
-      "height": 24
     },
     {
       "id": "8d92084e8e",

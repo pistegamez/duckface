@@ -1,8 +1,8 @@
 {
   "id": "birth",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2021-04-09T21:03:18.458Z",
-  "lastEdit": "2021-04-09T21:05:44.907Z",
+  "lastEdit": "2021-05-07T17:35:52.044Z",
   "title": "Birth of Duckface",
   "author": "Janne Kivilahti",
   "bgColor": "#f0f0ff",
@@ -239,17 +239,29 @@
       "id": "d804989872",
       "color": "#ffffff",
       "x": 224,
-      "y": -1280,
+      "y": -1216,
       "width": 136,
-      "height": 256
+      "height": 192,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "ced702cd49",
       "color": "#ffffff",
       "x": 464,
-      "y": -1280,
+      "y": -1216,
       "width": 128,
-      "height": 256
+      "height": 192,
+      "borders": {
+        "t": false,
+        "r": true,
+        "b": true,
+        "l": true
+      }
     },
     {
       "id": "29cf4f0d4d",
@@ -678,6 +690,7 @@
       "y": -168,
       "width": 32,
       "height": 48,
+      "blocks": false,
       "borders": {
         "t": true,
         "r": false,
@@ -692,6 +705,7 @@
       "y": -168,
       "width": 32,
       "height": 48,
+      "blocks": false,
       "borders": {
         "t": true,
         "r": true,

@@ -1,8 +1,8 @@
 {
   "id": "living-stones",
-  "version": "1.1",
+  "version": "1.2",
   "created": "2021-04-11T19:18:01.432Z",
-  "lastEdit": "2021-04-12T15:15:34.875Z",
+  "lastEdit": "2021-05-07T17:28:00.662Z",
   "title": "Living Stones",
   "author": "Janne Kivilahti",
   "bgColor": "#abb3bf",
@@ -392,51 +392,57 @@
     },
     {
       "id": "eb51c54abc",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1424,
       "y": 384,
       "width": 40,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "272bc766ea",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1464,
       "y": 384,
       "width": 40,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "b32efd47ca",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1448,
       "y": 408,
       "width": 40,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "169eb2eae5",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1520,
       "y": 464,
       "width": 40,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "e00c0a74a0",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1064,
       "y": 440,
       "width": 32,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "60b1e40635",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1120,
       "y": 400,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "19ee6566a5",
@@ -448,43 +454,48 @@
     },
     {
       "id": "3a91add8cb",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 344,
       "y": 440,
       "width": 40,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "54f64f9880",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 520,
       "y": 416,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "fd1d79b0c7",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 552,
       "y": 456,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "4b8b0e3290",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 664,
       "y": 448,
       "width": 40,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "5a7f9a08a5",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 752,
       "y": 496,
       "width": 32,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "13a7c6292d",
@@ -492,7 +503,8 @@
       "x": 1016,
       "y": 224,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "6adc899f7e",
@@ -500,31 +512,35 @@
       "x": 1032,
       "y": 248,
       "width": 32,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "9f0f4d37bf",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 944,
       "y": 464,
       "width": 16,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "84c625ee4c",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1288,
       "y": 368,
       "width": 40,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "2e98921974",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1160,
       "y": 480,
       "width": 48,
-      "height": 32
+      "height": 32,
+      "blocks": false
     },
     {
       "id": "9ed81a3034",
@@ -544,19 +560,21 @@
     },
     {
       "id": "f94fc42ae5",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1872,
       "y": 504,
       "width": 32,
-      "height": 24
+      "height": 24,
+      "blocks": false
     },
     {
       "id": "83800d7bc2",
-      "color": "#7c96a2",
+      "transparent": true,
       "x": 1928,
       "y": 544,
       "width": 24,
-      "height": 16
+      "height": 16,
+      "blocks": false
     },
     {
       "id": "3f60813250",
