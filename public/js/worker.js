@@ -466,36 +466,52 @@ function testCollisions(sprite, targets) {
       }
 
       sprite.collisionData.boxes.forEach((collisionBox) => {
-
         if (target.isSprite && collisionBox.testSprites) {
           target.collisionData.boxes
-          .filter(box => box.testSprites)
-          .forEach((targetCollisionBox) => {
-
-            if (
-              collisionBox.shape === SHAPES.BOX &&
-              targetCollisionBox.shape === SHAPES.BOX
-            ) {
-              if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
-                if (
-                  target.isObstacle &&
-                  spriteTypes[sprite.typeId].collidesWithObstacles &&
-                  spriteTypes[sprite.typeId].movedByOtherSprites
-                ) {
-                  const area = calculatePenetrationArea(
-                    collisionBox,
-                    targetCollisionBox
-                  );
-
-                  if (collision === null || collision.area.size < area.size) {
-                    collision = {
-                      target,
-                      area,
+            .filter((box) => box.testSprites)
+            .forEach((targetCollisionBox) => {
+              if (
+                collisionBox.shape === SHAPES.BOX &&
+                targetCollisionBox.shape === SHAPES.BOX
+              ) {
+                if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
+                  if (
+                    target.isObstacle &&
+                    spriteTypes[sprite.typeId].collidesWithObstacles &&
+                    spriteTypes[sprite.typeId].movedByOtherSprites
+                  ) {
+                    const area = calculatePenetrationArea(
                       collisionBox,
-                      targetShape: targetCollisionBox.shape,
-                    };
+                      targetCollisionBox
+                    );
+
+                    if (collision === null || collision.area.size < area.size) {
+                      collision = {
+                        target,
+                        area,
+                        collisionBox,
+                        targetShape: targetCollisionBox.shape,
+                      };
+                    }
+                  } else {
+                    sprite.collisionData.spriteIds.add(target.id);
+
+                    if (target.isPlayer) {
+                      sprite.collisionData.playerHits++;
+                    }
+
+                    if (target.isEnemy) {
+                      sprite.collisionData.enemyHits++;
+                    }
                   }
-                } else {
+                }
+              } else if (
+                collisionBox.shape === SHAPES.BOX &&
+                targetCollisionBox.shape === SHAPES.CIRCLE
+              ) {
+                if (
+                  checkBoxToCircleCollision(collisionBox, targetCollisionBox)
+                ) {
                   sprite.collisionData.spriteIds.add(target.id);
 
                   if (target.isPlayer) {
@@ -506,42 +522,29 @@ function testCollisions(sprite, targets) {
                     sprite.collisionData.enemyHits++;
                   }
                 }
-              }
-            } else if (
-              collisionBox.shape === SHAPES.BOX &&
-              targetCollisionBox.shape === SHAPES.CIRCLE
-            ) {
-              if (checkBoxToCircleCollision(collisionBox, targetCollisionBox)) {
-                sprite.collisionData.spriteIds.add(target.id);
+              } else if (
+                collisionBox.shape === SHAPES.CIRCLE &&
+                targetCollisionBox.shape === SHAPES.BOX
+              ) {
+                if (
+                  checkBoxToCircleCollision(targetCollisionBox, collisionBox)
+                ) {
+                  sprite.collisionData.spriteIds.add(target.id);
 
-                if (target.isPlayer) {
-                  sprite.collisionData.playerHits++;
-                }
-
-                if (target.isEnemy) {
-                  sprite.collisionData.enemyHits++;
-                }
-              }
-            } else if (
-              collisionBox.shape === SHAPES.CIRCLE &&
-              targetCollisionBox.shape === SHAPES.BOX
-            ) {
-              if (checkBoxToCircleCollision(targetCollisionBox, collisionBox)) {
-                sprite.collisionData.spriteIds.add(target.id);
-
-                if (target.isPlayer) {
-                  sprite.collisionData.playerHits++;
-                }
-                if (target.isEnemy) {
-                  sprite.collisionData.enemyHits++;
+                  if (target.isPlayer) {
+                    sprite.collisionData.playerHits++;
+                  }
+                  if (target.isEnemy) {
+                    sprite.collisionData.enemyHits++;
+                  }
                 }
               }
-            }
-          });
+            });
         }
         // TODO: circle shaped sprite vs tile
         else if (
-          target.isTile && collisionBox.testTiles &&
+          target.isTile &&
+          collisionBox.testTiles &&
           spriteTypes[sprite.typeId].collidesWithObstacles &&
           collisionBox.shape === SHAPES.BOX
         ) {
@@ -647,7 +650,6 @@ function testCollisions(sprite, targets) {
           }
         }
       } else if (collision.area.width > collision.area.height) {
-          
         if (
           collision.collisionBox.t < collision.area.top ||
           collision.targetShape === SHAPES.SLOPE_LEFT ||
@@ -730,23 +732,27 @@ function testCollisions(sprite, targets) {
               -sprite.velocity.y / 4,
               sprite.collisionData.velocity.y
             );
+
             sprite.collisionData.bounce = true;
-            postMessage({
-              type: "PLAY_SOUND",
-              sound: "bump",
-              x: sprite.x + sprite.width / 2,
-              y: sprite.y + sprite.height / 2,
-            });
-            postMessage({
-              type: "EMIT_PARTICLES",
-              particleTypeId: "star",
-              amount: 5,
-              particleProps: {
+
+            if (sprite.weight > 0) {
+              postMessage({
+                type: "PLAY_SOUND",
+                sound: "bump",
                 x: sprite.x + sprite.width / 2,
-                y: sprite.y,
-                energy: sprite.velocity.y / 6,
-              },
-            });
+                y: sprite.y + sprite.height / 2,
+              });
+              postMessage({
+                type: "EMIT_PARTICLES",
+                particleTypeId: "star",
+                amount: 5,
+                particleProps: {
+                  x: sprite.x + sprite.width / 2,
+                  y: sprite.y,
+                  energy: sprite.velocity.y / 6,
+                },
+              });
+            }
           } else if (sprite.velocity.y < 0 && !sprite.isElevator) {
             sprite.collisionData.velocity.y = Math.max(
               0,
@@ -785,12 +791,15 @@ function testCollisions(sprite, targets) {
               -sprite.velocity.x / 2,
               sprite.collisionData.velocity.x
             );
-            postMessage({
-              type: "PLAY_SOUND",
-              sound: "bump",
-              x: sprite.x + sprite.width / 2,
-              y: sprite.y + sprite.height / 2,
-            });
+
+            if (sprite.weight > 0) {
+              postMessage({
+                type: "PLAY_SOUND",
+                sound: "bump",
+                x: sprite.x + sprite.width / 2,
+                y: sprite.y + sprite.height / 2,
+              });
+            }
           } else if (sprite.velocity.x > 0) {
             sprite.collisionData.velocity.x = 0;
           }
@@ -819,12 +828,15 @@ function testCollisions(sprite, targets) {
               -sprite.velocity.x / 2,
               sprite.collisionData.velocity.x
             );
-            postMessage({
-              type: "PLAY_SOUND",
-              sound: "bump",
-              x: sprite.x + sprite.width / 2,
-              y: sprite.y + sprite.height / 2,
-            });
+
+            if (sprite.weight > 0) {
+              postMessage({
+                type: "PLAY_SOUND",
+                sound: "bump",
+                x: sprite.x + sprite.width / 2,
+                y: sprite.y + sprite.height / 2,
+              });
+            }
           } else if (sprite.velocity.x < 0) {
             sprite.collisionData.velocity.x = 0;
           }
