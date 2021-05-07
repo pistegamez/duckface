@@ -15,6 +15,7 @@ spriteTypes.wind = new SpriteType({
   ],
   spriteProps: {
     isObstacle: false,
+    weight: 0,
   },
   behaviours: ["wind"],
   animations: {
