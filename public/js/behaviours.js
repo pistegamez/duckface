@@ -1020,6 +1020,36 @@ const behaviours = {
     },
   },
 
+  "kills-rising": {
+    do({ sprite, sprites }) {
+      sprite.collisionData.spriteIds.forEach((id) => {
+        const target = sprites.find((sprite) => sprite.id === id);
+
+        if (
+          target &&
+          target.isPlayer &&
+          target.velocity.y < 0.1 &&
+          target.y > sprite.y &&
+          target.energy > 0
+        ) {
+          // target.remove = true;
+          target.damageCounter = 30;
+          target.energy = 0;
+          postMessage({
+            type: "EMIT_PARTICLES",
+            particleTypeId: "star",
+            amount: 9,
+            particleProps: {
+              x: target.x + target.width / 2,
+              y: target.y + target.height / 2,
+              energy: 20,
+            },
+          });
+        }
+      });
+    },
+  },
+
   sweats: {
     do({ sprite }) {
       if (sprite.energy > 0 && Math.random() > 0.95) {
@@ -1209,7 +1239,6 @@ const behaviours = {
                 ? sprite.x + sprite.width - sprite.width * sprite.blowX - sprite.blowSize / 2
                 : sprite.x + sprite.width * sprite.blowX - sprite.blowSize / 2,
             y: sprite.y + sprite.height * sprite.blowY - sprite.blowSize / 2,
-            weight: 0,
             width: sprite.blowSize,
             height,
             energy: sprite.blowEnergy,
