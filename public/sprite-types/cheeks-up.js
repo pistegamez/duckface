@@ -14,7 +14,7 @@ spriteTypes["cheeks-up"] = new SpriteType({
     blowX: 0.8,
     blowEnergy: 40,
     blowWait: 200,
-    blowVelocityY: -10,
+    blowVelocityY: -8,
   },
   patterns: {
     default: {
