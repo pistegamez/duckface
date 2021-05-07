@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 spriteTypes.ring = new SpriteType({
   id: "ring",
   name: "Ring",
