@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 spriteTypes.duckface = new SpriteType({
     id: "duckface",
     name: "Duckface",
