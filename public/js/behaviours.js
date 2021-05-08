@@ -1319,7 +1319,7 @@ const behaviours = {
               target.velocity.y < sprite.velocity.y
             ) {
               target.velocity.y = Math.min(
-                target.velocity.y + 0.22,
+                target.velocity.y + 0.251,
                 sprite.velocity.y
               );
             } else if (
@@ -1327,7 +1327,7 @@ const behaviours = {
               target.velocity.y > sprite.velocity.y
             ) {
               target.velocity.y = Math.max(
-                target.velocity.y - 0.22,
+                target.velocity.y - 0.251,
                 sprite.velocity.y
               );
             }
