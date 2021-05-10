@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 //const SCREEN_WIDTH = 800;
@@ -85,7 +86,7 @@ const randoms = new RandomValues(50, 1.25);
 setInterval(() => {
     if (jitters) {
         randoms.recalculate();
-        updateTileCanvases();
+        tileLayers.frame = (tileLayers.frame + 1) % TILE_FRAMES;
         tileLayers.update = true;
     }
 }, 200);
@@ -364,7 +365,7 @@ async function loadScene({ url, sceneId, albumId }) {
 const resetScene = () => {
 
     worker.postMessage({ action: "STOP" });
-    updateTileCanvases(true);
+    updateTileCanvases();
     worker.postMessage({ action: "SET_SCENE", scene, spriteTypes });
 
     if (scene.captions.length > 0) {
@@ -396,7 +397,7 @@ const resetScene = () => {
 const replayScene = () => {
 
     worker.postMessage({ action: "STOP" });
-    updateTileCanvases(true);
+    updateTileCanvases();
     worker.postMessage({ action: "SET_SCENE", scene, spriteTypes });
 
     showCaptions = false;

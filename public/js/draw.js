@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 "use strict";
 
+const TILE_FRAMES = 4;
+
 let tileCanvases = {};
 const canvasScale = 1;
 
@@ -8,7 +10,10 @@ let grainImage;
 
 const effects = { redraw: true };
 
-const tileLayers = { update: true };
+const tileLayers = {
+  frame: 0,
+  update: true,
+};
 
 let buttons = {};
 
@@ -16,54 +21,51 @@ let buttons = {};
 let showSpriteInfo = false;
 
 // eslint-disable-next-line no-unused-vars
-function updateTileCanvases(drawAll = false) {
-  const zx = typeof editor !== "undefined" ? 0 : camera.pixelX;
-  const zy = typeof editor !== "undefined" ? 0 : camera.pixelY;
-
-  if (drawAll) {
-    tileCanvases = {};
+function updateTileCanvases() {
+  tileCanvases = {
+    randoms: [],
+  };
+  for (let frame = 0; frame < TILE_FRAMES; frame++) {
+    tileCanvases.randoms[frame] = new RandomValues(50, 1.25);
   }
 
-  scene.tiles
-    .filter(
-      (tile) =>
-        drawAll ||
-        (tile.x + tile.width >= camera.pixelX + zx * tile.z &&
-          tile.y + tile.height >= camera.pixelY + zy * tile.z &&
-          tile.x <= camera.pixelX + zx * tile.z + canvas.width &&
-          tile.y <= camera.pixelY + zy * tile.z + canvas.height)
-    )
-    .forEach((tile) => {
-      updateTileCanvas(tile);
-    });
+  scene.tiles.forEach((tile) => {
+    updateTileCanvas(tile);
+  });
 }
 
 function updateTileCanvas(tile, forceRedraw = false) {
   if (tileCanvases[tile.id] === undefined) {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    canvas.width = tile.width * canvasScale + 4;
-    canvas.height = tile.height * canvasScale + 4;
-    // context.scale(canvasScale,canvasScale);
-    tileCanvases[tile.id] = {
-      canvas,
-      context,
-      redraw: true,
-    };
+    tileCanvases[tile.id] = [];
   }
 
-  const tileCanvas = tileCanvases[tile.id];
+  for (let frame = 0; frame < TILE_FRAMES; frame++) {
+    if (tileCanvases[tile.id][frame] === undefined) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      canvas.width = tile.width * canvasScale + 4;
+      canvas.height = tile.height * canvasScale + 4;
+      // context.scale(canvasScale,canvasScale);
+      tileCanvases[tile.id][frame] = {
+        canvas,
+        context,
+        redraw: true,
+      };
+    }
 
-  if (tileCanvas.redraw || forceRedraw) {
-    tileCanvas.canvas.width = tile.width * canvasScale + 4;
-    tileCanvas.canvas.height = tile.height * canvasScale + 4;
+    const tileCanvas = tileCanvases[tile.id][frame];
 
-    tileCanvas.context.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
-    tileCanvas.context.translate(2, 2);
-    drawTile(tile, tileCanvas.context);
-    tileCanvas.context.translate(-2, -2);
-    if (!tile.hasBorders) {
-      tileCanvas.redraw = false;
+    if (tileCanvas.redraw || forceRedraw) {
+      tileCanvas.canvas.width = tile.width * canvasScale + 4;
+      tileCanvas.canvas.height = tile.height * canvasScale + 4;
+
+      tileCanvas.context.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
+      tileCanvas.context.translate(2, 2);
+      drawTile(tile, tileCanvas.context, tileCanvases.randoms[frame]);
+      tileCanvas.context.translate(-2, -2);
+      if (!tile.hasBorders) {
+        tileCanvas.redraw = false;
+      }
     }
   }
 }
@@ -71,9 +73,11 @@ function updateTileCanvas(tile, forceRedraw = false) {
 // eslint-disable-next-line no-unused-vars
 function removeTileCanvasById(id) {
   if (tileCanvases[id] !== undefined) {
-    tileCanvases[id].canvas.height = 0;
-    tileCanvases[id].canvas.width = 0;
-    tileCanvases[id] = undefined;
+    for (let frame = 0; frame < TILE_FRAMES; frame++) {
+      tileCanvases[id][frame].canvas.height = 0;
+      tileCanvases[id][frame].canvas.width = 0;
+      tileCanvases[id][frame] = undefined;
+    }
   }
 }
 
@@ -817,7 +821,12 @@ function drawTileLayer(layer, context, canvas) {
     }
 
     tileLayers[layer].context.translate(-camera.pixelX, -camera.pixelY);
-    drawTiles(layer, tileLayers[layer].context, tileLayers[layer].canvas);
+    drawTiles(
+      layer,
+      tileLayers[layer].context,
+      tileLayers[layer].canvas,
+      tileLayers.frame
+    );
     tileLayers[layer].context.translate(camera.pixelX, camera.pixelY);
   }
 
@@ -881,8 +890,9 @@ function drawSprite(sprite, context) {
     throw new Error(`Sprite ${sprite.typeId} animation is undefined`);
   }
 
-  
-  let animationFrame = type.animations[sprite.animation] && type.animations[sprite.animation][sprite.frame];
+  let animationFrame =
+    type.animations[sprite.animation] &&
+    type.animations[sprite.animation][sprite.frame];
 
   if (animationFrame === undefined && type.animations.idle) {
     animationFrame = type.animations.idle[0];
@@ -1119,7 +1129,7 @@ function drawPath(path, rect, context) {
   });
 }
 
-function drawTiles(layer, context, canvas) {
+function drawTiles(layer, context, canvas, frame = 0) {
   context.lineWidth = 1.5;
   context.lineCap = "butt";
   context.setLineDash([]);
@@ -1137,8 +1147,8 @@ function drawTiles(layer, context, canvas) {
         tile.y <= camera.pixelY + zy * tile.z + canvas.height
     )
     .forEach((tile) => {
-      if (tileCanvases[tile.id]) {
-        const canvas = tileCanvases[tile.id].canvas;
+      if (tileCanvases[tile.id] && tileCanvases[tile.id][frame]) {
+        const canvas = tileCanvases[tile.id][frame].canvas;
         context.translate(zx * -tile.z, zy * -tile.z);
         context.translate(tile.x - 2, tile.y - 2);
         context.drawImage(canvas, 0, 0);
@@ -1148,7 +1158,7 @@ function drawTiles(layer, context, canvas) {
     });
 }
 
-function drawTile(tile, context) {
+function drawTile(tile, context, randoms) {
   context.lineWidth = 1.5;
   context.strokeStyle = tile.stroke;
   context.fillStyle = tile.color;
