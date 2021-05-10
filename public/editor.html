@@ -355,7 +355,7 @@
         );
 
         try {
-          drawTile(tile, context);
+          drawTile(tile, context, randoms);
         } catch (e) {
           context.restore();
           throw e;
@@ -762,7 +762,7 @@
                 type="radio"
                 value="select-tiles"
                 onclick="editor.setTool({tool: TOOLS.SELECT_TILES})"
-              />Tiles</label
+              />Tiles (in current layer)</label
             >
           </div>
           <div>
@@ -778,9 +778,21 @@
           <div>
             <button
               type="button"
-              onclick="editor.selectAllTilesInCurrentLayer()"
+              onclick="editor.selectAllTilesInLayer(LAYERS.BACKGROUND)"
             >
-              Current layer
+              All background tiles
+            </button>
+            <button
+              type="button"
+              onclick="editor.selectAllTilesInLayer(LAYERS.MIDDLE)"
+            >
+              All foreground tiles
+            </button>
+            <button
+              type="button"
+              onclick="editor.selectTilesByFillColor()"
+            >
+              Tiles by fill color
             </button>
           </div>
         </fieldset>
