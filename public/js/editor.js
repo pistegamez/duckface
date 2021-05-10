@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 const RESIZE_HANDLE_WIDTH = 8;
@@ -388,7 +389,7 @@ const editor = {
             this.idsOfSelectedSprites = [];
             //resetScene();
             this.updateUI();
-            updateTileCanvases(true);
+            updateTileCanvases();
             tileLayers.update = true;
         }
     },
@@ -552,14 +553,18 @@ const editor = {
         this.updateUI();
     },
 
-    selectAllTilesInCurrentLayer() {
-        this.selectTiles(scene.tiles.filter(tile => tile.layer === editor.tileLayer));
+    selectAllTilesInLayer(layer) {
+        this.idsOfSelectedTiles = [];
+        this.selectTiles(scene.tiles.filter(tile => tile.layer === layer));
+    },
+
+    selectTilesByFillColor() {
+        this.idsOfSelectedTiles = [];
+        this.selectTiles(scene.tiles.filter(tile => tile.color === this.fillColor));
     },
 
     selectTiles(tiles = []) {
 
-        //this.idsOfSelectedTiles = this.idsOfSelectedTiles.filter(id => !tiles.includes(tile => tile.id === id));
-        //this.idsOfSelectedTiles.push(...tiles.map(tile => tile.id));
         tiles.forEach(tile => {
             const index = this.idsOfSelectedTiles.findIndex(id => id === tile.id);
             if (index !== -1) {
