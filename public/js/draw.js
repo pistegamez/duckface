@@ -39,7 +39,10 @@ function updateTileCanvas(tile, forceRedraw = false) {
     tileCanvases[tile.id] = [];
   }
 
-  for (let frame = 0; frame < TILE_FRAMES; frame++) {
+  // TODO: tile wihtour borders, make references to frame 0
+  const frames = tile.hasBorders ? TILE_FRAMES : 1;
+
+  for (let frame = 0; frame < frames; frame++) {
     if (tileCanvases[tile.id][frame] === undefined) {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
@@ -74,9 +77,11 @@ function updateTileCanvas(tile, forceRedraw = false) {
 function removeTileCanvasById(id) {
   if (tileCanvases[id] !== undefined) {
     for (let frame = 0; frame < TILE_FRAMES; frame++) {
-      tileCanvases[id][frame].canvas.height = 0;
-      tileCanvases[id][frame].canvas.width = 0;
-      tileCanvases[id][frame] = undefined;
+      if (tileCanvases[id][frame]) {
+        tileCanvases[id][frame].canvas.height = 0;
+        tileCanvases[id][frame].canvas.width = 0;
+        tileCanvases[id][frame] = undefined;
+      }
     }
   }
 }
@@ -1147,13 +1152,17 @@ function drawTiles(layer, context, canvas, frame = 0) {
         tile.y <= camera.pixelY + zy * tile.z + canvas.height
     )
     .forEach((tile) => {
-      if (tileCanvases[tile.id] && tileCanvases[tile.id][frame]) {
-        const canvas = tileCanvases[tile.id][frame].canvas;
-        context.translate(zx * -tile.z, zy * -tile.z);
-        context.translate(tile.x - 2, tile.y - 2);
-        context.drawImage(canvas, 0, 0);
-        context.translate(-(tile.x - 2), -(tile.y - 2));
-        context.translate(zx * tile.z, zy * tile.z);
+      if (tileCanvases[tile.id]) {
+        const tileCanvas =
+          tileCanvases[tile.id][frame] || tileCanvases[tile.id][0];
+        if (tileCanvas) {
+          const canvas = tileCanvas.canvas;
+          context.translate(zx * -tile.z, zy * -tile.z);
+          context.translate(tile.x - 2, tile.y - 2);
+          context.drawImage(canvas, 0, 0);
+          context.translate(-(tile.x - 2), -(tile.y - 2));
+          context.translate(zx * tile.z, zy * tile.z);
+        }
       }
     });
 }
@@ -1194,7 +1203,7 @@ function drawTile(tile, context, randoms) {
         context.lineTo(
           tile.width + randoms.x(tile.x + tile.width, tile.y + tile.height, i),
           tile.height + randoms.y(tile.x + tile.width, tile.y + tile.height, i)
-        );
+        ); 
       }
 
       if (tile.borders.b) {
@@ -1206,7 +1215,7 @@ function drawTile(tile, context, randoms) {
         context.lineTo(
           randoms.x(tile.x, tile.y + tile.height, i),
           tile.height + randoms.y(tile.x, tile.y + tile.height, i)
-        );
+        ); 
       }
 
       if (tile.borders.l) {
