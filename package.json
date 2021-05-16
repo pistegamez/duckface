@@ -20,7 +20,8 @@
   "scripts": {
     "dev": "node dev-server.js",
     "start": "node build-server.js",
-    "build": "node build.js"
+    "build": "node build.js",
+    "format": "prettier --write 'src/**/*.js'"
   },
   "author": "Piste Gamez",
   "license": "GPL-3.0-or-later",
