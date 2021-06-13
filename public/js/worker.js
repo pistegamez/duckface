@@ -334,12 +334,8 @@ function move() {
           });
           sprite.velocity.x *= inertia;
         }
-      } else {
-        if (sprite.velocity.x > 0) {
-          sprite.velocity.x -= sprite.velocity.x / 150;
-        } else if (sprite.velocity.x < 0) {
-          sprite.velocity.x -= sprite.velocity.x / 150;
-        }
+      } else if (sprite.velocity.x !== 0) {
+        sprite.velocity.x -= sprite.velocity.x / 150;
       }
 
       if (!sprite.collisionData.bottom && sprite.weight > 0) {
@@ -365,43 +361,78 @@ function move() {
         }
       }
 
-      /*
-             if (scene.verticalLoop) {
-                 if (sprite.y + sprite.height >= scene.bottom) {
-                     sprite.y -= scene.height;
-                 }
-                 else if (sprite.y <= scene.top) {
-                     sprite.y += scene.height;
-                 }
-             }
- 
-             if (scene.horizontalLoop) {
-                 if (sprite.x >= scene.right) {
-                     sprite.x -= scene.width;
-                 }
-                 else if (sprite.x + sprite.width <= scene.left) {
-                     sprite.x += scene.width;
-                 }
-             }
-             */
-
       sprite.velocity.y = Math.floor(sprite.velocity.y * 10) / 10;
 
       if (sprite.damageCounter > 0) {
         sprite.damageCounter--;
       }
 
-      if (sprite.remove) {
-        removeSprites = true;
-      }
+      // if (sprite.remove) {
+      //  removeSprites = true;
+
+      /*
+        if (type.dyingEffect) {
+          postMessage({
+            type: "PLAY_SOUND",
+            sound: type.dyingEffect.sound || "collect",
+            x: sprite.x + sprite.width / 2,
+            y: sprite.y + sprite.height / 2,
+          });
+          postMessage({
+            type: "EMIT_PARTICLES",
+            particleTypeId: type.dyingEffect.particleType || "crumb",
+            amount: type.dyingEffect.particles || 10,
+            particleProps: {
+              ...(type.dyingEffect.particleProps || {}),
+              x: sprite.x + sprite.width / 2,
+              y: sprite.y + sprite.height / 2,
+            },
+          });
+        }
+        */
+      // }
     } else {
       sprite.freezeCounter--;
     }
   });
 
-  if (removeSprites) {
-    sprites = sprites.filter((sprite) => !sprite.remove);
-  }
+  sprites.forEach((sprite) => {
+    if (sprite.health > 0) {
+      sprite.health = Math.max(0, sprite.health + sprite.healthChange);
+      if (sprite.health === 0) {
+        const type = spriteTypes[sprite.typeId];
+
+        if (type.dyingEffect) {
+          postMessage({
+            type: "PLAY_SOUND",
+            sound: type.dyingEffect.sound || "collect",
+            x: sprite.x + sprite.width / 2,
+            y: sprite.y + sprite.height / 2,
+          });
+          postMessage({
+            type: "EMIT_PARTICLES",
+            particleTypeId: type.dyingEffect.particleType || "crumb",
+            amount: type.dyingEffect.particles || 10,
+            particleProps: {
+              ...(type.dyingEffect.particleProps || {}),
+              x: sprite.x + sprite.width / 2,
+              y: sprite.y + sprite.height / 2,
+            },
+          });
+        }
+
+        if (type.removable === true) {
+          sprite.remove = true;
+        }
+      }
+    }
+
+    sprite.healthChange = 0;
+  });
+
+  // if (removeSprites) {
+  sprites = sprites.filter((sprite) => !sprite.remove);
+  // }
 }
 
 function collide() {
@@ -438,6 +469,9 @@ function collide() {
       sprite.y = Math.floor(sprite.y + sprite.collisionData.yChange);
       sprite.velocity.x = sprite.collisionData.velocity.x;
       sprite.velocity.y = sprite.collisionData.velocity.y;
+
+      // sprite.health = Math.max(0, sprite.health - sprite.collisionData.damage);
+      sprite.healthChange -= sprite.collisionData.damage;
     }
   });
 }
@@ -475,6 +509,21 @@ function testCollisions(sprite, targets) {
                 targetCollisionBox.shape === SHAPES.BOX
               ) {
                 if (checkBoxToBoxCollision(collisionBox, targetCollisionBox)) {
+                  if (sprite.health > 0 && target.health > 0) {
+                    if (sprite.isDamagedBy(target)) {
+                      sprite.collisionData.damage +=
+                        spriteTypes[target.typeId].damage;
+                      sprite.damageCounter = 30;
+                    }
+
+                    if (target.isDamagedBy(sprite)) {
+                      sprite.changeAnimation({
+                        animation: spriteTypes[sprite.typeId].attackAnimation,
+                        animationMinDuration: 800,
+                      });
+                    }
+                  }
+
                   if (
                     target.isObstacle &&
                     spriteTypes[sprite.typeId].collidesWithObstacles &&
@@ -500,7 +549,7 @@ function testCollisions(sprite, targets) {
                       sprite.collisionData.playerHits++;
                     }
 
-                    if (target.isEnemy) {
+                    if (target.role === ROLES.ENEMY) {
                       sprite.collisionData.enemyHits++;
                     }
                   }
@@ -512,13 +561,28 @@ function testCollisions(sprite, targets) {
                 if (
                   checkBoxToCircleCollision(collisionBox, targetCollisionBox)
                 ) {
+                  if (sprite.health > 0 && target.health > 0) {
+                    if (sprite.isDamagedBy(target)) {
+                      sprite.collisionData.damage +=
+                        spriteTypes[target.typeId].damage;
+                      sprite.damageCounter = 30;
+                    }
+
+                    if (target.isDamagedBy(sprite)) {
+                      sprite.changeAnimation({
+                        animation: spriteTypes[sprite.typeId].attackAnimation,
+                        animationMinDuration: 800,
+                      });
+                    }
+                  }
+
                   sprite.collisionData.spriteIds.add(target.id);
 
                   if (target.isPlayer) {
                     sprite.collisionData.playerHits++;
                   }
 
-                  if (target.isEnemy) {
+                  if (target.role === ROLES.ENEMY) {
                     sprite.collisionData.enemyHits++;
                   }
                 }
@@ -529,12 +593,27 @@ function testCollisions(sprite, targets) {
                 if (
                   checkBoxToCircleCollision(targetCollisionBox, collisionBox)
                 ) {
+                  if (sprite.health > 0 && target.health > 0) {
+                    if (sprite.isDamagedBy(target)) {
+                      sprite.collisionData.damage +=
+                        spriteTypes[target.typeId].damage;
+                      sprite.damageCounter = 30;
+                    }
+
+                    if (target.isDamagedBy(sprite)) {
+                      sprite.changeAnimation({
+                        animation: spriteTypes[target.typeId].attackAnimation,
+                        animationMinDuration: 800,
+                      });
+                    }
+                  }
+
                   sprite.collisionData.spriteIds.add(target.id);
 
                   if (target.isPlayer) {
                     sprite.collisionData.playerHits++;
                   }
-                  if (target.isEnemy) {
+                  if (target.role === ROLES.ENEMY) {
                     sprite.collisionData.enemyHits++;
                   }
                 }
@@ -595,13 +674,14 @@ function testCollisions(sprite, targets) {
         if (collision.target.isPlayer) {
           sprite.collisionData.playerHits++;
         }
-        if (collision.target.isEnemy) {
+        if (collision.target.role === ROLES.ENEMY) {
           sprite.collisionData.enemyHits++;
         }
       } else if (collision.target.isTile) {
         sprite.collisionData.tileIds.add(collision.target.id);
       }
 
+      // eslint-disable-next-line no-empty
       if (sprite.isStatic) {
       } else if (collision.targetShape === SHAPES.TOP_DOWN) {
         if (
@@ -977,18 +1057,6 @@ function calculatePenetrationArea(box1, box2) {
   area.right = Math.min(box1.r, box2.r);
   area.top = Math.max(box1.t, box2.t);
   area.bottom = Math.min(box1.b, box2.b);
-  area.width = area.right - area.left;
-  area.height = area.bottom - area.top;
-  area.size = area.width * area.height;
-  return area;
-}
-
-function calculatePenetrationAreaOld(box1, box2) {
-  const area = {};
-  area.left = Math.max(box2.x, box1.x);
-  area.right = Math.min(box2.x + box2.width, box1.x + box1.width);
-  area.top = Math.max(box2.y, box1.y);
-  area.bottom = Math.min(box1.y + box1.height, box2.y + box2.height);
   area.width = area.right - area.left;
   area.height = area.bottom - area.top;
   area.size = area.width * area.height;

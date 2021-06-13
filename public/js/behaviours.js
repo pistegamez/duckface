@@ -26,7 +26,7 @@ const behaviours = {
 
   unfails: {
     do({ sprite, nextState }) {
-      if (sprite.energy > 0 && sprite.isPlayer) {
+      if (sprite.health > 0 && sprite.isPlayer) {
         nextState.failed = false;
       }
     },
@@ -40,7 +40,7 @@ const behaviours = {
         sprites
           .filter((sprite) => sprite.isPlayer)
           .forEach((sprite) => {
-            // sprite.energy = 0;
+            // sprite.health = 0;
             sprite.isPlayer = false;
           });
       }
@@ -63,15 +63,15 @@ const behaviours = {
     },
     do({ sprite, state }) {
       if (
-        (!sprite.isPlayer && !sprite.isEnemy) ||
+        (!sprite.isPlayer && sprite.role !== ROLES.ENEMY) ||
         sprite.freezeCounter > 0 ||
-        sprite.energy < 1 ||
+        sprite.health < 1 ||
         state.completed
       ) {
         return;
       }
 
-      if (!controls.up || sprite.isEnemy) {
+      if (!controls.up || sprite.role === ROLES.ENEMY) {
         sprite.jumpAgain = true;
       }
 
@@ -87,7 +87,7 @@ const behaviours = {
         sprite.groundContactCounter = 5;
       }
 
-      if (sprite.isEnemy && sprite.jumpPauseCounter > 0) {
+      if (sprite.role === ROLES.ENEMY && sprite.jumpPauseCounter > 0) {
         sprite.jumpPauseCounter--;
       }
 
@@ -97,7 +97,7 @@ const behaviours = {
 
       const jump =
         (sprite.isPlayer && controls.up) ||
-        (sprite.isEnemy && sprite.jumpPauseCounter === 0);
+        (sprite.role === ROLES.ENEMY && sprite.jumpPauseCounter === 0);
 
       if (
         (sprite.jumpAgain && sprite.groundContactCounter > 0) ||
@@ -200,7 +200,7 @@ const behaviours = {
       if (
         !sprite.isPlayer ||
         sprite.freezeCounter > 0 ||
-        sprite.energy < 1 ||
+        sprite.health < 1 ||
         state.completed
       ) {
         return;
@@ -312,15 +312,15 @@ const behaviours = {
       sprite.transform.height = sprite.transform.height || sprite.height;
     },
     do({ sprite, sprites }) {
-      // if (sprite.energy > 0) {
+      // if (sprite.health > 0) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
         if (
           target &&
-          !target.isEnemy &&
+          target.role !== ROLES.ENEMY &&
           target.isCollector &&
           target.transform &&
-          target.energy > 0
+          target.health > 0
         ) {
           target.transform.originalWidth = target.width;
           target.transform.originalHeight = target.height;
@@ -356,7 +356,7 @@ const behaviours = {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0) {
+        if (target && target.isPlayer && target.health > 0) {
           target.maxVelocity.x += sprite.transform.maxVelocityX;
           postMessage({
             type: "PLAY_SOUND",
@@ -373,12 +373,12 @@ const behaviours = {
   "throttle-players-max-jump": {
     init(sprite) {
       sprite.transform = sprite.transform || {};
-      sprite.transform.maxJump = sprite.transform.maxJump || 2;
+      sprite.transform.maxJump = sprite.transform.maxJump || 8;
     },
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0 && target.maxJump) {
+        if (target && target.isPlayer && target.health > 0 && target.maxJump) {
           target.maxJump += sprite.transform.maxJump;
           postMessage({
             type: "PLAY_SOUND",
@@ -387,7 +387,7 @@ const behaviours = {
             y: target.y,
           });
           target.freezeCounter = 30;
-          target.damageCounter = 30;
+          // target.damageCounter = 30;
         }
       });
     },
@@ -403,7 +403,8 @@ const behaviours = {
         const target = sprites.find((sprite) => sprite.id === id);
         if (
           target &&
-          !target.isEnemy &&
+          target.health > 0 &&
+          target.role !== ROLES.ENEMY &&
           target.isCollector &&
           target.pattern === "default"
         ) {
@@ -427,7 +428,8 @@ const behaviours = {
         const target = sprites.find((sprite) => sprite.id === id);
         if (
           target &&
-          !target.isEnemy &&
+          target.health > 0 &&
+          target.role !== ROLES.ENEMY &&
           target.isCollector &&
           target.pattern === "default"
         ) {
@@ -449,7 +451,7 @@ const behaviours = {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0) {
+        if (target && target.isPlayer && target.health > 0) {
           for (const prop in sprite.transform) {
             target[prop] = sprite.transform.spriteProps[prop];
           }
@@ -476,7 +478,7 @@ const behaviours = {
     },
 
     do({ sprite }) {
-      if (sprite.energy <= 0) {
+      if (sprite.health <= 0) {
         return;
       }
 
@@ -485,6 +487,7 @@ const behaviours = {
       } else {
         addSprite({
           typeId: "fireball",
+          parentId: sprite.id,
           x:
             sprite.direction === DIRECTION.LEFT
               ? sprite.x
@@ -493,8 +496,8 @@ const behaviours = {
           weight: 0,
           width: sprite.fireBallSize,
           height: sprite.fireBallSize,
-          energy: 75,
-          isEnemy: sprite.isEnemy,
+          health: 75,
+          role: sprite.role,
           direction: sprite.direction,
           velocity: {
             y: 0,
@@ -509,25 +512,38 @@ const behaviours = {
           x: sprite.x,
           y: sprite.y,
         });
-        sprite.changeAnimation({ animation: "attack", forceChange: true });
+        sprite.changeAnimation({
+          animation: "attack",
+          forceChange: true,
+          animationMinDuration: 500,
+        });
       }
+      /*
       if (sprite.reloadCounter > sprite.reloadWait / 2) {
-        sprite.changeAnimation({ animation: "attack" });
-      }
+        sprite.changeAnimation({
+          animation: "attack",
+          animationMinDuration: 200,
+        });
+      } */
     },
   },
 
   fireball: {
     do({ sprite, sprites }) {
-      if (sprite.energy > 0) {
-        sprite.energy--;
+      if (sprite.health > 0) {
+        // sprite.health--;
+        sprite.healthChange--;
 
         sprite.collisionData.spriteIds.forEach((id) => {
           const target = sprites.find((sprite) => sprite.id === id);
-          if (target && target.isEnemy !== sprite.isEnemy) {
-            sprite.energy = 0;
-            target.energy--;
-            target.damageCounter = 30;
+
+          if (
+            target &&
+            sprite.parentId !== target.id &&
+            target.role !== sprite.role &&
+            (sprite.isDamagedBy(target) || target.isDamagedBy(sprite))
+          ) {
+            sprite.healthChange = -sprite.health;
             postMessage({
               type: "PLAY_SOUND",
               sound: "damage",
@@ -537,7 +553,7 @@ const behaviours = {
           }
         });
 
-        if (sprite.energy % 2 === 0) {
+        if (sprite.health % 2 === 0) {
           postMessage({
             type: "EMIT_PARTICLES",
             particleTypeId: "fire",
@@ -552,9 +568,9 @@ const behaviours = {
             },
           });
         }
-      } else {
+      } /* else {
         sprite.remove = true;
-      }
+      } */
     },
   },
 
@@ -562,7 +578,7 @@ const behaviours = {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0) {
+        if (target && target.isPlayer && target.health > 0) {
           target.setType(sprite.typeId);
           target.damageCounter = 30;
           postMessage({
@@ -588,17 +604,20 @@ const behaviours = {
   "moves-forward": {
     init(sprite) {
       sprite.acceleration = sprite.acceleration || 0.2;
+      sprite.nextDirection = null;
     },
     do({ sprite, state }) {
       if (state.completed) {
         return;
       }
 
-      if (sprite.collisionData.bottom || sprite.weight === 0) {
-        if (sprite.direction === DIRECTION.RIGHT) {
-          sprite.velocity.x += sprite.acceleration;
-        } else if (sprite.direction === DIRECTION.LEFT) {
-          sprite.velocity.x -= sprite.acceleration;
+      if (sprite.nextDirection === null) {
+        if (sprite.collisionData.bottom || sprite.weight === 0) {
+          if (sprite.direction === DIRECTION.RIGHT) {
+            sprite.velocity.x += sprite.acceleration;
+          } else if (sprite.direction === DIRECTION.LEFT) {
+            sprite.velocity.x -= sprite.acceleration;
+          }
         }
       }
 
@@ -680,7 +699,7 @@ const behaviours = {
 
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0) {
+        if (target && target.isPlayer && target.health > 0) {
           sprite.direction = target.direction;
         }
         /*
@@ -757,7 +776,7 @@ const behaviours = {
       }
     },
     do({ sprite }) {
-      if (sprite.energy <= 0) {
+      if (sprite.health <= 0) {
         return;
       }
 
@@ -770,7 +789,7 @@ const behaviours = {
 
   "falls-if-dead": {
     do({ sprite }) {
-      if (sprite.energy <= 0) {
+      if (sprite.health <= 0) {
         sprite.weight = 2.5;
       }
     },
@@ -778,7 +797,7 @@ const behaviours = {
 
   "changes-type-when-completed": {
     do({ sprite, state }) {
-      if (sprite.energy > 0 && state.completed) {
+      if (sprite.health > 0 && state.completed) {
         sprite.setType(sprite.transform.typeId);
         sprite.color = sprite.transform.color;
         sprite.damageCounter = 30;
@@ -845,13 +864,37 @@ const behaviours = {
   },
 
   "changes-direction-on-collision": {
+    init(sprite) {
+      sprite.directionChangePause = sprite.directionChangePause || 0;
+      sprite.directionChangePauseCounter = 0;
+      sprite.nextDirection = null;
+    },
     do({ sprite }) {
       if (sprite.collisionData.bottom || sprite.weight === 0) {
-        if (sprite.collisionData.left && sprite.direction !== DIRECTION.RIGHT) {
-          sprite.direction = DIRECTION.RIGHT;
-        }
-        if (sprite.collisionData.right && sprite.direction !== DIRECTION.LEFT) {
-          sprite.direction = DIRECTION.LEFT;
+        if (sprite.nextDirection === null) {
+          if (
+            sprite.collisionData.left &&
+            sprite.direction !== DIRECTION.RIGHT
+          ) {
+            // sprite.direction = DIRECTION.RIGHT;
+            sprite.nextDirection = DIRECTION.RIGHT;
+            sprite.directionChangePauseCounter = sprite.directionChangePause;
+          }
+          if (
+            sprite.collisionData.right &&
+            sprite.direction !== DIRECTION.LEFT
+          ) {
+            // sprite.direction = DIRECTION.LEFT;
+            sprite.nextDirection = DIRECTION.LEFT;
+            sprite.directionChangePauseCounter = sprite.directionChangePause;
+          }
+        } else {
+          if (sprite.directionChangePauseCounter > 0) {
+            sprite.directionChangePauseCounter--;
+          } else {
+            sprite.direction = sprite.nextDirection;
+            sprite.nextDirection = null;
+          }
         }
       }
     },
@@ -876,7 +919,7 @@ const behaviours = {
 
   "blocks-completion": {
     do({ sprite, nextState }) {
-      if (sprite.energy > 0) {
+      if (sprite.health > 0) {
         nextState.completed = false;
       }
     },
@@ -894,7 +937,8 @@ const behaviours = {
   "is-lock": {
     do({ sprite, sprites }) {
       if (!sprites.some((sprite) => sprite.isKey === true)) {
-        sprite.energy = 0;
+        // sprite.health = 0;
+        sprite.healthChange = -sprite.health;
       }
     },
   },
@@ -912,16 +956,16 @@ const behaviours = {
     },
   },
 
-  "changes-pattern-when-energy-low": {
+  "changes-pattern-when-health-low": {
     init(sprite) {
       sprite.transform = sprite.transform || {};
-      sprite.energyLowPatternChanged = false;
-      sprite.transform.energyThreshold = sprite.transform.energyThreshold || 1;
+      sprite.healthLowPatternChanged = false;
+      sprite.transform.healthThreshold = sprite.transform.healthThreshold || 1;
     },
     do({ sprite }) {
       if (
-        sprite.energy <= sprite.transform.energyThreshold &&
-        !sprite.energyLowPatternChanged &&
+        sprite.health <= sprite.transform.healthThreshold &&
+        !sprite.healthLowPatternChanged &&
         sprite.pattern !== sprite.transform.pattern
       ) {
         sprite.changePattern(sprite.transform.pattern);
@@ -930,28 +974,10 @@ const behaviours = {
     },
   },
 
-  "removed-if-energy-0": {
-    init(sprite) {
-      // sprite.exitSound =
-    },
+  "removed-if-health-0": {
     do({ sprite }) {
-      if (sprite.energy <= 0 && !sprite.remove) {
+      if (sprite.health <= 0 && !sprite.remove) {
         sprite.remove = true;
-        postMessage({
-          type: "PLAY_SOUND",
-          sound: "collect",
-          x: sprite.x,
-          y: sprite.y,
-        });
-        postMessage({
-          type: "EMIT_PARTICLES",
-          particleTypeId: "crumb",
-          amount: 10,
-          particleProps: {
-            x: sprite.x + sprite.width / 2,
-            y: sprite.y + sprite.height / 2,
-          },
-        });
       }
     },
   },
@@ -967,7 +993,7 @@ const behaviours = {
       if (!sprite.accessory.targetId) {
         sprite.collisionData.spriteIds.forEach((id) => {
           const target = sprites.find((sprite) => sprite.id === id);
-          if (target && target.isPlayer && target.energy > 0) {
+          if (target && target.isPlayer && target.health > 0) {
             sprite.accessory.targetId = target.id;
             postMessage({
               type: "PLAY_SOUND",
@@ -975,7 +1001,8 @@ const behaviours = {
               x: sprite.x,
               y: sprite.y,
             });
-            sprite.energy = 0;
+            // sprite.health = 0;
+            sprite.healthChange = -sprite.health;
           }
         });
       } else {
@@ -990,21 +1017,23 @@ const behaviours = {
     },
   },
 
-  "kills-falling": {
+  "damages-falling": {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
+        const targetType = spriteTypes[target.typeId];
 
         if (
           target &&
-          target.isPlayer &&
+          targetType.isDamagedBy.includes(DAMAGE_TYPES.SPIKE) &&
           target.velocity.y > 0.1 &&
           target.y < sprite.y &&
-          target.energy > 0
+          target.health > 0
         ) {
           // target.remove = true;
           target.damageCounter = 30;
-          target.energy = 0;
+          // target.health = 0;
+          target.healthChange = -target.health;
           postMessage({
             type: "EMIT_PARTICLES",
             particleTypeId: "star",
@@ -1020,21 +1049,23 @@ const behaviours = {
     },
   },
 
-  "kills-rising": {
+  "damages-rising": {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
+        const targetType = spriteTypes[target.typeId];
 
         if (
           target &&
-          target.isPlayer &&
+          targetType.isDamagedBy.includes(DAMAGE_TYPES.SPIKE) &&
           target.velocity.y < 0.1 &&
           target.y > sprite.y &&
-          target.energy > 0
+          target.health > 0
         ) {
           // target.remove = true;
           target.damageCounter = 30;
-          target.energy = 0;
+          // target.health = 0;
+          target.healthChange = -target.health;
           postMessage({
             type: "EMIT_PARTICLES",
             particleTypeId: "star",
@@ -1052,7 +1083,7 @@ const behaviours = {
 
   sweats: {
     do({ sprite }) {
-      if (sprite.energy > 0 && Math.random() > 0.95) {
+      if (sprite.health > 0 && Math.random() > 0.95) {
         postMessage({
           type: "EMIT_PARTICLES",
           particleTypeId: "drop",
@@ -1070,8 +1101,9 @@ const behaviours = {
     do({ sprite, sprites }) {
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
-        if (target && target.isPlayer && target.energy > 0) {
-          target.energy = 0;
+        if (target && target.isPlayer && target.health > 0) {
+          // target.health = 0;
+          target.healthChange = -target.health;
           target.damageCounter = 30;
           postMessage({
             type: "PLAY_SOUND",
@@ -1100,18 +1132,20 @@ const behaviours = {
       sprite.collectCounter = 0;
     },
     do({ sprite, sprites }) {
-      if (sprite.energy <= 0) {
+      /*
+      if (sprite.health <= 0) {
         return;
       }
-
+      
       sprite.collisionData.spriteIds.forEach((id) => {
         const target = sprites.find((sprite) => sprite.id === id);
         if (
           target &&
-          target.energy > 0 &&
+          target.health > 0 &&
           spriteTypes[target.typeId].collectable
         ) {
-          target.energy = 0;
+          // target.health = 0;
+          target.healthChange = -target.health;
           sprite.collectCounter = 10;
         }
       });
@@ -1119,7 +1153,7 @@ const behaviours = {
       if (sprite.collectCounter > 0) {
         sprite.changeAnimation({ animation: "collect" });
         sprite.collectCounter--;
-      }
+      } */
     },
   },
 
@@ -1177,29 +1211,32 @@ const behaviours = {
         return;
       }
 
-      const players = sprites.filter(
-        (sprite) => sprite.isPlayer && sprite.energy > 0
-      );
+      if (sprite.collisionData.bottom) {
+        const players = sprites.filter(
+          (sprite) => sprite.isPlayer && sprite.health > 0
+        );
 
-      players.forEach((player) => {
-        if (
-          Math.abs(player.x + player.width / 2 - sprite.x + sprite.width / 2) <=
-            500 &&
-          player.y + player.height > sprite.y &&
-          player.y < sprite.y + sprite.height
-        ) {
-          if (player.x < sprite.x && sprite.direction === DIRECTION.LEFT) {
-            sprite.velocity.x -= 0.1;
-            sprite.changeAnimation({ animation: "move" });
-          } else if (
-            player.x > sprite.x &&
-            sprite.direction === DIRECTION.RIGHT
+        players.forEach((player) => {
+          if (
+            Math.abs(
+              player.x + player.width / 2 - sprite.x + sprite.width / 2
+            ) <= 500 &&
+            player.y + player.height > sprite.y &&
+            player.y < sprite.y + sprite.height
           ) {
-            sprite.velocity.x += 0.1;
-            sprite.changeAnimation({ animation: "move" });
+            if (player.x < sprite.x && sprite.direction === DIRECTION.LEFT) {
+              sprite.velocity.x -= 0.1;
+              sprite.changeAnimation({ animation: "move" });
+            } else if (
+              player.x > sprite.x &&
+              sprite.direction === DIRECTION.RIGHT
+            ) {
+              sprite.velocity.x += 0.1;
+              sprite.changeAnimation({ animation: "move" });
+            }
           }
-        }
-      });
+        });
+      }
     },
   },
 
@@ -1214,12 +1251,14 @@ const behaviours = {
       sprite.blowSize = sprite.blowSize !== undefined ? sprite.blowSize : 35;
       sprite.blowX = sprite.blowX !== undefined ? sprite.blowX : 1;
       sprite.blowY = sprite.blowY !== undefined ? sprite.blowY : 0.5;
-      sprite.blowVelocityX = sprite.blowVelocityX !== undefined ? sprite.blowVelocityX : 0;
-      sprite.blowVelocityY = sprite.blowVelocityY !== undefined ? sprite.blowVelocityY : 0;
+      sprite.blowVelocityX =
+        sprite.blowVelocityX !== undefined ? sprite.blowVelocityX : 0;
+      sprite.blowVelocityY =
+        sprite.blowVelocityY !== undefined ? sprite.blowVelocityY : 0;
     },
 
     do({ sprite }) {
-      if (sprite.energy <= 0) {
+      if (sprite.health <= 0) {
         return;
       }
 
@@ -1236,16 +1275,22 @@ const behaviours = {
             parentId: sprite.id,
             x:
               sprite.direction === DIRECTION.LEFT
-                ? sprite.x + sprite.width - sprite.width * sprite.blowX - sprite.blowSize / 2
+                ? sprite.x +
+                  sprite.width -
+                  sprite.width * sprite.blowX -
+                  sprite.blowSize / 2
                 : sprite.x + sprite.width * sprite.blowX - sprite.blowSize / 2,
             y: sprite.y + sprite.height * sprite.blowY - sprite.blowSize / 2,
             width: sprite.blowSize,
             height,
-            energy: sprite.blowEnergy,
+            health: sprite.blowEnergy,
             direction: sprite.direction,
             velocity: {
               y: sprite.blowVelocityY,
-              x: sprite.direction === DIRECTION.LEFT ? -sprite.blowVelocityX : sprite.blowVelocityX,
+              x:
+                sprite.direction === DIRECTION.LEFT
+                  ? -sprite.blowVelocityX
+                  : sprite.blowVelocityX,
             },
             maxVelocity: { y: 10, x: 10 },
           });
@@ -1280,10 +1325,11 @@ const behaviours = {
       sprite.changeAnimation({ animation: "blow" });
     },
     do({ sprite, sprites }) {
-      if (sprite.energy > 0 && sprite.collisionData.wallHits === 0) {
-        sprite.energy--;
+      if (sprite.health > 0 && sprite.collisionData.wallHits === 0) {
+        // sprite.health--;
+        sprite.healthChange--;
 
-        if (sprite.energy < 20) {
+        if (sprite.health < 20) {
           sprite.changeAnimation({ animation: "fade" });
         }
 
@@ -1331,8 +1377,8 @@ const behaviours = {
                 sprite.velocity.y
               );
             }
-            // sprite.energy = 0;
-            // target.energy--;
+            // sprite.health = 0;
+            // target.health--;
             // target.damageCounter = 30;
             /* 
             postMessage({
@@ -1348,119 +1394,16 @@ const behaviours = {
       }
     },
   },
-  /*
-  blows: {
-    init(sprite) {
-      sprite.blowCounter = sprite.x % 200;
-      sprite.blowTop = sprite.blowTop || 0;
-      sprite.blowBottom = sprite.blowBottom || 1;
-      sprite.blowLeft = sprite.blowLeft || 0;
-      sprite.blowRight = sprite.blowRight || 1;
-      sprite.blowStart = sprite.blowStart || 100;
-      sprite.blowEnd = sprite.blowEnd || 200;
-    },
-    do({ sprite, sprites }) {
-      if (sprite.energy <= 0) {
-        return;
-      }
-
-      sprite.blowCounter++;
-
-      if (sprite.blowCounter >= sprite.blowStart) {
-        sprite.changeAnimation({ animation: "blow" });
-        if (sprite.blowCounter === sprite.blowStart) {
-          postMessage({
-            type: "PLAY_SOUND",
-            sound: "fire",
-            x: sprite.x,
-            y: sprite.y,
-          });
-        }
-
-        const players = sprites.filter(
-          (sprite) =>
-            !sprite.isEnemy && spriteTypes[sprite.typeId].movedByOtherSprites
-        );
-
-        players.forEach((player) => {
-          if (sprite.blowDirection && sprite.blowDirection === DIRECTION.UP) {
-            const distance = Math.abs(
-              player.y + player.height / 2 - sprite.y + sprite.height / 2
-            );
-            if (
-              distance <=
-              Math.min(500, (sprite.blowCounter - sprite.blowStart) * 5)
-            ) {
-              const power =
-                50 *
-                (1 -
-                  (sprite.blowCounter - sprite.blowStart) /
-                    (sprite.blowEnd - sprite.blowStart));
-              if (
-                sprite.direction === DIRECTION.RIGHT &&
-                player.x + player.width >
-                  sprite.x + sprite.width * sprite.blowLeft &&
-                player.x < sprite.x + sprite.width * sprite.blowRight
-              ) {
-                player.velocity.y -= Math.max(
-                  0.1,
-                  Math.min(5, power / distance)
-                );
-                // player.velocity.y -= Math.max(0.2, 1 / Math.min(50,distance));
-                if (player.maxJump) {
-                  player.jumpCounter = player.maxJump - 1;
-                  // player.jumpAgain = true;
-                }
-              } else if (
-                sprite.direction === DIRECTION.LEFT &&
-                player.x + player.width > sprite.x &&
-                player.x < sprite.x + sprite.width * sprite.blowLeft
-              ) {
-                player.velocity.y -= 0.2;
-                // player.velocity.y -= Math.max(0.1, Math.min(6, power / distance));
-                if (player.maxJump) {
-                  // player.jumpCounter = player.maxJump-1;
-                  // player.jumpAgain = true;
-                }
-              }
-            }
-          } else {
-            if (
-              Math.abs(
-                player.x + player.width / 2 - sprite.x + sprite.width / 2
-              ) <= 700 &&
-              player.y + player.height >
-                sprite.y + sprite.height * sprite.blowTop &&
-              player.y < sprite.y + sprite.height * sprite.blowBottom
-            ) {
-              if (player.x < sprite.x && sprite.direction === DIRECTION.LEFT) {
-                player.velocity.x -= 0.1;
-              } else if (
-                player.x > sprite.x &&
-                sprite.direction === DIRECTION.RIGHT
-              ) {
-                player.velocity.x += 0.1;
-              }
-            }
-          }
-        });
-      }
-
-      if (sprite.blowCounter >= sprite.blowEnd) {
-        sprite.blowCounter = 0;
-        sprite.changeAnimation({ animation: "idle" });
-      }
-    },
-  }, */
 
   "dies-if-falls": {
     do({ sprite }) {
       if (
-        sprite.energy > 0 &&
+        sprite.health > 0 &&
         sprite.collisionData.bottom &&
         Math.abs(sprite.velocity.y) > 0.5
       ) {
-        sprite.energy = 0;
+        // sprite.health = 0;
+        sprite.healthChange = -sprite.health;
       }
     },
   },
@@ -1470,7 +1413,7 @@ const behaviours = {
       sprite.isDead = false;
     },
     do({ sprite }) {
-      if (sprite.energy < 1) {
+      if (sprite.health < 1) {
         sprite.changeAnimation({ animation: "dead" });
         if (sprite.isPlayer && !sprite.isDead) {
           postMessage({ type: "PLAY_SOUND", sound: "fail" });
@@ -1491,31 +1434,36 @@ const behaviours = {
       sprite.originalY = sprite.y;
     },
     do({ sprite }) {
-      if (sprite.energy <= 0 && sprite.rebirthCounter === 0 && !sprite.hidden) {
+      if (sprite.health <= 0 && sprite.rebirthCounter === 0 && !sprite.hidden) {
         sprite.hidden = true;
         sprite.rebirthCounter = sprite.rebirthWait;
-        postMessage({
-          type: "PLAY_SOUND",
-          sound: "collect",
-          x: sprite.x,
-          y: sprite.y,
-        });
-        postMessage({
-          type: "EMIT_PARTICLES",
-          particleTypeId: "crumb",
-          amount: 10,
-          particleProps: {
+        /* 
+        const type = spriteTypes[sprite.typeId];
+        if (type.dyingEffect) {
+          postMessage({
+            type: "PLAY_SOUND",
+            sound: type.dyingEffect.sound || "collect",
             x: sprite.x + sprite.width / 2,
             y: sprite.y + sprite.height / 2,
-          },
-        });
+          });
+          postMessage({
+            type: "EMIT_PARTICLES",
+            particleTypeId: type.dyingEffect.particleType || "crumb",
+            amount: type.dyingEffect.particles || 10,
+            particleProps: {
+              ...(type.dyingEffect.particleProps || {}),
+              x: sprite.x + sprite.width / 2,
+              y: sprite.y + sprite.height / 2,
+            },
+          });
+        } */
       } else if (sprite.rebirthCounter > 0) {
         sprite.rebirthCounter--;
       } else if (sprite.hidden) {
         sprite.x = sprite.originalX;
         sprite.y = sprite.originalY;
         sprite.hidden = false;
-        sprite.energy = 1;
+        sprite.health = 1;
         postMessage({
           type: "PLAY_SOUND",
           sound: "pop",

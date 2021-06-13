@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 "use strict";
 
+// eslint-disable-next-line prefer-const
 let spriteTypes = {};
 
 const SHAPES = {
@@ -33,7 +35,7 @@ const tileMaterials = {
   default: {
     id: "default",
     name: "Clay",
-    inertia: 0.95, //0.97
+    inertia: 0.95,
   },
   ice: {
     id: "ice",
@@ -43,9 +45,20 @@ const tileMaterials = {
 };
 
 const DAMAGE_TYPES = {
-  TOUCH: 1,
-  STING: 2,
-  FIRE: 3,
+  COLLECT: 0,
+  EAT: 1,
+  TOUCH: 2,
+  SPIKE: 3,
+  FIRE: 4,
+  SPOOK: 5,
+  BITE: 6,
+};
+
+const ROLES = {
+  NEUTRAL: 0,
+  FRIEND: 1,
+  ENEMY: 2,
+  ITEM: 3,
 };
 
 class Scene {
@@ -136,12 +149,18 @@ class SpriteType {
     paths = {},
     patterns,
     behaviours = [],
+    damage = 0,
+    isDamagedBy,
+    isNotDamagedBy,
     damageType = DAMAGE_TYPES.TOUCH,
+    attackAnimation,
     animations = { idle: [{ frame: "default" }] },
     frames,
     shaded = true,
     availableInEditor = true,
     colors,
+    dyingEffect,
+    removable = true,
   }) {
     this.id = id;
     this.name = name;
@@ -152,17 +171,31 @@ class SpriteType {
     this.collidesWithObstacles = collidesWithObstacles;
     this.collisidesWithSprites = collisidesWithSprites;
     this.movedByOtherSprites = movedByOtherSprites;
+    this.damage = damage;
     this.damageType = damageType;
+    this.attackAnimation = attackAnimation;
     this.shaded = shaded;
     this.colors = colors;
     this.animations = animations;
     this.availableInEditor = availableInEditor;
+    this.dyingEffect = dyingEffect;
+    this.removable = removable;
+
+    if (isDamagedBy) {
+      this.isDamagedBy = isDamagedBy;
+    } else if (isNotDamagedBy) {
+      this.isDamagedBy = Object.values(DAMAGE_TYPES).filter(
+        (type) => !isNotDamagedBy.includes(type)
+      );
+    } else {
+      this.isDamagedBy = Object.values(DAMAGE_TYPES);
+    }
 
     if (frames) {
       this.frames = frames;
     } else {
       this.frames = { default: [] };
-      for (let i in paths) {
+      for (const i in paths) {
         this.frames.default.push({ path: i });
       }
     }
@@ -176,6 +209,10 @@ class SpriteType {
           behaviours: [...behaviours],
         },
       };
+    }
+
+    if (this.patterns.dead) {
+      this.removable = false;
     }
 
     if (collisionBox) {
@@ -215,7 +252,7 @@ class SpriteType {
     });
 
     if (
-      params.sprite.energy > 0 &&
+      params.sprite.health > 0 &&
       this.patterns[params.sprite.pattern].next &&
       this.patterns[params.sprite.pattern].rounds > 0
     ) {
@@ -255,7 +292,7 @@ class Sprite {
     typeId,
     parentId,
     isPlayer = false,
-    isEnemy = false,
+    role = ROLES.NEUTRAL,
     isObstacle = false,
     isStatic = false,
     direction = DIRECTION.RIGHT,
@@ -266,7 +303,7 @@ class Sprite {
     weight = 0.25,
     maxVelocity = { x: 2, y: 6 },
     velocity = { x: 0, y: 0 },
-    energy = 1,
+    health = 1,
     color,
     hidden = false,
     pattern = "default",
@@ -274,7 +311,7 @@ class Sprite {
     this.id = id || generateId();
     this.parentId = parentId;
     this.isPlayer = isPlayer;
-    this.isEnemy = isEnemy;
+    this.role = role;
     this.isObstacle = isObstacle;
     this.isStatic = isStatic;
     this.direction = direction;
@@ -285,11 +322,14 @@ class Sprite {
     this.weight = weight;
     this.maxVelocity = { ...maxVelocity };
     this.velocity = { ...velocity };
-    this.energy = energy;
+    this.health = health;
+    this.healthChange = 0;
     this.freezeCounter = 0;
     this.color = color;
     this.hidden = hidden;
     this.damageCounter = 0;
+    this.nextAnimation = undefined;
+    this.animationMinDuration = 0;
 
     this.setType(typeId);
 
@@ -303,13 +343,37 @@ class Sprite {
     this.resetCollisionBoxes();
   }
 
-  changeAnimation({ animation, randomFrame = false, forceChange = false }) {
-    if (this.animation !== animation || forceChange) {
-      this.setAnimation(animation, randomFrame);
+  changeAnimation({
+    animation,
+    randomFrame = false,
+    forceChange = false,
+    animationMinDuration = 0,
+  }) {
+    if (this.animation === animation) {
+      if (this.animationMinDuration !== undefined) {
+        this.animationMinDuration += animationMinDuration;
+      }
+
+      if (!forceChange) {
+        return;
+      }
+    }
+
+    if (
+      this.animationMinDuration === undefined ||
+      this.animationMinDuration < Date.now()
+    ) {
+      this.setAnimation(animation, randomFrame, animationMinDuration);
+    } else {
+      this.nextAnimation = {
+        animation,
+        randomFrame,
+        animationMinDuration,
+      };
     }
   }
 
-  setAnimation(name, randomFrame = false) {
+  setAnimation(name, randomFrame = false, animationMinDuration = 0) {
     if (spriteTypes[this.typeId].animations[name]) {
       this.animation = name;
       this.frame = randomFrame
@@ -317,7 +381,38 @@ class Sprite {
             Math.random() * spriteTypes[this.typeId].animations[name].length
           )
         : 0;
+      this.animationMinDuration = Date.now() + animationMinDuration;
       this.frameCounter = 0;
+    }
+  }
+
+  animate(rps = 90) {
+    if (this.nextAnimation && Date.now() > this.animationMinDuration) {
+      this.setAnimation(
+        this.nextAnimation.animation,
+        this.nextAnimation.randomFrame,
+        this.nextAnimation.animationMinDuration
+      );
+      this.nextAnimation = undefined;
+    }
+
+    const animation =
+      spriteTypes[this.typeId].animations[this.animation] ||
+      spriteTypes[this.typeId].animations.idle;
+
+    if (animation && animation.length > 1) {
+      const frame = animation[this.frame] || { s: 0 };
+
+      if (this.frameCounter >= rps * (frame.s || 0)) {
+        if (this.frame + 1 < animation.length) {
+          this.frame++;
+        } else if (frame.loop !== undefined) {
+          this.frame = frame.loop;
+        }
+        this.frameCounter = 0;
+      } else {
+        this.frameCounter++;
+      }
     }
   }
 
@@ -347,6 +442,7 @@ class Sprite {
           this.changeAnimation({
             animation:
               spriteTypes[this.typeId].patterns[this.pattern].animation,
+            animationMinDuration: 200,
           });
         }
 
@@ -366,6 +462,7 @@ class Sprite {
       top: false,
       bounce: false,
       boxes: [],
+      damage: 0,
       yChange: 0,
       xChange: 0,
       width: this.width,
@@ -446,25 +543,40 @@ class Sprite {
     }
   }
 
-  animate(rps = 90) {
-    const animation =
-      spriteTypes[this.typeId].animations[this.animation] ||
-      spriteTypes[this.typeId].animations.idle;
+  // duckface hits cheeks
+  // duckface hits pill
+  // cheek hits pill
+  // fireball hits pill
+  // elevator hits pill
+  // zombie hits living stone
+  // fireball hits duckface
 
-    if (animation && animation.length > 1) {
-      const frame = animation[this.frame] || { s: 0 };
-
-      if (this.frameCounter >= rps * (frame.s || 0)) {
-        if (this.frame + 1 < animation.length) {
-          this.frame++;
-        } else if (frame.loop !== undefined) {
-          this.frame = frame.loop;
-        }
-        this.frameCounter = 0;
-      } else {
-        this.frameCounter++;
-      }
+  isDamagedBy(sprite) {
+    if (this.typeId === sprite.typeId) {
+      return false;
     }
+
+    if (this.id === sprite.parentId) {
+      return false;
+    }
+
+    if (this.role === ROLES.FRIEND && sprite.role !== ROLES.ENEMY) {
+      return false;
+    }
+
+    if (this.role === ROLES.NEUTRAL && sprite.role !== ROLES.ENEMY) {
+      return false;
+    }
+
+    if (
+      !spriteTypes[this.typeId].isDamagedBy.includes(
+        spriteTypes[sprite.typeId].damageType
+      )
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   get isSprite() {
@@ -574,7 +686,7 @@ class Tile {
   }
 
   toJSON() {
-    let data = { ...this };
+    const data = { ...this };
 
     if (data.shape === SHAPES.BOX) {
       data.shape = undefined;
@@ -640,7 +752,6 @@ class Particle {
     this.duration = duration * 1000;
     this.rotation = rotation;
     this.velocity = { ...velocity };
-    //this.animation = "idle";
     this.frame = 0;
     this.frameCounter = 0;
   }
@@ -648,8 +759,8 @@ class Particle {
 
 function generateId() {
   return "xxxxxxxxxx".replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
+    const r = (Math.random() * 16) | 0;
+    const v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -787,7 +898,6 @@ function easeTransform(x) {
     return -0.1;
   }
   return -0.4;
-  //return Math.min(1,x);
 }
 
 function easePop(x) {
@@ -817,7 +927,6 @@ function easePop(x) {
     return 0.4;
   }
   return 0.1;
-  //return Math.min(1,x);
 }
 
 function easeFire(x) {
