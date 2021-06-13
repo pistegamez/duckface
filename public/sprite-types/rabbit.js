@@ -12,6 +12,7 @@ spriteTypes.rabbit = new SpriteType({
     maxJump: 46,
     jumpPause: 100,
     maxVelocity: { x: 1, y: 6 },
+    directionChangePause: 10,
   },
   isDamagedBy: [DAMAGE_TYPES.SPIKE, DAMAGE_TYPES.FIRE],
   damage: 1,
