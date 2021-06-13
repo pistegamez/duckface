@@ -485,7 +485,7 @@ const editor = {
       scene = previous;
       this.idsOfSelectedTiles = [];
       this.idsOfSelectedSprites = [];
-      //resetScene();
+      // resetScene();
       this.updateUI();
       updateTileCanvases();
       tileLayers.update = true;
@@ -1536,6 +1536,8 @@ const initEditor = async ({ sceneId, albumId, url }) => {
   camera.enabled = false;
 
   audio.init();
+
+  updateTileCanvases();
 
   requestAnimationFrame(mainloop);
 
