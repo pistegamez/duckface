@@ -1134,6 +1134,25 @@ function drawPath(path, rect, context) {
   });
 }
 
+/*
+function drawPath(path, rect, context) {
+
+        if (path.shaded === true) {
+          context.strokeStyle = path.stroke || "#404040";
+          context.moveTo(
+            rect.width * command.r - 4 + randoms.nextValue,
+            rect.height * command.b - 8 + randoms.nextValue
+          );
+          context.lineTo(
+            rect.width * command.r - 8 + randoms.nextValue,
+            rect.height * command.b - 4 + randoms.nextValue
+          );
+          context.stroke();
+          context.closePath();
+        }
+}
+*/
+
 function drawTiles(layer, context, canvas, frame = 0) {
   context.lineWidth = 1.5;
   context.lineCap = "butt";
@@ -1203,7 +1222,7 @@ function drawTile(tile, context, randoms) {
         context.lineTo(
           tile.width + randoms.x(tile.x + tile.width, tile.y + tile.height, i),
           tile.height + randoms.y(tile.x + tile.width, tile.y + tile.height, i)
-        ); 
+        );
       }
 
       if (tile.borders.b) {
@@ -1215,7 +1234,7 @@ function drawTile(tile, context, randoms) {
         context.lineTo(
           randoms.x(tile.x, tile.y + tile.height, i),
           tile.height + randoms.y(tile.x, tile.y + tile.height, i)
-        ); 
+        );
       }
 
       if (tile.borders.l) {
