@@ -2,7 +2,7 @@
   "id": "oh-horror",
   "version": "2.0",
   "created": "2021-03-29T19:14:35.128Z",
-  "lastEdit": "2021-04-11T17:52:06.280Z",
+  "lastEdit": "2021-06-13T10:55:52.715Z",
   "title": "Oh, the Horror!",
   "author": "Janne Kivilahti",
   "bgColor": "#5a4568",
@@ -150,7 +150,7 @@
     },
     {
       "id": "e54021405b",
-      "typeId": "zombie",
+      "typeId": "robot",
       "x": 536,
       "y": 48,
       "width": 24,
@@ -158,7 +158,7 @@
     },
     {
       "id": "56aa329383",
-      "typeId": "zombie",
+      "typeId": "robot",
       "x": 456,
       "y": 360,
       "width": 24,
@@ -166,7 +166,7 @@
     },
     {
       "id": "a4c94f1145",
-      "typeId": "zombie",
+      "typeId": "robot",
       "x": 408,
       "y": 64,
       "width": 24,

@@ -1,8 +1,8 @@
 {
   "id": "looking-at-you",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2021-03-27T18:14:15.166Z",
-  "lastEdit": "2021-03-27T18:23:21.026Z",
+  "lastEdit": "2021-05-26T18:56:25.040Z",
   "title": "Looking at You",
   "author": "Janne Kivilahti",
   "bgColor": "#5b5b8b",
@@ -50,6 +50,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "c9d825bab1",
@@ -126,18 +128,13 @@
     {
       "id": "56b2c01989",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 576,
       "y": 64,
       "width": 72,
       "height": 200,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "665788e6b5",
@@ -162,66 +159,46 @@
     {
       "id": "446f0bf87c",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 0,
       "y": 376,
       "width": 64,
       "height": 112,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "3bfd6396b3",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 648,
       "y": 192,
       "width": 104,
       "height": 296,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "4dce7af705",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 64,
       "y": 304,
       "width": 88,
       "height": 184,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "202bc768f2",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 152,
       "y": 136,
       "width": 112,
       "height": 352,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "1cded51596",
@@ -286,50 +263,35 @@
     {
       "id": "7f3ac44860",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 752,
       "y": 312,
       "width": 48,
       "height": 176,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "ee29b8b78f",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 176,
       "y": 112,
       "width": 32,
       "height": 24,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "52fac6bd86",
       "color": "#545469",
+      "stroke": "#545469",
       "x": 616,
       "y": 48,
       "width": 16,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "1d6013b9c2",
@@ -589,146 +551,101 @@
     {
       "id": "2e7899d874",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 176,
       "y": 152,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "c6c1aae542",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 88,
       "y": 336,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "73cca109ee",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 152,
       "y": 384,
       "width": 8,
       "height": 8,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "82e12bc049",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 704,
       "y": 240,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "0d6247c0a8",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 728,
       "y": 240,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "bdfc8ca162",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 736,
       "y": 416,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "d072dc6e00",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 752,
       "y": 416,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "2f7af69c58",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 736,
       "y": 440,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     },
     {
       "id": "55ac932b92",
       "color": "#f2f0a6",
+      "stroke": "#f2f0a6",
       "x": 752,
       "y": 440,
       "width": 8,
       "height": 16,
       "layer": 1,
-      "blocks": false,
-      "borders": {
-        "t": false,
-        "r": false,
-        "b": false,
-        "l": false
-      }
+      "blocks": false
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "need-for-speed",
-  "version": "2.0",
+  "version": "2.1",
   "created": "2021-03-27T18:32:05.599Z",
-  "lastEdit": "2021-04-24T17:16:13.137Z",
+  "lastEdit": "2021-05-26T19:27:21.367Z",
   "title": "Need for Speed",
   "author": "Janne Kivilahti",
   "bgColor": "#f0f0ff",
@@ -599,7 +599,7 @@
     {
       "id": "b6c30f8267",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -280,
       "y": 56,
       "z": -0.3,
@@ -611,7 +611,7 @@
     {
       "id": "6bebbce3d9",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -256,
       "y": 24,
       "z": -0.3,
@@ -629,7 +629,7 @@
     {
       "id": "fa13e68d36",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -200,
       "y": 72,
       "z": -0.3,
@@ -647,7 +647,7 @@
     {
       "id": "960aec27fc",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -144,
       "y": 40,
       "z": -0.3,
@@ -665,7 +665,7 @@
     {
       "id": "d060b17293",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -96,
       "y": 24,
       "z": -0.3,
@@ -683,7 +683,7 @@
     {
       "id": "f7ca6e5a97",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -104,
       "y": 72,
       "z": -0.3,
@@ -701,7 +701,7 @@
     {
       "id": "4bf43c03c7",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": -8,
       "y": 80,
       "z": -0.3,
@@ -713,7 +713,7 @@
     {
       "id": "e988b6afba",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 8,
       "y": 72,
       "z": -0.3,
@@ -731,7 +731,7 @@
     {
       "id": "71ce46ca7f",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 80,
       "y": 104,
       "z": -0.3,
@@ -743,7 +743,7 @@
     {
       "id": "a6f761643e",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 232,
       "y": 56,
       "z": -0.3,
@@ -755,7 +755,7 @@
     {
       "id": "fea6ac2593",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 256,
       "y": 40,
       "z": -0.3,
@@ -773,7 +773,7 @@
     {
       "id": "8caec96222",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 312,
       "y": 16,
       "z": -0.3,
@@ -791,7 +791,7 @@
     {
       "id": "509cdc3a79",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 384,
       "y": 80,
       "z": -0.3,
@@ -809,7 +809,7 @@
     {
       "id": "ecde98dce9",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 296,
       "y": 72,
       "z": -0.3,
@@ -827,7 +827,7 @@
     {
       "id": "e7b4c776ce",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 208,
       "y": 96,
       "z": -0.3,
@@ -845,7 +845,7 @@
     {
       "id": "ff8fa712fb",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 560,
       "y": 96,
       "z": -0.3,
@@ -857,7 +857,7 @@
     {
       "id": "579468c406",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 576,
       "y": 80,
       "z": -0.3,
@@ -875,7 +875,7 @@
     {
       "id": "dd4904353d",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 624,
       "y": 120,
       "z": -0.3,
@@ -893,7 +893,7 @@
     {
       "id": "c3df11f0d3",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 664,
       "y": 64,
       "z": -0.3,
@@ -911,7 +911,7 @@
     {
       "id": "2d58b42a43",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 728,
       "y": 128,
       "z": -0.3,
@@ -929,7 +929,7 @@
     {
       "id": "3014eff64c",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 680,
       "y": 48,
       "z": -0.3,
@@ -947,7 +947,7 @@
     {
       "id": "f88d293bea",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 704,
       "y": 80,
       "z": -0.3,
@@ -965,7 +965,7 @@
     {
       "id": "6728b15a73",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 760,
       "y": 128,
       "z": -0.3,
@@ -983,7 +983,7 @@
     {
       "id": "559f9d77cf",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 520,
       "y": 128,
       "z": -0.3,
@@ -1001,7 +1001,7 @@
     {
       "id": "874d4676ec",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 544,
       "y": 160,
       "z": -0.3,
@@ -1019,7 +1019,7 @@
     {
       "id": "dcea1a9d5a",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 952,
       "y": 56,
       "z": -0.3,
@@ -1031,7 +1031,7 @@
     {
       "id": "4772120358",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1224,
       "y": 136,
       "z": -0.3,
@@ -1043,7 +1043,7 @@
     {
       "id": "535a9614dc",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 968,
       "y": 32,
       "z": -0.3,
@@ -1061,7 +1061,7 @@
     {
       "id": "bfb5bf34be",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1040,
       "y": 16,
       "z": -0.3,
@@ -1079,7 +1079,7 @@
     {
       "id": "1085e301d8",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1096,
       "y": 40,
       "z": -0.3,
@@ -1097,7 +1097,7 @@
     {
       "id": "69bf583e6f",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1088,
       "y": 72,
       "z": -0.3,
@@ -1115,7 +1115,7 @@
     {
       "id": "b159658abc",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1008,
       "y": 88,
       "z": -0.3,
@@ -1133,7 +1133,7 @@
     {
       "id": "830be60945",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1136,
       "y": 96,
       "z": -0.3,
@@ -1151,7 +1151,7 @@
     {
       "id": "a407e64aac",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 928,
       "y": 96,
       "z": -0.3,
@@ -1169,7 +1169,7 @@
     {
       "id": "2814aef764",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1240,
       "y": 128,
       "z": -0.3,
@@ -1187,7 +1187,7 @@
     {
       "id": "728e941888",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1280,
       "y": 88,
       "z": -0.3,
@@ -1205,7 +1205,7 @@
     {
       "id": "0fed10095a",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1272,
       "y": 152,
       "z": -0.3,
@@ -1223,7 +1223,7 @@
     {
       "id": "0edafc3b31",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1360,
       "y": 168,
       "z": -0.3,
@@ -1241,7 +1241,7 @@
     {
       "id": "7b54c9ab9f",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1216,
       "y": 168,
       "z": -0.3,
@@ -1259,7 +1259,7 @@
     {
       "id": "437c6a750a",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 808,
       "y": 168,
       "z": -0.3,
@@ -1271,7 +1271,7 @@
     {
       "id": "1e8c64cdda",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 856,
       "y": 184,
       "z": -0.3,
@@ -1283,7 +1283,7 @@
     {
       "id": "4874cdd289",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1632,
       "y": 80,
       "z": -0.3,
@@ -1295,7 +1295,7 @@
     {
       "id": "3164f994f2",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1648,
       "y": 64,
       "z": -0.3,
@@ -1313,7 +1313,7 @@
     {
       "id": "fb33fa7e62",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1688,
       "y": 32,
       "z": -0.3,
@@ -1331,7 +1331,7 @@
     {
       "id": "77dcd51535",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1680,
       "y": 96,
       "z": -0.3,
@@ -1349,7 +1349,7 @@
     {
       "id": "7823c78dd6",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1744,
       "y": 104,
       "z": -0.3,
@@ -1367,7 +1367,7 @@
     {
       "id": "b4cadc848a",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1616,
       "y": 128,
       "z": -0.3,
@@ -1385,7 +1385,7 @@
     {
       "id": "3696a5038c",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 1992,
       "y": 88,
       "z": -0.3,
@@ -1397,7 +1397,7 @@
     {
       "id": "9a4bc9f0af",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2408,
       "y": 120,
       "z": -0.3,
@@ -1409,7 +1409,7 @@
     {
       "id": "b731dc74d1",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2560,
       "y": 136,
       "z": -0.3,
@@ -1421,7 +1421,7 @@
     {
       "id": "e6f4ebcc6b",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2008,
       "y": 40,
       "z": -0.3,
@@ -1439,7 +1439,7 @@
     {
       "id": "d9976fbfbe",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2088,
       "y": 72,
       "z": -0.3,
@@ -1457,7 +1457,7 @@
     {
       "id": "f426c4986b",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2112,
       "y": 40,
       "z": -0.3,
@@ -1475,7 +1475,7 @@
     {
       "id": "974b9fb3c6",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2192,
       "y": 64,
       "z": -0.3,
@@ -1493,7 +1493,7 @@
     {
       "id": "86071d1b39",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2280,
       "y": 80,
       "z": -0.3,
@@ -1511,7 +1511,7 @@
     {
       "id": "486d11ee5f",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2360,
       "y": 80,
       "z": -0.3,
@@ -1529,7 +1529,7 @@
     {
       "id": "ad8b6ca67a",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2424,
       "y": 112,
       "z": -0.3,
@@ -1547,7 +1547,7 @@
     {
       "id": "1669e7304d",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2176,
       "y": 112,
       "z": -0.3,
@@ -1565,7 +1565,7 @@
     {
       "id": "a690f125d2",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2072,
       "y": 112,
       "z": -0.3,
@@ -1583,7 +1583,7 @@
     {
       "id": "c67b7e8530",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2352,
       "y": 112,
       "z": -0.3,
@@ -1601,7 +1601,7 @@
     {
       "id": "ee992ff8f1",
       "color": "#ffffff",
-      "stroke": "#bababa",
+      "stroke": "#dedede",
       "x": 2464,
       "y": 112,
       "z": -0.3,

@@ -1,8 +1,8 @@
 {
   "id": "slim-fit",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2021-03-27T13:14:17.088Z",
-  "lastEdit": "2021-03-30T13:05:14.837Z",
+  "lastEdit": "2021-06-04T21:10:33.492Z",
   "title": "Slim Fit",
   "author": "Janne Kivilahti",
   "bgColor": "#f0ffff",
@@ -38,6 +38,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "773fa04bcd",
@@ -264,7 +266,7 @@
     {
       "id": "0f0b4ba2aa",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 632,
       "y": 48,
       "width": 136,
@@ -551,7 +553,7 @@
     {
       "id": "5bba2bc3ae",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 496,
       "y": 72,
       "width": 104,
@@ -562,7 +564,7 @@
     {
       "id": "11e80259ff",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 512,
       "y": 48,
       "width": 40,
@@ -579,7 +581,7 @@
     {
       "id": "21ce7cf5bc",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 552,
       "y": 24,
       "width": 40,
@@ -596,7 +598,7 @@
     {
       "id": "aff30025b9",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 488,
       "y": 96,
       "width": 16,
@@ -613,7 +615,7 @@
     {
       "id": "2d797b9e1c",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 592,
       "y": 96,
       "width": 72,
@@ -630,7 +632,7 @@
     {
       "id": "d7de4acf49",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 648,
       "y": 24,
       "width": 48,
@@ -647,7 +649,7 @@
     {
       "id": "c1f59c09ff",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 696,
       "y": 40,
       "width": 48,
@@ -664,7 +666,7 @@
     {
       "id": "1a4702cc47",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 688,
       "y": 64,
       "width": 24,
@@ -681,7 +683,7 @@
     {
       "id": "e8611ea2dc",
       "color": "#ffffff",
-      "stroke": "#c9c9c9",
+      "stroke": "#dedede",
       "x": 544,
       "y": 88,
       "width": 16,

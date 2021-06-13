@@ -1,8 +1,8 @@
 {
   "id": "haunted-maze",
-  "version": "1.1",
+  "version": "1.2",
   "created": "2021-03-22T14:50:49.432Z",
-  "lastEdit": "2021-05-05T19:45:22.532Z",
+  "lastEdit": "2021-06-04T21:07:14.646Z",
   "title": "Haunted Maze",
   "author": "Janne Kivilahti",
   "bgColor": "#bab8b5",
@@ -1371,6 +1371,7 @@
       "y": 552,
       "width": 136,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1387,6 +1388,7 @@
       "y": 440,
       "width": 128,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1403,6 +1405,7 @@
       "y": 376,
       "width": 144,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1419,6 +1422,7 @@
       "y": 440,
       "width": 120,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1435,6 +1439,7 @@
       "y": 544,
       "width": 88,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1451,6 +1456,7 @@
       "y": 712,
       "width": 96,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1467,6 +1473,7 @@
       "y": 648,
       "width": 32,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1483,6 +1490,7 @@
       "y": 648,
       "width": 120,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1499,6 +1507,7 @@
       "y": 736,
       "width": 32,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1515,6 +1524,7 @@
       "y": 576,
       "width": 184,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1531,6 +1541,7 @@
       "y": 544,
       "width": 40,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1547,6 +1558,7 @@
       "y": 472,
       "width": 64,
       "height": 32,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1563,6 +1575,7 @@
       "y": 96,
       "width": 600,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1579,6 +1592,7 @@
       "y": 192,
       "width": 64,
       "height": 24,
+      "layer": 1,
       "blocks": false,
       "borders": {
         "t": false,
@@ -1594,6 +1608,23 @@
       "y": 520,
       "width": 48,
       "height": 32
+    },
+    {
+      "id": "8e5b60a898",
+      "color": "#3f4550",
+      "opacity": 0.2,
+      "x": 416,
+      "y": 544,
+      "width": 16,
+      "height": 24,
+      "layer": 1,
+      "blocks": false,
+      "borders": {
+        "t": false,
+        "r": false,
+        "b": false,
+        "l": false
+      }
     }
   ]
 }

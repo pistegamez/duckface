@@ -1,10 +1,10 @@
 {
   "id": "pig-rescue",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2021-03-29T19:17:01.167Z",
-  "lastEdit": "2021-04-02T11:00:54.792Z",
+  "lastEdit": "2021-05-29T19:37:32.043Z",
   "title": "Pig Rescue",
-  "author": "",
+  "author": "Janne Kivilahti",
   "bgColor": "#656595",
   "themeSong": "theme-secret-agent",
   "captions": [
@@ -32,6 +32,8 @@
       }
     }
   ],
+  "actionDifficulty": 0.5,
+  "puzzleDifficulty": 0.5,
   "sprites": [
     {
       "id": "9b0a81416e",
@@ -96,8 +98,8 @@
       "id": "873fe29b40",
       "typeId": "duckface",
       "isPlayer": true,
-      "x": 328,
-      "y": 40,
+      "x": 360,
+      "y": 48,
       "width": 56,
       "height": 32
     },
@@ -181,7 +183,7 @@
       "x": 120,
       "y": 200,
       "width": 32,
-      "height": 64
+      "height": 56
     },
     {
       "id": "42989e167f",
