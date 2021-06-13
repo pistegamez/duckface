@@ -7,12 +7,19 @@ spriteTypes.ring = new SpriteType({
   collectable: true,
   collidesWithObstacles: false,
   spriteProps: {
+    role: ROLES.ITEM,
     width: 16,
     height: 16,
     weight: 0,
     maxVelocity: { x: 0, y: 0 },
   },
-  behaviours: ["removed-if-energy-0", "blocks-completion"],
+  isDamagedBy: [DAMAGE_TYPES.EAT],
+  dyingEffect: {
+    sound: "collect",
+    particleType: "crumb",
+    particles: 10,
+  },
+  behaviours: ["removed-if-health-0", "blocks-completion"],
   paths: {
     body: {
       stroke: "#ffff80",

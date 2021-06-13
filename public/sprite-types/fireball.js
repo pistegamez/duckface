@@ -7,14 +7,24 @@ spriteTypes.fireball = new SpriteType({
   shaded: false,
   collidesWithObstacles: true,
   movedByOtherSprites: false,
-  damageType: DAMAGE_TYPES.FIRE,
   availableInEditor: false,
   collisionBoxes: [
     { t: 0.1, l: 0.1, r: 0.9, b: 0.9, testSprites: true, testTiles: false },
-    { t: 0.4, l: 0.2, r: 0.8, b: 0.6, testSprites: false, testTiles: true }
+    { t: 0.4, l: 0.2, r: 0.8, b: 0.6, testSprites: false, testTiles: true },
   ],
   spriteProps: {
     isObstacle: false,
+  },
+  damage: 1,
+  damageType: DAMAGE_TYPES.FIRE,
+  isNotDamagedBy: [DAMAGE_TYPES.SPIKE],
+  dyingEffect: {
+    sound: "collect",
+    particleType: "dust",
+    particles: 10,
+    particleProps: {
+      energy: 0.1,
+    },
   },
   behaviours: ["fireball"],
   animations: {

@@ -12,7 +12,10 @@ spriteTypes["spikes-up"] = new SpriteType({
     isObstacle: false,
     maxVelocity: { x: 0, y: 0 },
   },
-  behaviours: ["kills-falling"],
+  behaviours: ["damages-falling"],
+  damage: 1,
+  damageType: DAMAGE_TYPES.SPIKE,
+  isDamagedBy: [],
   paths: {
     spikes: {
       fill: "#d0d0d0",

@@ -6,17 +6,22 @@ spriteTypes.key = new SpriteType({
   resizable: false,
   shaded: false,
   collectable: true,
-  collisionBoxes: [
-    { t: 0.0, r: 0.7, b: 1.0, l: 0.3 }
-  ],
+  collisionBoxes: [{ t: 0.0, r: 0.7, b: 1.0, l: 0.3 }],
   spriteProps: {
+    role: ROLES.ITEM,
     weight: 0.25,
     isKey: true,
     width: 32,
     height: 32,
     isObstacle: true,
   },
-  behaviours: ["blocks-completion", "removed-if-energy-0"],
+  isDamagedBy: [DAMAGE_TYPES.EAT],
+  dyingEffect: {
+    sound: "collect",
+    particleType: "crumb",
+    particles: 10,
+  },
+  behaviours: ["blocks-completion", "removed-if-health-0"],
   paths: {
     inline: {
       lineWidth: 2,

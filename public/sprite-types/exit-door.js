@@ -12,6 +12,7 @@ spriteTypes["exit-door"] = new SpriteType({
     maxVelocity: { x: 0, y: 0 },
   },
   behaviours: ["exit"],
+  isDamagedBy: [],
   paths: {
     body: {
       fill: "#303030",

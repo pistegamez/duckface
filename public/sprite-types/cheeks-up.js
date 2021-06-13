@@ -6,7 +6,7 @@ spriteTypes["cheeks-up"] = new SpriteType({
   collidesWithObstacles: true,
   resizable: true,
   spriteProps: {
-    isEnemy: true,
+    role: ROLES.ENEMY,
     isObstacle: true,
     weight: 0.2,
     maxVelocity: { x: 2, y: 6 },
@@ -16,6 +16,9 @@ spriteTypes["cheeks-up"] = new SpriteType({
     blowWait: 200,
     blowVelocityY: -8,
   },
+  damage: 1,
+  damageType: DAMAGE_TYPES.SPIKE,
+  isDamagedBy: [DAMAGE_TYPES.FIRE],
   patterns: {
     default: {
       behaviours: [

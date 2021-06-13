@@ -1,21 +1,23 @@
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 spriteTypes.cheeks = new SpriteType({
   id: "cheeks",
   name: "Cheeks",
-  // eslint-disable-next-line no-undef
   shape: SHAPES.BOX,
   collidesWithObstacles: true,
   resizable: true,
   spriteProps: {
-    isEnemy: true,
+    role: ROLES.ENEMY,
     isObstacle: true,
     weight: 0.2,
     maxVelocity: { x: 2, y: 6 },
     blowY: 0.8,
     blowEnergy: 70,
     blowWait: 200,
-    blowVelocityX: 10
+    blowVelocityX: 10,
   },
+  damage: 1,
+  damageType: DAMAGE_TYPES.SPIKE,
+  isDamagedBy: [DAMAGE_TYPES.FIRE],
   patterns: {
     default: {
       behaviours: [
