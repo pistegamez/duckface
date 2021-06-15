@@ -741,6 +741,8 @@ class Particle {
     duration = 1,
     rotation = 0,
     velocity = { x: 0, y: 0 },
+    fill = "#ffffff",
+    stroke = "#404040",
   }) {
     this.startTime = Date.now();
     this.type = type;
@@ -754,6 +756,8 @@ class Particle {
     this.velocity = { ...velocity };
     this.frame = 0;
     this.frameCounter = 0;
+    this.fill = fill;
+    this.stroke = stroke;
   }
 }
 
