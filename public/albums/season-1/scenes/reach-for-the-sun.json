@@ -1,8 +1,8 @@
 {
   "id": "reach-for-the-sun",
-  "version": "4.1",
+  "version": "5.1",
   "created": "2021-03-25T20:06:08.541Z",
-  "lastEdit": "2021-05-26T14:52:28.957Z",
+  "lastEdit": "2021-06-14T18:19:49.790Z",
   "title": "Reach for the Sun",
   "author": "Janne Kivilahti",
   "bgColor": "#ffdda3",
@@ -41,7 +41,7 @@
       "typeId": "pill-placebo",
       "weight": 0,
       "x": 912,
-      "y": 432,
+      "y": 368,
       "width": 16,
       "height": 16
     },
