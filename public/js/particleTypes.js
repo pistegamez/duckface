@@ -163,12 +163,22 @@ const particleTypes = {
   },
   crumb: {
     id: "crumb",
-    create({ x, y, energy = 1, velocity = { x: 0, y: 0 } }) {
-      const size = 1 + Math.random() * 7;
+    create({
+      x,
+      y,
+      energy = 1,
+      velocity = { x: 0, y: 0 },
+      fill,
+      stroke,
+      minSize = 1,
+    }) {
+      const size = minSize + Math.random() * 7;
       return new Particle({
         type: this,
         x,
         y,
+        fill,
+        stroke,
         width: size,
         height: size,
         duration: 1 + Math.random() / 4,
@@ -188,8 +198,8 @@ const particleTypes = {
     },
     draw(particle, context, fill = true, stroke = true) {
       const time = (Date.now() - particle.startTime) / particle.duration;
-      context.fillStyle = "#ffffff";
-      context.strokeStyle = "#404040";
+      context.fillStyle = particle.fill;
+      context.strokeStyle = particle.stroke;
       context.lineWidth = 3;
 
       const top = -particle.width / 2;
