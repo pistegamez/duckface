@@ -1,206 +1,206 @@
 <!DOCTYPE html>
 <html lang="en-US">
-
-<head>
+  <head>
     <title>Duckface</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <meta name="description" content="List of Duckface custom scenes">
-    <meta http-equiv="Cache-Control" content="no-store">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="description" content="List of Duckface custom scenes" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Gaegu&display=swap");
 
-        body {
-            font-family: 'Arial';
-            color: #ffffff;
-            background-color: #7b3379;
-        }
+      body {
+        font-family: "Arial";
+        color: #ffffff;
+        background-color: #7b3379;
+      }
 
-        main {
-            font-family: 'Gaegu';
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90vw;
-            margin-left: auto;
-            margin-right: auto;
-        }
+      main {
+        font-family: "Gaegu";
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-        h1 {
-            color: #ff880e;
-            font-size: 4em;
-            margin: 0;
-            letter-spacing: -8px;
-        }
+      h1 {
+        color: #ff880e;
+        font-size: 4em;
+        margin: 0;
+        letter-spacing: -8px;
+      }
 
-        h2 {
-            margin: 0;
-            font-size: 1.2em;
-            color: #ffffff;
-        }
+      h2 {
+        margin: 0;
+        font-size: 1.2em;
+        color: #ffffff;
+      }
 
-        h3 {
-            font-size: 1.3em;
-            color: #ffffff;
-            text-shadow: 0px 0px 1px #303030, 0px 0px 1.5px #303030, 0px 0px 0px #303030, 0px 2px 0px #303030;
-        }
+      h3 {
+        font-size: 1.3em;
+        color: #ffffff;
+        text-shadow: 0px 0px 1px #303030, 0px 0px 1.5px #303030,
+          0px 0px 0px #303030, 0px 2px 0px #303030;
+      }
 
-        h4 {
-            font-size: 0.9em;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-            color: #ffffff;
-            text-shadow: 0px 0px 1px #303030, 0px 0px 1.5px #303030, 0px 0px 0px #303030, 0px 1px 0px #303030;
-        }
+      h4 {
+        font-size: 0.9em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        color: #ffffff;
+        text-shadow: 0px 0px 1px #303030, 0px 0px 1.5px #303030,
+          0px 0px 0px #303030, 0px 1px 0px #303030;
+      }
 
-        #scenes {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
+      #scenes {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
 
-        #scenes .scene {
-            border: 1px solid rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            margin: 0.5em;
-            padding: 0.5em;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.2em;
-            flex-grow: 1;
-            box-shadow: 0px 1px 1px rgb(0 0 0 / 30%);
-        }
+      #scenes .scene {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        margin: 0.5em;
+        padding: 0.5em;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2em;
+        flex-grow: 1;
+        box-shadow: 0px 1px 1px rgb(0 0 0 / 30%);
+      }
 
-        #scenes .scene h3 {
-            margin-top: 0;
-            margin-bottom: 0;
-            color: #ffffff;
-        }
+      #scenes .scene h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        color: #ffffff;
+      }
 
-        #scenes a {
-            border: 1px solid #3a772b;
-            border-radius: 5px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: bolder;
-            background-color: #3cc123;
-            width: -webkit-fill-available;
-            padding: 0.3em;
-            box-shadow: 0px 1px 1px rgb(0 0 0 / 30%);
-        }
+      #scenes a {
+        border: 1px solid #3a772b;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: bolder;
+        background-color: #3cc123;
+        width: -webkit-fill-available;
+        padding: 0.3em;
+        box-shadow: 0px 1px 1px rgb(0 0 0 / 30%);
+      }
 
-        #scene-table {
-            width: 100%;
-            text-align: left;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #ffffff;
-        }
+      #scene-table {
+        width: 100%;
+        text-align: left;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #ffffff;
+      }
 
-        #scene-table th,
-        td {
-            padding: 0.5em;
-        }
+      #scene-table th,
+      td {
+        padding: 0.5em;
+      }
 
-        #scene-table a {
-            border: 1px solid #3a772b;
-            border-radius: 5px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: bolder;
-            background-color: #3cc123;
-        }
+      #scene-table a {
+        border: 1px solid #3a772b;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: bolder;
+        background-color: #3cc123;
+      }
 
-        .footnote {
-            font-size: 0.8em;
-        }
+      .footnote {
+        font-size: 0.8em;
+      }
     </style>
     <script>
+      let scenes = [];
 
-        let scenes = [];
-
-        async function onLoad() {
-            const response = await fetch("https://api.duckface.lol/v1/scenes");
-            if (response.ok) {
-                scenes = await response.json();
-                scenes = scenes.sort((s1, s2) => s2.lastEdit.localeCompare(s1.lastEdit));
-                //updateSceneTable();
-                updateScenes();
-            }
-            else {
-                const scenesSection = document.getElementById("scenes");
-                scenesSection.innerHTML = `Loading scenes failed (response.status) : (`;
-            }
+      async function onLoad() {
+        const response = await fetch("https://api.duckface.lol/v1/scenes");
+        if (response.ok) {
+          scenes = await response.json();
+          scenes = scenes.sort((s1, s2) =>
+            s2.lastEdit.localeCompare(s1.lastEdit)
+          );
+          //updateSceneTable();
+          updateScenes();
+        } else {
+          const scenesSection = document.getElementById("scenes");
+          scenesSection.innerHTML = `Loading scenes failed (response.status) : (`;
         }
+      }
 
-        function updateSceneTable() {
-            const tableBody = document.getElementById("scene-table-body");
-            tableBody.innerHTML = "";
-            scenes.forEach(scene => {
-                const row = document.createElement("tr");
-                const titleCell = document.createElement("td");
-                const authorCell = document.createElement("td");
-                const linkCell = document.createElement("td");
-                const link = document.createElement("a");
+      function updateSceneTable() {
+        const tableBody = document.getElementById("scene-table-body");
+        tableBody.innerHTML = "";
+        scenes.forEach((scene) => {
+          const row = document.createElement("tr");
+          const titleCell = document.createElement("td");
+          const authorCell = document.createElement("td");
+          const linkCell = document.createElement("td");
+          const link = document.createElement("a");
 
-                titleCell.textContent = scene.title;
-                authorCell.textContent = scene.author;
+          titleCell.textContent = scene.title;
+          authorCell.textContent = scene.author;
 
-                link.href = `/game.html?source=server&scene=${scene.id}`;
-                link.textContent = "Play";
+          link.href = `/game.html?source=server&scene=${scene.id}`;
+          link.textContent = "Play";
 
-                linkCell.appendChild(link);
-                row.appendChild(titleCell);
-                row.appendChild(authorCell);
-                row.appendChild(linkCell);
-                tableBody.appendChild(row);
-            });
-        }
+          linkCell.appendChild(link);
+          row.appendChild(titleCell);
+          row.appendChild(authorCell);
+          row.appendChild(linkCell);
+          tableBody.appendChild(row);
+        });
+      }
 
-        function updateScenes() {
-            const scenesSection = document.getElementById("scenes");
-            scenesSection.innerHTML = "";
+      function updateScenes() {
+        const scenesSection = document.getElementById("scenes");
+        scenesSection.innerHTML = "";
 
-            scenes.forEach(scene => {
-                const sceneDiv = document.createElement("div");
-                const sceneHeader = document.createElement("h3");
-                const by = document.createElement("h4");
-                const authorHeader = document.createElement("h4");
-                const playLink = document.createElement("a");
+        scenes.forEach((scene) => {
+          const sceneDiv = document.createElement("div");
+          const sceneHeader = document.createElement("h3");
+          const by = document.createElement("h4");
+          const authorHeader = document.createElement("h4");
+          const playLink = document.createElement("a");
 
-                sceneDiv.className = "scene";
-                sceneDiv.style.backgroundColor = scene.color || "#ffffff";
-                sceneHeader.textContent = scene.title;
-                by.textContent = 'by';
-                authorHeader.textContent = scene.author;
-                playLink.textContent = "Play";
-                playLink.href = `/game.html?source=server&scene=${scene.id}`;
+          sceneDiv.className = "scene";
+          sceneDiv.style.backgroundColor = scene.color || "#ffffff";
+          sceneHeader.textContent = scene.title;
+          by.textContent = "by";
+          authorHeader.textContent = scene.author;
+          playLink.textContent = "Play";
+          playLink.href = `/game.html?source=server&scene=${scene.id}`;
 
-                sceneDiv.appendChild(sceneHeader);
-                sceneDiv.appendChild(by);
-                sceneDiv.appendChild(authorHeader);
-                sceneDiv.appendChild(playLink);
-                scenesSection.appendChild(sceneDiv);
-            });
-        }
-
+          sceneDiv.appendChild(sceneHeader);
+          sceneDiv.appendChild(by);
+          sceneDiv.appendChild(authorHeader);
+          sceneDiv.appendChild(playLink);
+          scenesSection.appendChild(sceneDiv);
+        });
+      }
     </script>
-</head>
+  </head>
 
-<body onload="onLoad()">
+  <body onload="onLoad()">
     <main>
-        <h1>Duckface</h1>
-        <h2>Unofficial & User Made levels</h2>
-        <!--
+      <h1>Duckface</h1>
+      <h2>Unofficial & User made levels</h2>
+      <!--
         <table id="scene-table">
             <thead>
                 <tr>
@@ -214,8 +214,7 @@
             </tbody>
         </table>
         -->
-        <section id="scenes">Loading...</section>
+      <section id="scenes">Loading...</section>
     </main>
-</body>
-
+  </body>
 </html>
