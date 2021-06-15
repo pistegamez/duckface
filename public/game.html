@@ -417,8 +417,18 @@
                 });
             }
             else {
-                album = await loadAlbum(albumId);
-                await initGame({ sceneId, albumId, volume, scale: 1 });
+                try {
+                    album = await loadAlbum(albumId);
+                    await initGame({ sceneId, albumId, volume, scale: 1 });
+                } catch (error) {
+                    alert(
+                        `Oh crap, could not load level ${sceneId}. Loading default level instead. Hope that is ok.`
+                    );
+                    albumId = "season-1";
+                    sceneId = "square-1";
+                    album = await loadAlbum(albumId);
+                    await initGame({ sceneId, albumId, volume, scale: 1 });
+                }
             }
             gameState.setState(STATES.TITLE);
             resetCamera();
