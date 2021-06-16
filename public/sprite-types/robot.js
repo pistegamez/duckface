@@ -69,8 +69,8 @@ spriteTypes.robot = new SpriteType({
       { path: "bottom" },
     ],
     "chomp-up": [
-      { path: "antenna-cord", y: 0.4 },
-      { path: "antenna-end", y: 0.4 },
+      { path: "antenna-cord", y: 0.2 },
+      { path: "antenna-end", y: 0.2 },
       { path: "top-teeth", y: 0.1 },
       { path: "top", y: 0.1 },
       { path: "eye", y: 0.1 },
