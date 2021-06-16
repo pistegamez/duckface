@@ -19,7 +19,7 @@ spriteTypes.fireball = new SpriteType({
   damageType: DAMAGE_TYPES.FIRE,
   isNotDamagedBy: [DAMAGE_TYPES.SPIKE],
   dyingEffect: {
-    sound: "collect",
+    sound: "fire",
     particleType: "dust",
     particles: 10,
     particleProps: {
