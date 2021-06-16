@@ -170,9 +170,10 @@ const particleTypes = {
       velocity = { x: 0, y: 0 },
       fill,
       stroke,
+      maxSize = 5,
       minSize = 1,
     }) {
-      const size = minSize + Math.random() * 7;
+      const size = minSize + Math.random() * (maxSize - minSize);
       return new Particle({
         type: this,
         x,
@@ -209,15 +210,13 @@ const particleTypes = {
 
       context.rotate(Math.PI * 2 * time * 10 * particle.rotation);
       context.beginPath();
-      /*
-            context.arc(
-                right / 2,
-                bottom / 2,
-                (right - left) / 2,
-                0,
-                Math.PI * 2);
-                */
-      context.rect(left, top, right, bottom);
+
+      context.moveTo(left, top);
+      context.lineTo(right, top);
+      context.lineTo(right, bottom);
+      context.lineTo(left, bottom);
+      context.closePath();
+
       if (fill) {
         context.fill();
       }
