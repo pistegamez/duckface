@@ -550,6 +550,16 @@ const behaviours = {
               x: target.x,
               y: target.y,
             });
+            postMessage({
+              type: "EMIT_PARTICLES",
+              particleTypeId: "star",
+              amount: 5,
+              particleProps: {
+                x: sprite.x + sprite.width / 2,
+                y: sprite.y + sprite.height / 2,
+                energy: 5,
+              },
+            });
           }
         });
 
