@@ -17,6 +17,7 @@ spriteTypes["flying-heart"] = new SpriteType({
     sound: "collect",
     particleType: "crumb",
     particles: 10,
+    particleProps: { fill: "#ff3090" },
   },
   collidesWithObstacles: false,
   behaviours: [

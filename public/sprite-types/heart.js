@@ -19,6 +19,7 @@ spriteTypes.heart = new SpriteType({
     sound: "collect",
     particleType: "crumb",
     particles: 10,
+    particleProps: { fill: "#ff5050" },
   },
   behaviours: ["removed-if-health-0", "blocks-completion", "floats"],
   animations: {

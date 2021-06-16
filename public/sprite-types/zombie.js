@@ -16,7 +16,11 @@ spriteTypes.zombie = new SpriteType({
   dyingEffect: {
     sound: "collect",
     particleType: "crumb",
-    particles: 10,
+    particles: 15,
+    particleProps: {
+      minSize: 4,
+      fill: "#55ff55",
+    },
   },
   patterns: {
     default: {

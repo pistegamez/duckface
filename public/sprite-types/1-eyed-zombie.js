@@ -15,7 +15,12 @@ spriteTypes["1-eyed-zombie"] = new SpriteType({
   dyingEffect: {
     sound: "collect",
     particleType: "crumb",
-    particles: 10,
+    particles: 20,
+    particleProps: {
+      maxSize: 20,
+      minSize: 2,
+      fill: "#55f055",
+    },
   },
   patterns: {
     default: {

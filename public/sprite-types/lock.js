@@ -14,7 +14,12 @@ spriteTypes.lock = new SpriteType({
   dyingEffect: {
     sound: "collect",
     particleType: "crumb",
-    particles: 10,
+    particles: 15,
+    particleProps: {
+      maxSize: 9,
+      minSize: 2,
+      fill: "#d0d0d0",
+    },
   },
   behaviours: ["is-lock", "is-x-locked", "is-y-locked", "removed-if-health-0"],
   paths: {

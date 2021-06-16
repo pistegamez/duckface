@@ -23,6 +23,9 @@ spriteTypes.burger = new SpriteType({
     sound: "collect",
     particleType: "crumb",
     particles: 10,
+    particleProps: {
+      fill: "#f0cf80",
+    },
   },
   behaviours: [
     "changes-collectors-size",

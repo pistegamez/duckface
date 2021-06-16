@@ -15,7 +15,7 @@ spriteTypes["pill-mega-placebo"] = new SpriteType({
   dyingEffect: {
     sound: "collect",
     particleType: "crumb",
-    particles: 10,
+    particles: 25,
   },
   behaviours: ["removed-if-health-0", "blocks-completion"],
   paths: {

@@ -21,6 +21,9 @@ spriteTypes.chili = new SpriteType({
     sound: "collect",
     particleType: "crumb",
     particles: 10,
+    particleProps: {
+      fill: "#ff5050",
+    },
   },
   removable: false,
   behaviours: ["changes-collectors-pattern", "reborns"],

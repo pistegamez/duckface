@@ -20,6 +20,7 @@ spriteTypes.key = new SpriteType({
     sound: "collect",
     particleType: "crumb",
     particles: 10,
+    particleProps: { fill: "#ffff80" },
   },
   behaviours: ["blocks-completion", "removed-if-health-0"],
   paths: {
