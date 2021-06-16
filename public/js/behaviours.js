@@ -103,7 +103,7 @@ const behaviours = {
         (sprite.jumpAgain && sprite.groundContactCounter > 0) ||
         sprite.jumpCounter > 0
       ) {
-        if (jump && sprite.jumpCounter <= sprite.maxJump) {
+        if (jump && sprite.jumpCounter < sprite.maxJump) {
           if (sprite.jumpCounter === 0) {
             postMessage({
               type: "PLAY_SOUND",
