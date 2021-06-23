@@ -95,25 +95,6 @@ spriteTypes["1-eyed-zombie"] = new SpriteType({
       { path: "o-eye" },
       { path: "pupil", x: 0.05 },
     ],
-    /*
-        "default-2": [
-            { path: "body" },
-            { path: "mouth" },
-            { path: "teeth", x: 0.025 },
-            { path: "eyes", x: 0.025 }
-        ],
-        "default-3": [
-            { path: "body" },
-            { path: "mouth" },
-            { path: "teeth", x: 0.05 },
-            { path: "eyes", x: 0.05 }
-        ],
-        "happy": [
-            { path: "body" },
-            { path: "smile" },
-            { path: "teeth" },
-            { path: "eyes" }
-        ]*/
   },
   paths: {
     body: {
